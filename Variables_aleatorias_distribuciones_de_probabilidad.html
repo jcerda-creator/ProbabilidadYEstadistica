@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítulo 3: Variables Aleatorias y Distribuciones de Probabilidad - UP</title>
+  
+  <!-- MathJax para renderizado de fórmulas matemáticas -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --up-blue: #0f2c59;
+      --up-burgundy: #7a1a1a;
+      --up-burgundy-light: #fdf2f2;
+      --up-gold: #c5a059;
+      --up-gold-light: #fef9e7;
+      --up-gray: #f8fafc;
+      --up-gray-dark: #cbd5e1;
+      --up-text: #1e293b;
+      --up-white: #ffffff;
+      --up-green: #0d9488;
+      --up-green-light: #ccfbf1;
+      --up-shadow: rgba(15, 44, 89, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: var(--up-gray);
+      color: var(--up-text);
+      line-height: 1.65;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: linear-gradient(135deg, var(--up-blue) 0%, var(--up-burgundy) 100%);
+      color: var(--up-white);
+      padding: 2rem 1.5rem;
+      box-shadow: 0 6px 20px var(--up-shadow);
+      border-bottom: 4px solid var(--up-gold);
+    }
+    header h1 {
+      margin: 0 0 0.3rem;
+      font-size: 2.2rem;
+      letter-spacing: -0.5px;
+    }
+    header h1 span {
+      color: var(--up-gold);
+    }
+    header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+
+    /* ===== TABS ===== */
+    nav.tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      background: var(--up-blue);
+      padding: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    nav.tabs button {
+      background: transparent;
+      color: #cbd5e1;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    nav.tabs button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    nav.tabs button.active {
+      background: var(--up-gold);
+      color: var(--up-blue);
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    section {
+      display: none;
+      animation: fade 0.4s ease;
+    }
+    section.active {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--up-white);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 4px 16px var(--up-shadow);
+      border-left: 6px solid var(--up-gold);
+      transition: box-shadow 0.2s;
+    }
+    .card.accent {
+      border-left-color: var(--up-green);
+    }
+    .card.warn {
+      border-left-color: var(--up-burgundy);
+    }
+    .card.success {
+      border-left-color: var(--up-green);
+    }
+    .card.burgundy {
+      border-left-color: var(--up-burgundy);
+      background: var(--up-burgundy-light);
+    }
+
+    h2 {
+      color: var(--up-blue);
+      margin-top: 0;
+      font-size: 1.6rem;
+    }
+    h3 {
+      color: var(--up-burgundy);
+      margin-top: 1.2rem;
+    }
+    .formula {
+      background: #f0f2f5;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      text-align: center;
+      border: 1px dashed var(--up-gold);
+      font-size: 1.1rem;
+      overflow-x: auto;
+    }
+    .keyword {
+      background: linear-gradient(transparent 60%, var(--up-gold-light) 60%);
+      font-weight: 700;
+      cursor: help;
+      border-bottom: 2px dotted var(--up-gold);
+    }
+
+    .glossary-term {
+      color: var(--up-burgundy);
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--up-gold);
+    }
+    .glossary-term:hover {
+      background: var(--up-gold-light);
+    }
+
+    /* ===== ACORDEÓN ===== */
+    .accordion-toggle {
+      background: var(--up-blue);
+      color: var(--up-white);
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 0.5rem 0;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      text-align: left;
+    }
+    .accordion-toggle:hover {
+      background: var(--up-burgundy);
+    }
+    .accordion-toggle .arrow {
+      transition: transform 0.3s;
+      margin-left: auto;
+    }
+    .accordion-toggle.open .arrow {
+      transform: rotate(180deg);
+    }
+    .accordion-content {
+      display: none;
+      padding-top: 0.8rem;
+      animation: fade 0.3s ease;
+    }
+    .accordion-content.open {
+      display: block;
+    }
+
+    /* ===== INPUTS ===== */
+    input.fill {
+      border: none;
+      border-bottom: 2px solid var(--up-blue);
+      background: transparent;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 2px 6px;
+      width: 130px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input.fill:focus {
+      border-color: var(--up-gold);
+      background: #fff;
+    }
+    input.fill.correct {
+      background: var(--up-green-light);
+      border-color: var(--up-green);
+      color: #0b4a2a;
+    }
+    input.fill.wrong {
+      background: #f8d7da;
+      border-color: #b02a37;
+      color: #7a1a1a;
+    }
+
+    .btn {
+      background: var(--up-blue);
+      color: var(--up-white);
+      border: none;
+      padding: 0.6rem 1.3rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 0.3rem 0.2rem;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 3px 8px rgba(10, 28, 58, 0.3);
+    }
+    .btn:hover {
+      background: var(--up-burgundy);
+      transform: translateY(-2px);
+    }
+    .btn.secondary {
+      background: var(--up-gray-dark);
+      color: var(--up-text);
+      box-shadow: none;
+    }
+    .btn.secondary:hover {
+      background: #b0b0b0;
+    }
+    .btn.success {
+      background: var(--up-green);
+    }
+    .btn.success:hover {
+      background: #005f47;
+    }
+    .btn.gold {
+      background: var(--up-gold);
+      color: var(--up-blue);
+    }
+    .btn.gold:hover {
+      background: #b8983f;
+    }
+
+    .feedback {
+      margin-top: 0.8rem;
+      padding: 0.8rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      display: none;
+    }
+    .feedback.ok {
+      background: var(--up-green-light);
+      color: #0b4a2a;
+      display: block;
+    }
+    .feedback.err {
+      background: #f8d7da;
+      color: #7a1a1a;
+      display: block;
+    }
+
+    /* ===== OPCIONES ===== */
+    .options label {
+      display: block;
+      padding: 0.6rem 1rem;
+      margin: 0.3rem 0;
+      background: #f8fafc;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .options label:hover {
+      background: #ecf3fa;
+      border-color: var(--up-gold-light);
+    }
+    .options input {
+      margin-right: 0.6rem;
+    }
+    .options label.selected {
+      background: var(--up-gold-light);
+      border-color: var(--up-gold);
+    }
+    .options label.correct {
+      background: var(--up-green-light);
+      border-color: var(--up-green);
+    }
+    .options label.wrong {
+      background: #f8d7da;
+      border-color: #b02a37;
+    }
+
+    /* ===== TEXTAREA ===== */
+    textarea.essay {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.8rem;
+      border: 2px solid var(--up-gray-dark);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    textarea.essay:focus {
+      border-color: var(--up-gold);
+      outline: none;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 28, 58, 0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.8rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      border-top: 6px solid var(--up-gold);
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.8rem;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--up-blue);
+    }
+
+    /* ===== TABLAS ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    th, td {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--up-gray-dark);
+      text-align: left;
+    }
+    th {
+      background: var(--up-blue);
+      color: var(--up-white);
+    }
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .progress {
+      height: 8px;
+      background: var(--up-gray-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--up-green), var(--up-gold));
+      width: 0;
+      transition: width 0.4s;
+    }
+
+    .case-box {
+      background: #fef9e7;
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      border-left: 6px solid var(--up-gold);
+    }
+    .case-box h4 {
+      margin-top: 0;
+      color: var(--up-blue);
+    }
+
+    footer {
+      background: var(--up-blue);
+      color: var(--up-gold-light);
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-top: 4px solid var(--up-gold);
+    }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.6rem; }
+      .card { padding: 1.2rem; }
+      nav.tabs button { font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+    }
+
+    .dialog-btn {
+      background: none;
+      border: none;
+      color: var(--up-green);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline dotted;
+      padding: 0 0.2rem;
+      font-size: 0.95rem;
+    }
+    .dialog-btn:hover {
+      color: var(--up-burgundy);
+    }
+
+    /* ===== NOMBRE DEL ALUMNO ===== */
+    .student-name-field {
+      margin-bottom: 1.2rem;
+      padding: 0.8rem 1rem;
+      background: #f0f4ff;
+      border-radius: 8px;
+      border-left: 4px solid var(--up-gold);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 1rem;
+    }
+    .student-name-field label {
+      font-weight: 600;
+      color: var(--up-blue);
+    }
+    .student-name-field input {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      flex: 1 1 200px;
+      min-width: 150px;
+      background: white;
+    }
+    .student-name-field input:focus {
+      border-color: var(--up-gold);
+      outline: none;
+      box-shadow: 0 0 0 2px var(--up-gold-light);
+    }
+  </style>
+  <body>
+
+  <header>
+    <h1>Variables Aleatorias y Distribuciones de Probabilidad</h1>
+    <p>Estadística Inferencial UP — <span>Capítulo 3 (Walpole)</span></p>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" onclick="showTab('teoria')">📚 Teoría</button>
+    <button onclick="showTab('autoevaluacion')">📝 Autoevaluación (Rellenar)</button>
+    <button onclick="showTab('cuestionario')">⚡ Cuestionario (Opción Múltiple)</button>
+    <button onclick="showTab('ejercicios')">✏️ Ejercicios de Desarrollo</button>
+  </nav>
+
+  <main>
+    
+    <!-- ============================================== -->
+    <!-- TAB 1: TEORÍA -->
+    <!-- ============================================== -->
+    <section id="teoria" class="active">
+      
+      <div class="card">
+        <h2>1. Concepto de Variable Aleatoria</h2>
+        <p>En el estudio de la estadística, realizamos experimentos cuyos resultados están sujetos al azar. Para analizar estos resultados de manera matemática, a menudo es conveniente asignarles una descripción numérica. La definición formal es la siguiente:</p>
+        
+        <div class="formula">
+          <b>Definición:</b> Una <b>variable aleatoria</b> es una función que asocia un número real con cada elemento del espacio muestral.
+        </div>
+        
+        <p>Utilizamos una letra mayúscula (por ejemplo, \(X\)) para denotar la variable aleatoria, y su correspondiente letra minúscula (\(x\)) para uno de sus valores específicos.</p>
+        
+        <div class="case-box">
+          <h4>💡 Ejemplo 1: Extracción de bolas de una urna</h4>
+          <p>De una urna que contiene <b>4 bolas rojas</b> y <b>3 negras</b> se extraen 2 bolas de manera sucesiva, sin reemplazo. Si definimos la variable aleatoria \(Y\) como el <b>número de bolas rojas</b>, los posibles resultados y sus valores correspondientes son:</p>
+          <table>
+            <tr><th>Punto Muestral (Espacio Muestral)</th><th>Valor \(y\) de la Variable Aleatoria \(Y\)</th></tr>
+            <tr><td>\(RR\) (Rojo, Rojo)</td><td><b>2</b></td></tr>
+            <tr><td>\(RN\) (Rojo, Negro)</td><td><b>1</b></td></tr>
+            <tr><td>\(NR\) (Negro, Rojo)</td><td><b>1</b></td></tr>
+            <tr><td>\(NN\) (Negro, Negro)</td><td><b>0</b></td></tr>
+          </table>
+        </div>
+
+        <div class="case-box">
+          <h4>💡 Ejemplo 2: Devolución de cascos</h4>
+          <p>Un empleado regresa 3 cascos de seguridad al azar a 3 obreros (Smith, Jones y Brown) que ya los habían probado. Si definimos la variable aleatoria \(M\) como el <b>número de emparejamientos correctos</b> (recibir el propio casco), los valores posibles para \(M\) son <b>0, 1 y 3</b>.</p>
+          <p><i>Nota interesante:</i> ¡El valor \(M = 2\) es imposible! Si dos obreros reciben su casco correcto, el tercero necesariamente también debe recibir el suyo.</p>
+        </div>
+      </div>
+
+      <div class="card accent">
+        <h2>2. Clasificación: Variables Discretas vs. Continuas</h2>
+        <p>La naturaleza del espacio muestral determina el tipo de variable aleatoria:</p>
+        
+        <ul>
+          <li><b>Variable Aleatoria Discreta:</b> Si su conjunto de resultados posibles es finito o se puede listar en una secuencia interminable con tantos elementos como números enteros existen (es decir, se puede contar). Ejemplos: \(Y\) (número de bolas rojas) y \(M\) (número de cascos correctos).</li>
+          <li><b>Variable Aleatoria Continua:</b> Si puede tomar valores en una escala continua, correspondiente a todos los puntos de un intervalo completo de números reales. Generalmente representan mediciones físicas. Ejemplos: el peso de un lote de granos, el tiempo de reacción de un conductor, o la proporción de personas que responden a una encuesta por correo (\(0 \leq x \leq 1\)).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>3. Distribuciones Discretas de Probabilidad</h2>
+        <p>Una variable aleatoria discreta toma cada uno de sus valores con cierta probabilidad. La distribución de estas probabilidades se describe mediante una función:</p>
+        
+        <div class="formula">
+          <b>Definición:</b> El conjunto de pares ordenados \((x, f(x))\) es una función de probabilidad o <b>distribución de probabilidad</b> de la variable aleatoria discreta \(X\) si, para cada resultado \(x\) posible:
+          <br><br>
+          1. \(f(x) \geq 0\)
+          <br>
+          2. \(\sum_x f(x) = 1\)
+          <br>
+          3. \(P(X = x) = f(x)\)
+        </div>
+
+        <div class="case-box">
+          <h4>💡 Ejemplo 3: Computadoras portátiles</h4>
+          <p>Un embarque de 20 computadoras portátiles contiene 3 que están defectuosas. Si una escuela compra al azar 2 de estas computadoras, la distribución de probabilidad para el número \(X\) de computadoras defectuosas se calcula mediante combinaciones:</p>
+          <div class="formula">
+            \(f(0) = P(X=0) = \frac{\binom{3}{0}\binom{17}{2}}{\binom{20}{2}} = \frac{68}{95}\) &nbsp;&nbsp;&nbsp;&nbsp;
+            \(f(1) = P(X=1) = \frac{\binom{3}{1}\binom{17}{1}}{\binom{20}{2}} = \frac{51}{190}\) &nbsp;&nbsp;&nbsp;&nbsp;
+            \(f(2) = P(X=2) = \frac{\binom{3}{2}\binom{17}{0}}{\binom{20}{2}} = \frac{3}{190}\)
+          </div>
+        </div>
+
+        <h3>Función de Distribución Acumulativa (FDA)</h3>
+        <p>A menudo deseamos calcular la probabilidad de que el valor observado de una variable \(X\) sea menor o igual que algún número real \(x\):</p>
+        <div class="formula">
+          <b>Definición:</b> La función de distribución acumulativa \(F(x)\) de una variable aleatoria discreta \(X\) con distribución de probabilidad \(f(x)\) es:
+          <br><br>
+          \(F(x) = P(X \leq x) = \sum_{t \leq x} f(t)\) , para \(-\infty < x < \infty\)
+        </div>
+      </div>
+
+      <div class="card success">
+        <h2>4. Distribuciones de Probabilidad Continua</h2>
+        <p>A diferencia de las variables discretas, una variable aleatoria continua tiene una <b>probabilidad de exactamente cero</b> de adoptar cualquiera de sus valores individuales específicos (es decir, \(P(X = x) = 0\)). Por ello, sus probabilidades se definen sobre intervalos y se representan como el área bajo una curva:</p>
+
+        <div class="formula">
+          <b>Definición:</b> La función \(f(x)\) es una <b>función de densidad de probabilidad (fdp)</b> para la variable aleatoria continua \(X\) si:
+          <br><br>
+          1. \(f(x) \geq 0\) , para toda \(x \in \mathbb{R}\)
+          <br>
+          2. \(\int_{-\infty}^{\infty} f(x) dx = 1\)
+          <br>
+          3. \(P(a < X < b) = \int_{a}^{b} f(x) dx\)
+        </div>
+
+        <div class="case-box">
+          <h4>💡 Ejemplo 4: Error en temperatura de reacción</h4>
+          <p>Suponga que el error en la temperatura de reacción en °C es una variable aleatoria continua con la fdp:</p>
+          <div class="formula">
+            \(f(x) = \begin{cases} \frac{x^2}{3} & -1 < x < 2 \\ 0 & \text{en otro caso} \end{cases}\)
+          </div>
+          <p>Podemos verificar que es válida porque:</p>
+          <div class="formula">
+            \(\int_{-1}^{2} \frac{x^2}{3} dx = \left[ \frac{x^3}{9} \right]_{-1}^{2} = \frac{8}{9} - \left( -\frac{1}{9} \right) = 1\)
+          </div>
+          <p>Y la probabilidad de que el error esté entre 0 y 1 °C es:</p>
+          <div class="formula">
+            \(P(0 < X \leq 1) = \int_{0}^{1} \frac{x^2}{3} dx = \left[ \frac{x^3}{9} \right]_{0}^{1} = \frac{1}{9}\)
+          </div>
+        </div>
+      </div>
+
+      <div class="card warn">
+        <h2>5. Distribuciones de Probabilidad Conjunta</h2>
+        <p>En muchas situaciones prácticas, un experimento se modela a través de dos o más variables aleatorias de forma simultánea. Registramos sus probabilidades utilizando distribuciones conjuntas:</p>
+
+        <div class="formula">
+          <b>Definición (Caso Discreto):</b> La función \(f(x,y)\) es una distribución de probabilidad conjunta de las variables discretas \(X\) y \(Y\) si:
+          <br><br>
+          1. \(f(x,y) \geq 0\) para todo \((x,y)\)
+          <br>
+          2. \(\sum_x \sum_y f(x,y) = 1\)
+          <br>
+          3. \(P(X=x, Y=y) = f(x,y)\)
+        </div>
+
+        <button class="accordion-toggle" data-target="marginales-condicionales">↪ Distribuciones Marginales y Condicionales <span class="arrow">▼</span></button>
+        <div class="accordion-content" id="marginales-condicionales" style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+          <p><b>Distribución Marginal:</b> Permite conocer la distribución de probabilidad de una sola variable aislada sumando (o integrando) sobre la otra:</p>
+          <div class="formula">
+            \(g(x) = \sum_{y} f(x,y)\) &nbsp;&nbsp;&nbsp;(Caso discreto) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            \(g(x) = \int_{-\infty}^{\infty} f(x,y) dy\) &nbsp;&nbsp;&nbsp;(Caso continuo)
+          </div>
+          <p><b>Distribución Condicional:</b> Expresa la probabilidad de una variable dado que la otra ha tomado un valor específico conocido:</p>
+          <div class="formula">
+            \(f(y|x) = \frac{f(x,y)}{g(x)}\) , siempre que \(g(x) > 0\)
+          </div>
+        </div>
+
+        <button class="accordion-toggle" data-target="independencia-detalles">↪ Independencia Estadística <span class="arrow">▼</span></button>
+        <div class="accordion-content" id="independencia-detalles" style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+          <p>Se dice que dos variables aleatorias \(X\) y \(Y\) son estadísticamente independientes si y solo si su probabilidad conjunta es exactamente igual al producto de sus distribuciones marginales individuales:</p>
+          <div class="formula">
+            <b>Definición:</b> \(f(x,y) = g(x)h(y)\) para todo \((x,y)\) en sus rangos.
+          </div>
+          <p>Si existe al menos un punto \((x,y)\) donde esta igualdad no se cumple, las variables se consideran dependientes.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB 2: AUTOEVALUACIÓN (RELLENAR) -->
+    <!-- ============================================== -->
+    <section id="autoevaluacion">
+      <div class="card">
+        <h2>Autoevaluación de Rellenar Espacios</h2>
+        
+        <!-- Campo para el nombre del alumno -->
+        <div class="student-name-field">
+          <label for="fill-name">👤 Nombre del alumno:</label>
+          <input type="text" id="fill-name" placeholder="Escribe tu nombre completo">
+        </div>
+
+        <p>Rellena cada espacio con el término o valor numérico correcto y pulsa <b>Verificar respuestas</b>.</p>
+
+        <div id="fill-container">
+          <div class="fill-item" data-answer="funcion|función">
+            <p>1. Una variable aleatoria se define matemáticamente como una <input class="fill" type="text" placeholder="..."> que asocia un número real con cada elemento del espacio muestral.</p>
+          </div>
+          <div class="fill-item" data-answer="discreto">
+            <p>2. Si un espacio muestral contiene un número finito de posibilidades o una serie tan numerosa como los números enteros, se le denomina espacio muestral <input class="fill" type="text" placeholder="...">.</p>
+          </div>
+          <div class="fill-item" data-answer="masa">
+            <p>3. Para una variable aleatoria discreta, la función de probabilidad \(f(x) = P(X=x)\) se conoce como función de <input class="fill" type="text" placeholder="..."> de probabilidad.</p>
+          </div>
+          <div class="fill-item" data-answer="1">
+            <p>4. La sumatoria de todas las probabilidades posibles para una variable discreta, \(\sum_x f(x)\), debe ser exactamente igual a <input class="fill" type="text" placeholder="..." style="width: 80px;">.</p>
+          </div>
+          <div class="fill-item" data-answer="acumulativa|acumulada">
+            <p>5. La función \(F(x) = P(X \leq x)\) recibe el nombre de función de distribución <input class="fill" type="text" placeholder="...">.</p>
+          </div>
+          <div class="fill-item" data-answer="densidad">
+            <p>6. En el caso de variables aleatorias continuas, la función \(f(x)\) se conoce como función de <input class="fill" type="text" placeholder="..."> de probabilidad.</p>
+          </div>
+          <div class="fill-item" data-answer="0">
+            <p>7. La probabilidad de que una variable aleatoria continua tome exactamente un valor individual \(x\), es decir \(P(X = x)\), es siempre igual a <input class="fill" type="text" placeholder="..." style="width: 80px;">.</p>
+          </div>
+          <div class="fill-item" data-answer="marginales|marginal">
+            <p>8. Para obtener la distribución individual de una variable a partir de una conjunta \(f(x,y)\), sumamos o integramos sobre la otra variable, obteniendo distribuciones <input class="fill" type="text" placeholder="...">.</p>
+          </div>
+          <div class="fill-item" data-answer="condicional">
+            <p>9. La distribución de probabilidad de \(Y\) dado que \(X\) ha tomado un valor fijo se conoce como distribución <input class="fill" type="text" placeholder="...">.</p>
+          </div>
+          <div class="fill-item" data-answer="independientes">
+            <p>10. Decimos que \(X\) y \(Y\) son estadísticamente <input class="fill" type="text" placeholder="..."> si su distribución conjunta es igual al producto de sus distribuciones marginales, es decir, \(f(x,y) = g(x)h(y)\).</p>
+          </div>
+        </div>
+
+        <button class="btn" onclick="checkFill()">Verificar respuestas</button>
+        <button class="btn secondary" onclick="resetFill()">Reiniciar</button>
+        <div id="fill-feedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB 3: CUESTIONARIO (OPCIÓN MÚLTIPLE) -->
+    <!-- ============================================== -->
+    <section id="cuestionario">
+      <div class="card">
+        <h2>Cuestionario Interactivo (Opción Múltiple)</h2>
+        
+        <!-- Campo para el nombre del alumno -->
+        <div class="student-name-field">
+          <label for="mc-name">👤 Nombre del alumno:</label>
+          <input type="text" id="mc-name" placeholder="Escribe tu nombre completo">
+        </div>
+
+        <p>Selecciona la opción correcta para cada una de las siguientes preguntas basadas en el Capítulo 3 de Walpole. Tu progreso se reflejará en la barra superior.</p>
+
+        <div class="progress">
+          <div class="progress-bar" id="mc-progress"></div>
+        </div>
+
+        <div id="mc-container">
+          <!-- Las preguntas se renderizan dinámicamente con JavaScript -->
+        </div>
+
+        <button class="btn success" onclick="checkMC()">Calificar respuestas</button>
+        <button class="btn secondary" onclick="renderMC()">Reiniciar Cuestionario</button>
+        <div id="mc-feedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: EJERCICIOS DE DESARROLLO -->
+    <!-- ============================================== -->
+    <section id="ejercicios">
+      <div class="card">
+        <h2>Ejercicios de Desarrollo Práctico</h2>
+        
+        <!-- Campo para el nombre del alumno -->
+        <div class="student-name-field">
+          <label for="essay-name">👤 Nombre del alumno:</label>
+          <input type="text" id="essay-name" placeholder="Escribe tu nombre completo">
+        </div>
+
+        <p>Resuelve los siguientes problemas con tus propias palabras y describe el desarrollo matemático. Al finalizar, pulsa <b>Guardar mis respuestas</b> para almacenarlas localmente y ver un resumen imprimible.</p>
+
+        <div class="case-box">
+          <h3>Pregunta 1: Discretas vs. Continuas</h3>
+          <p>Explica detalladamente la diferencia fundamental entre una variable aleatoria discreta y una continua en términos de su espacio muestral y cómo se calculan sus probabilidades (sumatorias frente a integrales).</p>
+          <textarea class="essay" id="essay-q1" placeholder="Escribe tu análisis comparativo aquí..."></textarea>
+        </div>
+
+        <div class="case-box">
+          <h3>Pregunta 2: Análisis del Experimento de Componentes</h3>
+          <p>Un plan de muestreo implica obtener una muestra de 10 artículos de un lote de 100, en el que 12 están defectuosos. Si \(X\) representa el número de artículos defectuosos en la muestra, ¿qué tipo de variable aleatoria es \(X\), qué valores puede asumir y bajo qué modelo (hipergeométrico o binomial) calcularías sus probabilidades?</p>
+          <textarea class="essay" id="essay-q2" placeholder="Desarrolla tu justificación estadística aquí..."></textarea>
+        </div>
+
+        <div class="case-box">
+  <h3>Pregunta 3: Distribución Conjunta y Condicional</h3>
+
+  <p>
+    Considerando la distribución de probabilidad conjunta que se muestra en la (Tabla 3.1)
+    para refacciones de bolígrafos de colores (azules \(X\), rojos \(Y\)):
+    explica paso a paso cómo se obtiene la probabilidad condicional
+    \(P(X = 0 \mid Y = 1) = 1/2\) a partir de la densidad condicional
+    \(f(x|y)\) y de la distribución marginal \(h(y)\). Diga cual es el procedimiento. 
+  </p>
+
+  <!-- Tabla 3.1 -->
+  <div class="table-container">
+    <table class="joint-distribution">
+      <caption>
+        Tabla 3.1: Distribución de probabilidad conjunta.
+      </caption>
+
+      <thead>
+        <tr>
+          <th rowspan="2"></th>
+          <th rowspan="2">\(f(x,y)\)</th>
+          <th colspan="3">\(x\)</th>
+          <th rowspan="2">Totales<br>por renglón</th>
+        </tr>
+        <tr>
+          <th>0</th>
+          <th>1</th>
+          <th>2</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <th rowspan="3">\(y\)</th>
+          <th>0</th>
+          <td>\(\frac{3}{28}\)</td>
+          <td>\(\frac{9}{28}\)</td>
+          <td>\(\frac{3}{28}\)</td>
+          <td>\(\frac{15}{28}\)</td>
+        </tr>
+
+        <tr>
+          <th>1</th>
+          <td>\(\frac{3}{14}\)</td>
+          <td>\(\frac{3}{14}\)</td>
+          <td>0</td>
+          <td>\(\frac{3}{7}\)</td>
+        </tr>
+
+        <tr>
+          <th>2</th>
+          <td>\(\frac{1}{28}\)</td>
+          <td>0</td>
+          <td>0</td>
+          <td>\(\frac{1}{28}\)</td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <th colspan="2">Totales por columna</th>
+          <td>\(\frac{5}{14}\)</td>
+          <td>\(\frac{15}{28}\)</td>
+          <td>\(\frac{3}{28}\)</td>
+          <td>1</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Desarrollo que debe contestar el alumno -->
+<textarea
+    class="essay"
+    id="essay-q3"
+    placeholder="Escribe el desarrollo paso a paso del cálculo aquí..."
+  ></textarea>
+</div>
+        <div class="case-box">
+          <h3>Pregunta 4: FDA de Variable Continua</h3>
+          <p>Para una variable aleatoria continua \(X\) con fdp \(f(x) = \frac{x^2}{3}\) para \(-1 < x < 2\) y 0 en otro caso, describe paso a paso cómo calcularías la función de distribución acumulativa \(F(x)\) para el intervalo principal \(-1 \leq x < 2\), mostrando la integral correspondiente.</p>
+          <textarea class="essay" id="essay-q4" placeholder="Desarrolla el cálculo de la integral acumulada aquí..."></textarea>
+        </div>
+
+        <button class="btn success" onclick="saveEssay()">💾 Guardar mis respuestas</button>
+        <div id="essay-feedback" class="feedback"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE RESUMEN -->
+  <div class="modal" id="summary-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close-btn">&times;</button>
+      <h2 style="color: var(--up-burgundy);">📋 Resumen de Respuestas de Desarrollo</h2>
+      <div id="modal-summary-body">
+        <!-- El contenido se genera dinámicamente -->
+      </div>
+      <br>
+      <button class="btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+      <button class="btn secondary" onclick="document.getElementById('summary-modal').classList.remove('show')">Cerrar</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Universidad Panamericana — Facultad de Ingeniería — Probabilidad y Estadística</p>
+    <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.8;">Material interactivo autoevaluable diseñado para el estudio de las variables aleatorias - Dr. Adrián Cerda.</p>
+  </footer>
+
+  <script>
+    // Sincronizar nombres entre pestañas
+    document.addEventListener("DOMContentLoaded", () => {
+      const inputs = ["fill-name", "mc-name", "essay-name"];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", (e) => {
+          inputs.forEach(otherId => {
+            if (otherId !== id) {
+              document.getElementById(otherId).value = e.target.value;
+            }
+          });
+          localStorage.setItem("student_name_cap3", e.target.value);
+        });
+      });
+    });
+
+    // Cambiar de pestañas
+    function showTab(tabId) {
+      const sections = document.querySelectorAll("section");
+      sections.forEach(s => s.classList.remove("active"));
+      document.getElementById(tabId).classList.add("active");
+
+      const tabButtons = document.querySelectorAll("nav.tabs button");
+      tabButtons.forEach(btn => btn.classList.remove("active"));
+      
+      const activeBtn = Array.from(tabButtons).find(btn => btn.getAttribute("onclick").includes(`'${tabId}'`));
+      if (activeBtn) {
+        activeBtn.classList.add("active");
+      }
+    }
+
+    // Acordeones para detalles
+    document.querySelectorAll(".accordion-toggle").forEach(button => {
+      button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-target");
+        const content = document.getElementById(targetId);
+        button.classList.toggle("open");
+        content.classList.toggle("open");
+      });
+    });
+
+    // Cerrar modal
+    document.getElementById("modal-close-btn").addEventListener("click", () => {
+      document.getElementById("summary-modal").classList.remove("show");
+    });
+
+    // --- SECCIÓN RELLENAR ---
+    function cleanText(text) {
+      return text.trim().toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "") // Eliminar acentos
+        .replace(/\s+/g, " ");           // Normalizar espacios
+    }
+
+    function checkFill() {
+      const name = document.getElementById("fill-name").value.trim();
+      if (!name) {
+        const feedback = document.getElementById("fill-feedback");
+        feedback.className = "feedback err";
+        feedback.innerHTML = "⚠️ Por favor, ingresa tu nombre completo antes de verificar las respuestas.";
+        return;
+      }
+
+      let correctCount = 0;
+      const items = document.querySelectorAll(".fill-item");
+      items.forEach(item => {
+        const input = item.querySelector("input.fill");
+        const studentAns = cleanText(input.value);
+        const correctAns = cleanText(item.getAttribute("data-answer"));
+
+        const possibleAnswers = correctAns.split("|").map(ans => cleanText(ans));
+
+        if (possibleAnswers.includes(studentAns)) {
+          input.className = "fill correct";
+          correctCount++;
+        } else {
+          input.className = "fill wrong";
+        }
+      });
+
+      const feedback = document.getElementById("fill-feedback");
+      const percentage = Math.round((correctCount / items.length) * 100);
+      feedback.style.display = "block";
+      
+      if (percentage === 100) {
+        feedback.className = "feedback ok";
+        feedback.innerHTML = `🎉 ¡Excelente, ${name}! Lograste un puntaje perfecto: ${correctCount}/${items.length} (100% correctas).`;
+      } else if (percentage >= 70) {
+        feedback.className = "feedback ok";
+        feedback.innerHTML = `👍 ¡Buen trabajo, ${name}! Has acertado ${correctCount} de ${items.length} respuestas (${percentage}%). ¡Sigue repasando!`;
+      } else {
+        feedback.className = "feedback err";
+        feedback.innerHTML = `❌ Ánimo, ${name}. Obtuviste ${correctCount}/${items.length} respuestas correctas (${percentage}%). Revisa la teoría e inténtalo de nuevo.`;
+      }
+    }
+
+    function resetFill() {
+      document.querySelectorAll(".fill-item input.fill").forEach(input => {
+        input.value = "";
+        input.className = "fill";
+      });
+      const feedback = document.getElementById("fill-feedback");
+      feedback.style.display = "none";
+      feedback.innerHTML = "";
+    }
+
+    // --- SECCIÓN OPCIÓN MÚLTIPLE ---
+    const mcQuestions = [
+      {
+        question: "1. ¿Cuál es la definición formal de una variable aleatoria?",
+        options: [
+          "Una variable matemática cuyo valor se calcula resolviendo un sistema de ecuaciones lineales.",
+          "Una función que asocia un número real con cada elemento del espacio muestral.",
+          "El número total de observaciones individuales en un experimento binomial.",
+          "Una regla que asigna una probabilidad subjetiva a un deudor específico."
+        ],
+        answer: 1
+      },
+      {
+        question: "2. Si extraemos sucesivamente y sin reemplazo 2 bolas de una urna que contiene 4 rojas y 3 negras, y definimos la variable aleatoria Y como el número de bolas rojas obtenidas. ¿Qué valores puede asumir Y?",
+        options: [
+          "{1, 2, 3}",
+          "{0, 1, 2, 3}",
+          "{0, 1, 2}",
+          "{1, 2}"
+        ],
+        answer: 2
+      },
+      {
+        question: "3. Si un empleado regresa al azar 3 cascos de seguridad a sus 3 respectivos obreros (Smith, Jones y Brown), y M representa el número de emparejamientos correctos, ¿cuál de los siguientes valores es imposible para M?",
+        options: [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        answer: 2
+      },
+      {
+        question: "4. ¿Cuál de las siguientes es una propiedad fundamental de toda función de masa de probabilidad discreta f(x) para una variable discreta X?",
+        options: [
+          "La integral de f(x) de menos infinito a infinito es igual a 1.",
+          "f(x) es menor o igual a cero para todos los valores reales de x.",
+          "f(x) >= 0 para cada resultado x posible y la sumatoria sobre todos los valores posibles de x es igual a 1.",
+          "f(x) representa la probabilidad acumulada P(X <= x)."
+        ],
+        answer: 2
+      },
+      {
+        question: "5. Un embarque contiene 20 computadoras portátiles, de las cuales 3 están defectuosas. Si una escuela compra al azar 2 de estas computadoras, ¿cuál es la probabilidad f(2) de que ambas computadoras compradas estén defectuosas?",
+        options: [
+          "51/190",
+          "3/190",
+          "68/95",
+          "1/10"
+        ],
+        answer: 1
+      },
+      {
+        question: "6. Para una variable aleatoria continua X con función de densidad de probabilidad f(x), la probabilidad de que X tome exactamente cualquier valor individual x (es decir, P(X = x)) es siempre igual a:",
+        options: [
+          "1.0",
+          "0.5",
+          "0.0",
+          "f(x)"
+        ],
+        answer: 2
+      },
+      {
+        question: "7. Si se tiene la distribución de probabilidad conjunta f(x,y) de las variables aleatorias discretas X y Y, la distribución marginal g(x) sólo de X se obtiene mediante:",
+        options: [
+          "Sumar f(x,y) sobre todos los valores posibles de Y.",
+          "Sumar f(x,y) sobre todos los valores posibles de X.",
+          "Multiplicar f(x,y) por la distribución condicional f(x|y).",
+          "Integrar f(x,y) de menos infinito a x."
+        ],
+        answer: 0
+      },
+      {
+        question: "8. Una empresa privada opera un local que da servicio a clientes que llegan en automovil y otro que da servicio a clientes que llegan caminando. En un día elegido al azar, sean X e Y, respectivamente, las proporciones de tiempo que ambos locales estan en servicio y supongamos que la función de densidad conjunta está dada por f(x,y) = 2/5 * (2x + 3y) para 0 < x < 1, 0 < y < 1, ¿cuál es la probabilidad P(0 < X < 1/2, 1/4 < Y < 2/4) asociada al cilindro recto sobre dicha región?",
+        options: [
+          "1/4",
+          "13/160",
+          "27/80",
+          "3/8"
+        ],
+        answer: 1
+      }
+    ];
+
+    function renderMC() {
+      const container = document.getElementById("mc-container");
+      container.innerHTML = "";
+      document.getElementById("mc-feedback").style.display = "none";
+      document.getElementById("mc-progress").style.width = "0%";
+
+      mcQuestions.forEach((q, qIndex) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "card mc-question-card";
+        qDiv.id = `q-card-${qIndex}`;
+
+        const qTitle = document.createElement("h3");
+        qTitle.textContent = q.question;
+        qDiv.appendChild(qTitle);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        q.options.forEach((opt, oIndex) => {
+          const label = document.createElement("label");
+          label.id = `label-${qIndex}-${oIndex}`;
+          
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = `q-${qIndex}`;
+          radio.value = oIndex;
+          radio.onchange = () => selectOption(qIndex, oIndex);
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(" " + opt));
+          optionsDiv.appendChild(label);
+        });
+
+        qDiv.appendChild(optionsDiv);
+        container.appendChild(qDiv);
+      });
+    }
+
+    function selectOption(qIndex, oIndex) {
+      const labels = document.querySelectorAll(`[id^="label-${qIndex}-"]`);
+      labels.forEach(l => l.classList.remove("selected"));
+
+      const selectedLabel = document.getElementById(`label-${qIndex}-${oIndex}`);
+      selectedLabel.classList.add("selected");
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = mcQuestions.length;
+      let answered = 0;
+      for (let i = 0; i < total; i++) {
+        const radios = document.getElementsByName(`q-${i}`);
+        for (let r of radios) {
+          if (r.checked) {
+            answered++;
+            break;
+          }
+        }
+      }
+      const pct = Math.round((answered / total) * 100);
+      document.getElementById("mc-progress").style.width = pct + "%";
+    }
+
+    function checkMC() {
+      const name = document.getElementById("mc-name").value.trim();
+      if (!name) {
+        const feedback = document.getElementById("mc-feedback");
+        feedback.className = "feedback err";
+        feedback.innerHTML = "⚠️ Por favor, ingresa tu nombre completo antes de calificar.";
+        return;
+      }
+
+      let correctCount = 0;
+      mcQuestions.forEach((q, qIndex) => {
+        const radios = document.getElementsByName(`q-${qIndex}`);
+        let selectedOpt = -1;
+        for (let r of radios) {
+          if (r.checked) {
+            selectedOpt = parseInt(r.value);
+            break;
+          }
+        }
+
+        const qCard = document.getElementById(`q-card-${qIndex}`);
+        qCard.className = "card"; // Reiniciar clase de borde
+
+        q.options.forEach((opt, oIndex) => {
+          const label = document.getElementById(`label-${qIndex}-${oIndex}`);
+          label.className = "";
+          if (oIndex === q.answer) {
+            label.classList.add("correct");
+          } else if (selectedOpt === oIndex && oIndex !== q.answer) {
+            label.classList.add("wrong");
+          }
+        });
+
+        if (selectedOpt === q.answer) {
+          correctCount++;
+          qCard.style.borderLeftColor = "var(--up-green)";
+        } else {
+          qCard.style.borderLeftColor = "var(--up-burgundy)";
+        }
+      });
+
+      const feedback = document.getElementById("mc-feedback");
+      feedback.style.display = "block";
+      const percentage = Math.round((correctCount / mcQuestions.length) * 100);
+
+      if (percentage === 100) {
+        feedback.className = "feedback ok";
+        feedback.innerHTML = `🎉 ¡Perfecto, ${name}! Has contestado correctamente todas las preguntas (${correctCount}/${mcQuestions.length}).`;
+      } else if (percentage >= 70) {
+        feedback.className = "feedback ok";
+        feedback.innerHTML = `👍 ¡Buen intento, ${name}! Calificación: ${percentage}% (${correctCount}/${mcQuestions.length} correctas). Revisa las respuestas correctas marcadas en verde.`;
+      } else {
+        feedback.className = "feedback err";
+        feedback.innerHTML = `❌ Calificación baja para ${name}: ${percentage}% (${correctCount}/${mcQuestions.length} correctas). Te sugerimos repasar la pestaña de Teoría y volver a intentarlo.`;
+      }
+    }
+
+    // --- SECCIÓN DESARROLLO (ESSAY) ---
+    function saveEssay() {
+      const name = document.getElementById("essay-name").value.trim();
+      if (!name) {
+        const feedback = document.getElementById("essay-feedback");
+        feedback.className = "feedback err";
+        feedback.innerHTML = "⚠️ Por favor, ingresa tu nombre completo antes de guardar.";
+        return;
+      }
+
+      const answers = [
+        document.getElementById("essay-q1").value.trim(),
+        document.getElementById("essay-q2").value.trim(),
+        document.getElementById("essay-q3").value.trim(),
+        document.getElementById("essay-q4").value.trim()
+      ];
+
+      localStorage.setItem("student_name_cap3", name);
+      localStorage.setItem("essay_answers_cap3", JSON.stringify(answers));
+
+      const feedback = document.getElementById("essay-feedback");
+      feedback.className = "feedback ok";
+      feedback.style.display = "block";
+      feedback.innerHTML = `💾 ¡Respuestas guardadas localmente con éxito para <b>${name}</b>! Se ha generado tu informe de autoevaluación.`;
+
+      showModalSummary(name, answers);
+    }
+
+    function loadSavedEssay() {
+      const savedName = localStorage.getItem("student_name_cap3");
+      if (savedName) {
+        document.getElementById("essay-name").value = savedName;
+        document.getElementById("fill-name").value = savedName;
+        document.getElementById("mc-name").value = savedName;
+      }
+      
+      const savedAnswersStr = localStorage.getItem("essay_answers_cap3");
+      if (savedAnswersStr) {
+        const savedAnswers = JSON.parse(savedAnswersStr);
+        const ids = ["essay-q1", "essay-q2", "essay-q3", "essay-q4"];
+        ids.forEach((id, idx) => {
+          if (savedAnswers[idx] !== undefined) {
+            document.getElementById(id).value = savedAnswers[idx];
+          }
+        });
+      }
+    }
+
+    function showModalSummary(name, answers) {
+      const modal = document.getElementById("summary-modal");
+      const modalBody = document.getElementById("modal-summary-body");
+      
+      let html = `<p><b>Alumno:</b> ${name}</p>`;
+      html += `<p><b>Fecha de registro:</b> ${new Date().toLocaleString()}</p><hr>`;
+      
+      const questions = [
+        "Pregunta 1: Diferencia entre variable discreta y continua (Espacio muestral y cálculo).",
+        "Pregunta 2: Análisis del Experimento de Componentes en un Lote de 100.",
+        "Pregunta 3: Desarrollo del cálculo de distribución conjunta, marginal g(x) y condicional f(y|x).",
+        "Pregunta 4: Deducción matemática de la FDA continua para f(x) = x^2/3."
+      ];
+
+      answers.forEach((ans, idx) => {
+        html += `<h4 style="color: var(--up-blue); margin-bottom: 0.3rem;">${questions[idx]}</h4>`;
+        html += `<p style="white-space: pre-wrap; background:#f0f2f5; padding: 12px; border-radius:8px; border-left:4px solid var(--up-burgundy); margin-top:0.2rem; font-family: inherit; font-size: 0.95rem;">${ans || "<i>Sin respuesta proporcionada</i>"}</p>`;
+      });
+
+      modalBody.innerHTML = html;
+      modal.classList.add("show");
+    }
+
+    // Inicializar elementos
+    loadSavedEssay();
+    renderMC();
+  </script>
+</body>
+</html>
