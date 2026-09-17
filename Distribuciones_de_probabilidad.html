@@ -385,7 +385,7 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
 <section class="view" id="v-inicio">
   <div class="wrap hero">
     <div>
-      <p class="overline">Probabilidad y Estadística para Ingeniería · Walpole — Capítulo 3</p>
+      <p class="overline">Facultad de Ingniería · Universidad Panamericana</p>
       <h1>Distribuciones de probabilidad <em>discretas</em> y <em>continuas</em></h1>
       <p class="lead">Del conteo a la medida: cómo una variable aleatoria traduce el azar en números, y cómo sus leyes —fmp, fda y densidad— describen por completo el comportamiento de un fenómeno aleatorio.</p>
       <div class="hero-actions">
@@ -394,14 +394,14 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
       </div>
       <dl class="meta-grid">
         <div><dt>Unidad</dt><dd>III — Variables aleatorias</dd></div>
-        <div><dt>Sesiones</dt><dd>4 · teórico-prácticas</dd></div>
+        <div><dt>Sesiones</dt><dd>teórico-prácticas</dd></div>
         <div><dt>Evaluación</dt><dd>Quiz + tareas + laboratorio</dd></div>
         <div><dt>Requisitos</dt><dd>Probabilidad (Cap. 2)</dd></div>
       </dl>
     </div>
     <figure class="hero-fig">
       <canvas id="heroCanvas"></canvas>
-      <figcaption><strong>Discreto → continuo.</strong> La binomial B(36, ½) frente a su aproximación normal: el puente entre contar y medir.</figcaption>
+      <figcaption><strong>Discreto → continuo.</strong> La dist. binomial B(36, ½) frente a su aproximación normal.</figcaption>
     </figure>
   </div>
 
@@ -447,7 +447,7 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
     <div class="view-head">
       <p class="overline">Desarrollo de la teoría</p>
       <h2>Variables aleatorias y sus distribuciones</h2>
-      <p class="sub">Síntesis del Capítulo 3 de Walpole, Myers, Myers y Ye, <em>Probabilidad y Estadística para Ingeniería y Ciencias</em>. Cada sección combina definición formal, propiedades y un ejemplo resuelto.</p>
+      <p class="sub">Síntesis del Capítulo 3 del libro de Ronald E. Walpole, <em>Probabilidad y Estadística para Ingeniería y Ciencias</em>. Seis secciones con definiciones formales, propiedades y un ejemplo resuelto.</p>
     </div>
 
     <div class="theory">
@@ -473,8 +473,8 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
           </div>
           <p>La variable aleatoria convierte experimentos abstractos en cantidades numéricas sobre las que podemos operar. Se clasifican en dos tipos según el conjunto de valores que puede tomar:</p>
           <ul>
-            <li><strong>Discreta:</strong> toma valores en un conjunto finito o numerable. En general <em>resulta de contar</em>: número de defectos en una pieza, de clientes en una fila, de águilas en \(n\) lanzamientos.</li>
-            <li><strong>Continua:</strong> toma cualquier valor en un intervalo de los reales. En general <em>resulta de medir</em>: temperatura, presión, tiempo de vida de un componente, carga eléctrica.</li>
+            <li><strong>Discretas:</strong> toma valores en un conjunto finito o numerable. En general, estas v.a. <em>resultan de un proceso de contar</em>: número de defectos en una pieza, de clientes en una fila, de águilas en \(n\) lanzamientos.</li>
+            <li><strong>Continuas:</strong> toma cualquier valor en un intervalo de los reales. En general, estas v.a. <em>resultan de medir</em> por ejemplo: temperatura, presión, tiempo de vida de un componente, carga eléctrica.</li>
           </ul>
           <div class="ex">
             <span class="ex-tag">Ejemplo — Walpole 3.1</span>
@@ -483,17 +483,17 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
               <thead><tr><th>Resultado</th><th class="center">AAA</th><th class="center">AAS · ASA · SAA</th><th class="center">ASS · SAS · SSA</th><th class="center">SSS</th></tr></thead>
               <tbody><tr><td>\(X\)</td><td class="center">3</td><td class="center">2</td><td class="center">1</td><td class="center">0</td></tr></tbody>
             </table>
-            <p>Varios resultados del espacio muestral pueden compartir el mismo valor de \(X\): la variable aleatoria es una <em>reducción</em> del experimento a lo que nos interesa medir.</p>
+            <p>Varios resultados del espacio muestral pueden compartir el mismo valor de \(X\): la variable aleatoria es una <em>reducción</em> del experimento a lo que nos interesa medir, cuántas águilas caen.</p>
           </div>
         </article>
 
         <!-- 3.2 -->
         <article class="sec" id="t32">
           <div class="sec-no">3.2</div>
-          <h3>Distribución de probabilidad discreta (fmp)</h3>
+          <h3>Distribución de probabilidad discreta </h3>
           <div class="def">
             <span class="def-tag">Definición</span>
-            <p>La <strong>función de masa de probabilidad</strong> (fmp) de la variable discreta \(X\) es \(f(x) = P(X = x)\), y debe cumplir:</p>
+            <p>La <strong>función de masa de probabilidad</strong> (fmp) de la variable discreta \(X\) es \[f(x) = P(X = x)\], y debe cumplir:</p>
             <p style="display:flex;justify-content:center;padding:6px 0">\( \displaystyle f(x) \ge 0 \qquad \text{y} \qquad \sum_{x} f(x) = 1. \)</p>
           </div>
           <p>La fmp describe cómo se reparte la probabilidad total (que vale 1) entre los valores posibles de \(X\). Su gráfica suele presentarse como un histograma de probabilidad, donde cada rectángulo tiene área igual a la probabilidad del valor.</p>
@@ -504,7 +504,7 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
               <thead><tr><th class="center">\(x\)</th><th class="center">0</th><th class="center">1</th><th class="center">2</th></tr></thead>
               <tbody><tr><td class="center">\(f(x)\)</td><td class="center">1/10</td><td class="center">3/10</td><td class="center">6/10</td></tr></tbody>
             </table>
-            <p>Verificación: \(f(x)\ge 0\) y \( \tfrac{1}{10}+\tfrac{3}{10}+\tfrac{6}{10}=1 \). Con esta tabla ya podemos responder preguntas como \(P(X &gt; 0) = \tfrac{3}{10}+\tfrac{6}{10} = \tfrac{9}{10}\).</p>
+            <p>Verificación: \(f(x)\ge 0\) y \( \tfrac{1}{10}+\tfrac{3}{10}+\tfrac{6}{10}=1 \). Con esta tabla de distribución ya podemos responder preguntas como \(P(X &gt; 0) = \tfrac{3}{10}+\tfrac{6}{10} = \tfrac{9}{10}\).</p>
           </div>
         </article>
 
