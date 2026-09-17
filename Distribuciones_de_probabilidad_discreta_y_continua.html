@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 3 · Distribuciones de probabilidad discretas y continuas — Probabilidad y Estadística</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<style>
+/* ============================================================
+   VARIABLES Y BASE
+============================================================ */
+:root{
+  --paper:#f7f3eb;
+  --card:#fffdf8;
+  --ink:#1c2b25;
+  --pine:#1e4636;
+  --pine-soft:#2c5e49;
+  --terra:#c2542f;
+  --terra-soft:#f3e0d6;
+  --gold:#c9a227;
+  --line:rgba(28,43,37,.16);
+  --line-strong:rgba(28,43,37,.4);
+  --muted:rgba(28,43,37,.62);
+  --ok-bg:#e7efe6;
+  --err-bg:#f7e6dd;
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+[id]{scroll-margin-top:150px}
+[hidden]{display:none!important}
+body{
+  font-family:'Instrument Sans',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  background-image:radial-gradient(rgba(30,70,54,.075) 1px, transparent 1px);
+  background-size:26px 26px;
+}
+.wrap{max-width:1150px;margin:0 auto;padding:0 24px}
+h1,h2,h3,.display{font-family:'Fraunces',serif;font-weight:600;line-height:1.12;letter-spacing:-.01em}
+.overline{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.mono{font-variant-numeric:tabular-nums}
+button{font-family:inherit;cursor:pointer}
+a{color:var(--pine)}
+svg.lucide{width:16px;height:16px;stroke-width:2}
+
+/* ============================================================
+   HEADER / NAV
+============================================================ */
+header.topbar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(247,243,235,.93);
+  backdrop-filter:blur(10px);
+  border-bottom:1.5px solid var(--ink);
+}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem}
+.brand .brand-ico{width:34px;height:34px;border:1.5px solid var(--ink);border-radius:9px;display:grid;place-items:center;background:var(--ink);color:var(--paper)}
+.brand .brand-ico svg{width:17px;height:17px}
+.brand small{display:block;font-family:'Instrument Sans';font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.topbar-side{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right}
+nav.tabs{display:flex;gap:6px;border-top:1px solid var(--line);padding:10px 0;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.nav-btn{
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+  border:1px solid transparent;background:transparent;color:var(--pine);
+  font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:999px;
+  transition:all .18s ease;
+}
+.nav-btn svg{width:15px;height:15px}
+.nav-btn:hover{border-color:var(--line-strong)}
+.nav-btn.active{background:var(--ink);color:var(--paper)}
+
+/* ============================================================
+   VISTAS
+============================================================ */
+.view{padding:0 0 80px}
+.view-head{border-bottom:2px solid var(--ink);padding:52px 0 26px;margin-bottom:36px}
+.view-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin:8px 0 10px}
+.view-head p.sub{max-width:680px;color:var(--muted)}
+
+/* ============================================================
+   BOTONES / FORMULARIOS
+============================================================ */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:var(--paper);
+  border:1px solid var(--ink);border-radius:10px;
+  padding:11px 18px;font-weight:600;font-size:14px;
+  transition:all .18s ease;
+}
+.btn:hover{background:var(--pine);border-color:var(--pine);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:rgba(28,43,37,.06);transform:translateY(-1px)}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{
+  font:inherit;font-size:14px;color:var(--ink);
+  background:var(--card);border:1px solid var(--line-strong);
+  border-radius:8px;padding:10px 12px;width:100%;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(30,70,54,.14)}
+.hint{font-size:12px;color:var(--muted)}
+
+/* ============================================================
+   INICIO / HERO
+============================================================ */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:64px 0 56px}
+.hero h1{font-size:clamp(2.3rem,4.6vw,3.7rem);margin:14px 0 18px}
+.hero h1 em{font-style:italic;color:var(--terra)}
+.hero .lead{font-size:1.05rem;color:var(--muted);max-width:520px}
+.hero-actions{display:flex;gap:12px;margin:26px 0 30px;flex-wrap:wrap}
+.meta-grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line-strong);max-width:520px}
+.meta-grid>div{padding:12px 14px 12px 0;border-bottom:1px solid var(--line)}
+.meta-grid dt{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.meta-grid dd{font-weight:600;font-size:14.5px}
+.hero-fig{border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--card);overflow:hidden;box-shadow:6px 6px 0 rgba(28,43,37,.12)}
+.hero-fig canvas{display:block;width:100%;height:320px}
+.hero-fig figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.home-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:44px;border-top:1.5px solid var(--ink);padding-top:38px}
+.route-item{display:grid;grid-template-columns:86px 1fr auto;gap:18px;align-items:center;border-top:1px solid var(--line);padding:22px 4px;cursor:pointer;transition:background .15s}
+.route-item:first-child{border-top:none}
+.route-item:hover{background:rgba(28,43,37,.045)}
+.route-no{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:400;color:rgba(30,70,54,.28)}
+.route-item h3{font-size:1.2rem;margin-bottom:4px}
+.route-item p{font-size:13.5px;color:var(--muted)}
+.route-go{width:38px;height:38px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:transparent;color:var(--ink);transition:all .18s}
+.route-item:hover .route-go{background:var(--ink);color:var(--paper)}
+.side-stats{display:flex;flex-direction:column;gap:12px}
+.stat{border:1px solid var(--line-strong);border-radius:10px;background:var(--card);padding:14px 18px}
+.stat .num{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;line-height:1}
+.stat .lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ============================================================
+   TEORÍA
+============================================================ */
+.theory{display:grid;grid-template-columns:250px 1fr;gap:52px;align-items:start}
+.toc{position:sticky;top:150px;border-left:1.5px solid var(--ink);display:flex;flex-direction:column}
+.toc-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 0 10px 16px}
+.toc a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--ink);padding:9px 16px;font-size:13.5px;font-weight:500;border-left:3px solid transparent;margin-left:-1.5px;transition:all .15s}
+.toc a span{font-family:'Fraunces',serif;color:var(--terra);font-weight:600;min-width:30px}
+.toc a:hover{border-left-color:var(--pine);background:rgba(28,43,37,.05)}
+.sec{border-top:1px solid var(--line);padding:44px 0}
+.sec:first-child{border-top:none;padding-top:0}
+.sec-no{font-family:'Fraunces',serif;font-size:3rem;font-weight:400;color:rgba(30,70,54,.22);line-height:1}
+.sec h3{font-size:1.55rem;margin:6px 0 16px}
+.prose p{margin:0 0 14px;max-width:70ch}
+.prose ul,.prose ol{margin:0 0 14px 22px;max-width:70ch}
+.prose li{margin-bottom:6px}
+.def{background:#ecf1ea;border:1px solid rgba(30,70,54,.28);border-radius:0 10px 10px 0;border-left:4px solid var(--pine);padding:18px 22px;margin:20px 0}
+.def .def-tag{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pine)}
+.def p{margin:6px 0 0}
+.ex{background:var(--card);border:1px solid var(--line-strong);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:18px 22px;margin:20px 0}
+.ex .ex-tag{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8a6d10}
+.formula-hero{display:flex;justify-content:center;padding:16px 0;font-size:1.15rem}
+.tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.tbl th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1.5px solid var(--ink)}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line)}
+.tbl tbody tr:hover{background:rgba(28,43,37,.04)}
+.tbl td.center,.tbl th.center{text-align:center}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid}
+.tag.d{color:var(--pine);border-color:rgba(30,70,54,.45);background:#ecf1ea}
+.tag.c{color:var(--terra);border-color:rgba(194,84,47,.45);background:var(--terra-soft)}
+.spec-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:18px;align-items:center;border-top:1px solid var(--line);padding:18px 6px;transition:background .15s}
+.spec-row:hover{background:rgba(28,43,37,.04)}
+.spec-row:last-child{border-bottom:1px solid var(--line)}
+.spec-id{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.spec-id .no{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--muted)}
+.spec-name{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600}
+.spec-use{font-size:13px;color:var(--muted);margin-top:2px}
+.spec-math{text-align:right;font-size:1rem;overflow-x:auto}
+
+/* ============================================================
+   PANELES / LABORATORIOS
+============================================================ */
+.panel{background:var(--card);border:1.5px solid var(--ink);border-radius:var(--radius);overflow:hidden}
+.panel-head{display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.panel-body{padding:20px 18px}
+.lab-grid{display:grid;grid-template-columns:350px 1fr;gap:28px;align-items:start}
+.sim-controls{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px}
+.stat-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-2 .stat{padding:11px 14px}
+.stat-2 .num{font-size:1.35rem}
+.conv{margin-top:18px}
+.conv-bar{height:8px;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;background:var(--paper);margin-top:6px}
+.conv-bar>div{height:100%;background:var(--terra);width:0%;transition:width .4s ease}
+.note{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line-strong);margin-top:18px;padding-top:12px}
+.graph-frame canvas{display:block;width:100%;height:340px}
+.graph-cap{padding:11px 16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+/* Resultados calculadora */
+.res-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding:10px 2px}
+.res-row:last-child{border-bottom:none}
+.res-label{font-size:13.5px;font-weight:600}
+.res-val{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;color:var(--pine)}
+.calc-formula{border:1px dashed var(--line-strong);border-radius:8px;padding:12px 14px;margin-bottom:14px;text-align:center;overflow-x:auto}
+.calc-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:46px 20px;color:var(--muted);text-align:center}
+.calc-empty svg{width:30px;height:30px;stroke-width:1.5}
+
+/* ============================================================
+   ACTIVIDADES
+============================================================ */
+.act-block{margin-bottom:52px}
+.act-block>h3{font-size:1.45rem;margin:8px 0 6px}
+.act-block>.act-desc{color:var(--muted);max-width:70ch;margin-bottom:20px}
+.rub-row{display:grid;grid-template-columns:280px 1fr 60px;gap:16px;align-items:center;border-top:1px solid var(--line);padding:14px 4px}
+.rub-row:last-child{border-bottom:1px solid var(--line)}
+.rub-row .rub-name{font-weight:600;font-size:14.5px}
+.rub-bar{height:10px;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden}
+.rub-bar>div{height:100%;background:var(--pine)}
+.rub-pct{text-align:right;font-family:'Fraunces',serif;font-weight:600}
+details.sol{border:1px solid var(--line-strong);border-radius:10px;background:var(--card);margin-bottom:14px;overflow:hidden}
+details.sol summary{list-style:none;display:flex;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer;font-weight:600;transition:background .15s}
+details.sol summary::-webkit-details-marker{display:none}
+details.sol summary:hover{background:rgba(28,43,37,.04)}
+.sol-marker{flex:none;width:24px;height:24px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:15px;transition:transform .2s;margin-top:1px}
+details[open].sol .sol-marker{transform:rotate(45deg);background:var(--ink);color:var(--paper)}
+.sol-body{border-top:1px dashed var(--line-strong);padding:16px 20px;font-size:14.5px}
+.sol-body p{margin-bottom:10px;max-width:75ch}
+.prob-tag{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--terra);display:block;margin-bottom:4px}
+.quiz-q{border-top:1px solid var(--line);padding:24px 4px}
+.quiz-q header{display:flex;gap:14px;margin-bottom:14px}
+.qnum{flex:none;font-family:'Fraunces',serif;font-weight:700;color:var(--terra);border:1.5px solid var(--terra);border-radius:8px;padding:2px 9px;height:fit-content}
+.quiz-q .q-text{font-weight:600;font-size:15.5px;padding-top:4px}
+.opts{display:grid;gap:9px;margin-left:56px}
+.opt{display:flex;align-items:center;gap:12px;border:1px solid var(--line-strong);border-radius:10px;padding:11px 14px;cursor:pointer;background:var(--card);transition:all .15s;font-size:14.5px}
+.opt:hover{border-color:var(--pine)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt-key{flex:none;width:26px;height:26px;border:1.5px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;transition:all .15s}
+.opt.is-correct{border-color:var(--pine);background:var(--ok-bg)}
+.opt.is-correct .opt-key{background:var(--pine);border-color:var(--pine);color:var(--paper)}
+.opt.is-wrong{border-color:var(--terra);background:var(--err-bg)}
+.opt.is-wrong .opt-key{background:var(--terra);border-color:var(--terra);color:var(--paper)}
+.opt.locked{cursor:default}
+.explain{margin:12px 0 0 56px;font-size:13.5px;color:var(--muted);border-left:3px solid var(--gold);padding:8px 14px;background:var(--card)}
+.quiz-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;border-top:1.5px solid var(--ink);padding-top:20px}
+.quiz-result{font-size:15px}
+.quiz-result strong{font-family:'Fraunces',serif;font-size:1.5rem;color:var(--pine);margin-right:8px}
+.task-panel{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.chk{display:flex;align-items:center;gap:11px;border:1px solid var(--line-strong);border-radius:9px;background:var(--card);padding:10px 14px;margin-bottom:9px;cursor:pointer;transition:all .15s;font-size:14.5px}
+.chk:hover{border-color:var(--pine)}
+.chk input{width:16px;height:16px;accent-color:var(--pine)}
+.chk.done{background:var(--ok-bg);border-color:var(--pine)}
+
+/* ============================================================
+   REGISTRO Y BOLETA
+============================================================ */
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.del-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:600;transition:all .15s}
+.del-btn:hover{border-color:var(--terra);color:var(--terra)}
+.del-btn.confirm{background:var(--terra);border-color:var(--terra);color:#fff}
+.boleta-card{position:relative;max-width:700px;background:var(--card);border:2px solid var(--ink);border-radius:var(--radius);box-shadow:8px 8px 0 rgba(28,43,37,.12);overflow:hidden}
+.b-head{display:flex;align-items:center;gap:16px;padding:22px 24px;border-bottom:1.5px solid var(--ink)}
+.b-head .avatar{width:52px;height:52px;font-size:17px;border:1.5px solid var(--ink)}
+.b-head>div{flex:1;min-width:0}
+.b-title{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--terra);margin-bottom:3px}
+.b-name{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:700;line-height:1.15}
+.b-meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.b-seal{flex:none;width:76px;height:76px;border:2px solid var(--terra);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--terra);transform:rotate(-8deg);opacity:.85;line-height:1.25}
+.b-seal span{font-size:7.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.b-seal strong{font-family:'Fraunces',serif;font-size:1.05rem}
+.b-body{padding:8px 24px 18px}
+.b-row{display:grid;grid-template-columns:1fr 150px 92px;gap:14px;align-items:center;border-top:1px solid var(--line);padding:13px 0}
+.b-row:first-child{border-top:none}
+.b-rubname{font-weight:600;font-size:14.5px}
+.b-rubdet{font-size:12px;color:var(--muted);margin-top:1px}
+.b-bar{height:10px;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;background:var(--paper)}
+.b-bar>div{height:100%;background:var(--pine);transition:width .4s ease}
+.b-pts{text-align:right;font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem}
+.b-pts small{font-weight:400;color:var(--muted);font-size:.75em}
+.b-total{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:2px solid var(--ink);background:#ecf1ea;padding:16px 24px}
+.b-total-lbl{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem}
+.b-total-det{font-size:11.5px;color:var(--muted);margin-top:2px}
+.b-score{display:flex;align-items:baseline;gap:6px}
+.b-score .big{font-family:'Fraunces',serif;font-size:3rem;font-weight:700;color:var(--pine);line-height:1}
+.b-score .den{font-family:'Fraunces',serif;font-size:1.2rem;color:var(--muted)}
+.b-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--line-strong);padding:11px 24px;font-size:11.5px;color:var(--muted)}
+.boleta-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;max-width:700px}
+
+/* ============================================================
+   TOASTS / FOOTER
+============================================================ */
+#toasts{position:fixed;bottom:22px;right:22px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:340px}
+.toast{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);border-radius:10px;padding:12px 16px;font-size:13.5px;font-weight:500;box-shadow:0 8px 24px rgba(28,43,37,.28);animation:toastIn .28s cubic-bezier(.2,.9,.3,1.2)}
+.toast svg{flex:none;width:17px;height:17px}
+.toast.ok svg{color:#8fd0a5}
+.toast.err svg{color:#f0a284}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
+.foot-row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.foot-row strong{color:var(--ink)}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr;gap:34px}
+  .home-grid{grid-template-columns:1fr}
+  .theory{grid-template-columns:1fr}
+  .toc{position:static;flex-direction:row;overflow-x:auto;border-left:none;border-bottom:1.5px solid var(--ink);gap:2px}
+  .toc-title{display:none}
+  .toc a{white-space:nowrap;border-left:none;border-bottom:3px solid transparent}
+  .toc a:hover{border-bottom-color:var(--pine)}
+  .lab-grid,.task-panel{grid-template-columns:1fr}
+  .spec-row{grid-template-columns:1fr;gap:8px}
+  .spec-math{text-align:left}
+  .rub-row{grid-template-columns:1fr;gap:8px}
+  .rub-pct{text-align:left}
+  .meta-grid{max-width:none}
+}
+@media (max-width:640px){
+  .b-row{grid-template-columns:1fr 86px}
+  .b-bar{display:none}
+  .b-seal{display:none}
+  .b-total{flex-direction:column;align-items:flex-start;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="topbar">
+  <div class="wrap topbar-row">
+    <div class="brand">
+      <span class="brand-ico"><i data-lucide="sigma"></i></span>
+      <span>Probabilidad · Estadística<small>Aula interactiva — Dr. Adrián Cerda</small></span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="tabs" id="mainNav">
+      <button class="nav-btn active" data-view="inicio"><i data-lucide="home"></i>Inicio</button>
+      <button class="nav-btn" data-view="teoria"><i data-lucide="book-open"></i>Teoría</button>
+      <button class="nav-btn" data-view="simulador"><i data-lucide="dice-5"></i>Simulador</button>
+      <button class="nav-btn" data-view="calculadora"><i data-lucide="calculator"></i>Calculadora</button>
+      <button class="nav-btn" data-view="actividades"><i data-lucide="clipboard-list"></i>Actividades</button>
+      <button class="nav-btn" data-view="boleta"><i data-lucide="badge-check"></i>Mi boleta</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ==================== INICIO ==================== -->
+<section class="view" id="v-inicio">
+  <div class="wrap hero">
+    <div>
+      <p class="overline">Probabilidad y Estadística para Ingeniería · Walpole — Capítulo 3</p>
+      <h1>Distribuciones de probabilidad <em>discretas</em> y <em>continuas</em></h1>
+      <p class="lead">Del conteo a la medida: cómo una variable aleatoria traduce el azar en números, y cómo sus leyes —fmp, fda y densidad— describen por completo el comportamiento de un fenómeno aleatorio.</p>
+      <div class="hero-actions">
+        <button class="btn" data-view="teoria"><i data-lucide="book-open"></i>Entrar a la teoría</button>
+        <button class="btn ghost" data-view="simulador"><i data-lucide="dice-5"></i>Probar el simulador</button>
+      </div>
+      <dl class="meta-grid">
+        <div><dt>Unidad</dt><dd>III — Variables aleatorias</dd></div>
+        <div><dt>Sesiones</dt><dd>4 · teórico-prácticas</dd></div>
+        <div><dt>Evaluación</dt><dd>Quiz + tareas + laboratorio</dd></div>
+        <div><dt>Requisitos</dt><dd>Probabilidad (Cap. 2)</dd></div>
+      </dl>
+    </div>
+    <figure class="hero-fig">
+      <canvas id="heroCanvas"></canvas>
+      <figcaption><strong>Discreto → continuo.</strong> La binomial B(36, ½) frente a su aproximación normal: el puente entre contar y medir.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap home-grid">
+    <div>
+      <p class="overline" style="margin-bottom:14px">Ruta del capítulo</p>
+      <div class="route-item" data-view="teoria">
+        <span class="route-no">01</span>
+        <div><h3>Desarrollo de la teoría</h3><p>Variable aleatoria, fmp, distribución acumulativa, densidad y catálogo de distribuciones notables.</p></div>
+        <span class="route-go"><i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="route-item" data-view="simulador">
+        <span class="route-no">02</span>
+        <div><h3>Laboratorio de simulación</h3><p>Lanza dados y observa cómo la frecuencia relativa converge a la distribución teórica de la suma.</p></div>
+        <span class="route-go"><i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="route-item" data-view="actividades">
+        <span class="route-no">03</span>
+        <div><h3>Evaluación y tareas</h3><p>Ejercicios guiados con solución, quiz de autoevaluación y la tarea de problemas del Walpole.</p></div>
+        <span class="route-go"><i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="route-item" data-view="boleta">
+        <span class="route-no">04</span>
+        <div><h3>Mi boleta</h3><p>Regístrate una sola vez y sigue tu nota: tu avance y tu calificación final, con descarga en imagen para compartir.</p></div>
+        <span class="route-go"><i data-lucide="arrow-right"></i></span>
+      </div>
+    </div>
+    <aside>
+      <p class="overline" style="margin-bottom:14px">En un vistazo</p>
+      <div class="side-stats">
+        <div class="stat"><div class="num" id="statNota">—</div><div class="lbl">Tu nota (sobre 10)</div></div>
+        <div class="stat"><div class="num">10</div><div class="lbl">Distribuciones en catálogo</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">Preguntas del quiz</div></div>
+        <div class="stat"><div class="num">12</div><div class="lbl">Ejercicios y problemas</div></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ==================== TEORÍA ==================== -->
+<section class="view" id="v-teoria" hidden>
+  <div class="wrap">
+    <div class="view-head">
+      <p class="overline">Desarrollo de la teoría</p>
+      <h2>Variables aleatorias y sus distribuciones</h2>
+      <p class="sub">Síntesis del Capítulo 3 de Walpole, Myers, Myers y Ye, <em>Probabilidad y Estadística para Ingeniería y Ciencias</em>. Cada sección combina definición formal, propiedades y un ejemplo resuelto.</p>
+    </div>
+
+    <div class="theory">
+      <aside class="toc">
+        <p class="toc-title">Contenido</p>
+        <a href="#t31"><span>3.1</span>Variable aleatoria</a>
+        <a href="#t32"><span>3.2</span>Distribución discreta (fmp)</a>
+        <a href="#t33"><span>3.3</span>Acumulativa discreta</a>
+        <a href="#t34"><span>3.4</span>Densidad (fdp)</a>
+        <a href="#t35"><span>3.5</span>Acumulativa continua</a>
+        <a href="#t36"><span>3.6</span>Catálogo de distribuciones</a>
+      </aside>
+
+      <div class="prose">
+
+        <!-- 3.1 -->
+        <article class="sec" id="t31">
+          <div class="sec-no">3.1</div>
+          <h3>Variable aleatoria</h3>
+          <div class="def">
+            <span class="def-tag">Definición</span>
+            <p>Una <strong>variable aleatoria</strong> es una función \(X\) que asigna a cada resultado \(s\) de un espacio muestral \(S\) un número real: \(X : S \to \mathbb{R}\).</p>
+          </div>
+          <p>La variable aleatoria convierte experimentos abstractos en cantidades numéricas sobre las que podemos operar. Se clasifican en dos tipos según el conjunto de valores que puede tomar:</p>
+          <ul>
+            <li><strong>Discreta:</strong> toma valores en un conjunto finito o numerable. En general <em>resulta de contar</em>: número de defectos en una pieza, de clientes en una fila, de águilas en \(n\) lanzamientos.</li>
+            <li><strong>Continua:</strong> toma cualquier valor en un intervalo de los reales. En general <em>resulta de medir</em>: temperatura, presión, tiempo de vida de un componente, carga eléctrica.</li>
+          </ul>
+          <div class="ex">
+            <span class="ex-tag">Ejemplo — Walpole 3.1</span>
+            <p>Se lanzan tres monedas y \(X\) = número de águilas. El espacio muestral tiene 8 resultados y \(X\) los agrupa:</p>
+            <table class="tbl">
+              <thead><tr><th>Resultado</th><th class="center">AAA</th><th class="center">AAS · ASA · SAA</th><th class="center">ASS · SAS · SSA</th><th class="center">SSS</th></tr></thead>
+              <tbody><tr><td>\(X\)</td><td class="center">3</td><td class="center">2</td><td class="center">1</td><td class="center">0</td></tr></tbody>
+            </table>
+            <p>Varios resultados del espacio muestral pueden compartir el mismo valor de \(X\): la variable aleatoria es una <em>reducción</em> del experimento a lo que nos interesa medir.</p>
+          </div>
+        </article>
+
+        <!-- 3.2 -->
+        <article class="sec" id="t32">
+          <div class="sec-no">3.2</div>
+          <h3>Distribución de probabilidad discreta (fmp)</h3>
+          <div class="def">
+            <span class="def-tag">Definición</span>
+            <p>La <strong>función de masa de probabilidad</strong> (fmp) de la variable discreta \(X\) es \(f(x) = P(X = x)\), y debe cumplir:</p>
+            <p style="display:flex;justify-content:center;padding:6px 0">\( \displaystyle f(x) \ge 0 \qquad \text{y} \qquad \sum_{x} f(x) = 1. \)</p>
+          </div>
+          <p>La fmp describe cómo se reparte la probabilidad total (que vale 1) entre los valores posibles de \(X\). Su gráfica suele presentarse como un histograma de probabilidad, donde cada rectángulo tiene área igual a la probabilidad del valor.</p>
+          <div class="ex">
+            <span class="ex-tag">Ejemplo — Walpole 3.4</span>
+            <p>Se envían dos refacciones electrónicas y \(X\) = número que sigue funcionando después de 2 años. La distribución es:</p>
+            <table class="tbl">
+              <thead><tr><th class="center">\(x\)</th><th class="center">0</th><th class="center">1</th><th class="center">2</th></tr></thead>
+              <tbody><tr><td class="center">\(f(x)\)</td><td class="center">1/10</td><td class="center">3/10</td><td class="center">6/10</td></tr></tbody>
+            </table>
+            <p>Verificación: \(f(x)\ge 0\) y \( \tfrac{1}{10}+\tfrac{3}{10}+\tfrac{6}{10}=1 \). Con esta tabla ya podemos responder preguntas como \(P(X &gt; 0) = \tfrac{3}{10}+\tfrac{6}{10} = \tfrac{9}{10}\).</p>
+          </div>
+        </article>
+
+        <!-- 3.3 -->
+        <article class="sec" id="t33">
+          <div class="sec-no">3.3</div>
+          <h3>Distribución acumulativa discreta (fda)</h3>
+          <div class="def">
+            <span class="def-tag">Definición</span>
+            <p>La <strong>distribución acumulativa</strong> de \(X\) es \( F(x) = P(X \le x) = \displaystyle\sum_{t \le x} f(t) \).</p>
+          </div>
+          <p>La fda acumula probabilidad de izquierda a derecha. Es una función <strong>escalonada</strong>, no decreciente, con \(F(-\infty)=0\) y \(F(+\infty)=1\). Cada salto en un punto \(x\) mide exactamente \(f(x)\).</p>
+          <div class="ex">
+            <span class="ex-tag">Ejemplo — Walpole 3.6</span>
+            <p>Para las refacciones del ejemplo anterior:</p>
+            \( \displaystyle F(x) = \begin{cases} 0, & x &lt; 0 \\[2pt] \tfrac{1}{10}, & 0 \le x &lt; 1 \\[2pt] \tfrac{2}{5}, & 1 \le x &lt; 2 \\[2pt] 1, & x \ge 2 \end{cases} \)
+            <p style="margin-top:10px">Obsérvese que \(F(1) = f(0)+f(1) = \tfrac{4}{10}\). La fda responde de inmediato preguntas del tipo «¿cuál es la probabilidad de que falle <em>a más tardar</em>…?».</p>
+          </div>
+        </article>
+
+        <!-- 3.4 -->
+        <article class="sec" id="t34">
+          <div class="sec-no">3.4</div>
+          <h3>Distribución continua: función de densidad (fdp)</h3>
+          <div class="def">
+            <span class="def-tag">Definición</span>
+            <p>La variable \(X\) es <strong>continua</strong> si existe una función \(f(x)\), llamada <strong>función de densidad de probabilidad</strong> (fdp), tal que:</p>
+            <p style="display:flex;justify-content:center;padding:6px 0">\( \displaystyle f(x) \ge 0, \qquad \int_{-\infty}^{\infty} f(x)\,dx = 1, \qquad P(a \le X \le b) = \int_a^b f(x)\,dx. \)</p>
+          </div>
+          <p>La probabilidad de un intervalo es el <strong>área bajo la curva de densidad</strong>. Una consecuencia fundamental: como un punto no tiene longitud,</p>
+          <div class="formula-hero">\( P(X = a) = 0 \quad\Longrightarrow\quad P(a \le X \le b) = P(a &lt; X &lt; b). \)</div>
+          <p>Por eso \(f(a)\) <em>no</em> es una probabilidad sino una densidad: su valor puede incluso superar a 1; lo que vale 1 es el área total.</p>
+          <div class="ex">
+            <span class="ex-tag">Ejemplo</span>
+            <p>El tiempo normalizado de operación de una batería tiene densidad \( f(x) = 2(1-x) \) para \( 0 &lt; x &lt; 1 \), y 0 en otro caso.</p>
+            <p><strong>Verificación:</strong> \( f(x)\ge 0 \) en \((0,1)\) y \( \int_0^1 2(1-x)\,dx = 2\left[x - \tfrac{x^2}{2}\right]_0^1 = 2(1-\tfrac12) = 1 \). ✓</p>
+            <p><strong>Probabilidad:</strong> \( P(\tfrac14 &lt; X &lt; \tfrac12) = \displaystyle\int_{1/4}^{1/2} 2(1-x)\,dx = \left[2x - x^2\right]_{1/4}^{1/2} = \tfrac34 - \tfrac{7}{16} = \tfrac{5}{16}. \)</p>
+          </div>
+        </article>
+
+        <!-- 3.5 -->
+        <article class="sec" id="t35">
+          <div class="sec-no">3.5</div>
+          <h3>Distribución acumulativa continua</h3>
+          <div class="def">
+            <span class="def-tag">Definición</span>
+            <p>\( F(x) = P(X \le x) = \displaystyle\int_{-\infty}^{x} f(t)\,dt, \qquad P(a &lt; X \le b) = F(b) - F(a). \)</p>
+          </div>
+          <p>Aquí \(F\) es una curva continua (no escalonada), monótona creciente de 0 a 1, y su derivada devuelve la densidad: \( F'(x) = f(x) \) donde \(f\) es continua.</p>
+          <div class="ex">
+            <span class="ex-tag">Ejemplo</span>
+            <p>Para la batería del ejemplo 3.4:</p>
+            \( \displaystyle F(x) = \begin{cases} 0, & x \le 0 \\[2pt] 2x - x^2, & 0 &lt; x &lt; 1 \\[2pt] 1, & x \ge 1 \end{cases} \)
+            <p style="margin-top:10px">Y en efecto \( F(\tfrac12) - F(\tfrac14) = \tfrac34 - \tfrac{7}{16} = \tfrac{5}{16} \), la misma área calculada por integración directa. La fda es la herramienta natural cuando la densidad es complicada pero la acumulada es simple (o está tabulada, como la normal).</p>
+          </div>
+        </article>
+
+        <!-- 3.6 -->
+        <article class="sec" id="t36">
+          <div class="sec-no">3.6</div>
+          <h3>Catálogo de distribuciones notables</h3>
+          <p>Las familias de la tabla siguiente aparecerán una y otra vez en la práctica. Las etiquetas <span class="tag d">discreta</span> y <span class="tag c">continua</span> indican su naturaleza. Explora cada una numéricamente en la <a href="#" data-view="calculadora">calculadora del laboratorio</a>.</p>
+
+          <div style="margin-top:22px">
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D1</span></div>
+              <div><div class="spec-name">Uniforme discreta</div><div class="spec-use">Todos los resultados igualmente probables (un dado honesto).</div></div>
+              <div class="spec-math">\( f(x;k) = \dfrac{1}{k},\quad x = 1,\dots,k \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D2</span></div>
+              <div><div class="spec-name">Bernoulli</div><div class="spec-use">Un solo ensayo con dos posibles resultados: éxito o fracaso.</div></div>
+              <div class="spec-math">\( f(x;p) = p^{x} q^{\,1-x},\quad x\in\{0,1\} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D3</span></div>
+              <div><div class="spec-name">Binomial</div><div class="spec-use">Número de éxitos en \(n\) ensayos independientes con probabilidad \(p\) constante.</div></div>
+              <div class="spec-math">\( b(x;n,p) = \dbinom{n}{x} p^{x} q^{\,n-x} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D4</span></div>
+              <div><div class="spec-name">Geométrica</div><div class="spec-use">Ensayo en que ocurre el primer éxito.</div></div>
+              <div class="spec-math">\( g(x;p) = p\,q^{\,x-1},\quad x = 1,2,\dots \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D5</span></div>
+              <div><div class="spec-name">Binomial negativa</div><div class="spec-use">Ensayo en que ocurre el \(k\)-ésimo éxito.</div></div>
+              <div class="spec-math">\( b^{*}(x;k,p) = \dbinom{x-1}{k-1} p^{k} q^{\,x-k} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D6</span></div>
+              <div><div class="spec-name">Hipergeométrica</div><div class="spec-use">Muestreo <em>sin</em> reemplazo: éxitos en una muestra de tamaño \(n\) de una población \(N\) con \(K\) éxitos.</div></div>
+              <div class="spec-math">\( h(x;N,n,K) = \dfrac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag d">Discreta</span><span class="no">D7</span></div>
+              <div><div class="spec-name">Poisson</div><div class="spec-use">Conteo de eventos raros por unidad de tiempo o espacio, a ritmo promedio \(\lambda\).</div></div>
+              <div class="spec-math">\( p(x;\lambda) = \dfrac{e^{-\lambda}\lambda^{x}}{x!} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag c">Continua</span><span class="no">C1</span></div>
+              <div><div class="spec-name">Uniforme continua</div><div class="spec-use">Densidad constante en \([\alpha,\beta]\): "número al azar" entre dos límites.</div></div>
+              <div class="spec-math">\( f(x;\alpha,\beta) = \dfrac{1}{\beta-\alpha} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag c">Continua</span><span class="no">C2</span></div>
+              <div><div class="spec-name">Normal</div><div class="spec-use">El modelo más importante: errores de medición, promedios, fenómenos acumulados (TCL).</div></div>
+              <div class="spec-math">\( n(x;\mu,\sigma) = \dfrac{1}{\sqrt{2\pi}\,\sigma}\, e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}} \)</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-id"><span class="tag c">Continua</span><span class="no">C3</span></div>
+              <div><div class="spec-name">Exponencial (gamma)</div><div class="spec-use">Tiempo hasta el primer evento de un proceso Poisson; vidas útiles sin memoria.</div></div>
+              <div class="spec-math">\( f(x;\lambda) = \lambda e^{-\lambda x},\quad x &gt; 0 \)</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SIMULADOR ==================== -->
+<section class="view" id="v-simulador" hidden>
+  <div class="wrap">
+    <div class="view-head">
+      <p class="overline">Laboratorio de simulación · Actividad práctica</p>
+      <h2>La suma de dos dados: una distribución discreta en acción</h2>
+      <p class="sub">\(X\) = suma de dos dados honestos es discreta con soporte \(\{2,\dots,12\}\). Lanza y observa cómo la frecuencia relativa (barras verdes) se ajusta a la probabilidad teórica (guiones naranjas): <em>la ley de los grandes números en vivo</em>.</p>
+    </div>
+
+    <div class="lab-grid">
+      <div class="panel">
+        <div class="panel-head"><i data-lucide="dice-5"></i>Controles del experimento</div>
+        <div class="panel-body">
+          <div class="sim-controls">
+            <button class="btn" id="btnRoll1"><i data-lucide="play"></i>Lanzar 1</button>
+            <button class="btn ghost" id="btnRoll100"><i data-lucide="plus"></i>100</button>
+            <button class="btn ghost" id="btnRoll1000"><i data-lucide="plus"></i>1,000</button>
+            <button class="btn ghost" id="btnSimReset"><i data-lucide="rotate-ccw"></i>Reiniciar</button>
+          </div>
+          <div class="stat-2">
+            <div class="stat"><div class="num mono" id="simN">0</div><div class="lbl">Lanzamientos</div></div>
+            <div class="stat"><div class="num mono" id="simMean">—</div><div class="lbl">Media muestral (teo: 7)</div></div>
+            <div class="stat"><div class="num mono" id="simDev">—</div><div class="lbl">Desviación máx.</div></div>
+            <div class="stat"><div class="num mono" id="simTV">—</div><div class="lbl">Distancia total a lo teórico</div></div>
+          </div>
+          <div class="conv">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">
+              <span>Ajuste a la teórica</span><span id="simFit">—</span>
+            </div>
+            <div class="conv-bar"><div id="simTVBar"></div></div>
+          </div>
+          <p class="note">La <strong>distancia total de variación</strong> es \( \tfrac12\sum_x |\hat f(x) - f(x)| \): mide cuánta probabilidad hay que «mover» para que el experimento coincida con la teoría. Tiende a 0 conforme \(n\) crece. Registra tus observaciones: esta actividad vale <strong>15% de la evaluación</strong>. Cada lanzamiento se acumula a tu boleta aunque reinicies el experimento: llevas <strong class="mono" id="simEver">0</strong> en total (1,000 o más alcanzan el 100% del rubro).</p>
+        </div>
+      </div>
+
+      <div class="panel graph-frame">
+        <div class="panel-head"><i data-lucide="bar-chart-3"></i>Distribución empírica vs. teórica</div>
+        <canvas id="simCanvas"></canvas>
+        <div class="graph-cap">Barras: frecuencia relativa observada \(\hat f(x)\). Guiones: probabilidad teórica \(f(x) = \tfrac{6-|x-7|}{36}\). Solo es válida con \(n &gt; 0\).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CALCULADORA ==================== -->
+<section class="view" id="v-calculadora" hidden>
+  <div class="wrap">
+    <div class="view-head">
+      <p class="overline">Laboratorio de cálculo</p>
+      <h2>Calculadora de distribuciones</h2>
+      <p class="sub">Evalúa probabilidades para las distribuciones del catálogo 3.6 y visualiza la masa (discretas) o el área bajo la densidad (continuas).</p>
+    </div>
+
+    <div class="lab-grid">
+      <div class="panel">
+        <div class="panel-head"><i data-lucide="sliders-horizontal"></i>Parámetros</div>
+        <div class="panel-body">
+          <div class="field" style="margin-bottom:16px">
+            <label for="calcDist">Distribución</label>
+            <select id="calcDist">
+              <optgroup label="Discretas">
+                <option value="binomial" selected>Binomial B(n, p)</option>
+                <option value="poisson">Poisson Po(λ)</option>
+                <option value="geometrica">Geométrica G(p)</option>
+                <option value="hipergeometrica">Hipergeométrica H(N, n, K)</option>
+                <option value="unifdisc">Uniforme discreta U(1..k)</option>
+              </optgroup>
+              <optgroup label="Continuas">
+                <option value="normal">Normal N(μ, σ)</option>
+                <option value="exponencial">Exponencial Exp(λ)</option>
+                <option value="unifcont">Uniforme continua U(α, β)</option>
+              </optgroup>
+            </select>
+          </div>
+          <div id="calcParams" style="display:grid;gap:14px;margin-bottom:18px"></div>
+          <button class="btn" id="btnCalc" style="width:100%;justify-content:center"><i data-lucide="equal"></i>Calcular probabilidades</button>
+          <p class="note" id="calcNote">Consejo: para la Normal puedes dejar \(x_2\) vacío si solo necesitas \(P(X\le x)\).</p>
+        </div>
+      </div>
+
+      <div class="panel graph-frame">
+        <div class="panel-head"><i data-lucide="chart-line"></i>Resultado</div>
+        <canvas id="calcCanvas"></canvas>
+        <div class="panel-body" id="calcResults">
+          <div class="calc-empty">
+            <i data-lucide="calculator"></i>
+            <p>Elige una distribución, ajusta sus parámetros y presiona <strong>Calcular</strong>.<br>Aquí aparecerán las probabilidades y su gráfica.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ACTIVIDADES ==================== -->
+<section class="view" id="v-actividades" hidden>
+  <div class="wrap">
+    <div class="view-head">
+      <p class="overline">Zona de evaluación</p>
+      <h2>Actividades del capítulo</h2>
+      <p class="sub">Cuatro instrumentos alineados a las secciones de teoría. Todo tu avance se guarda automáticamente en este dispositivo y se refleja en tu <a href="#" data-view="boleta">boleta de resultados</a>.</p>
+    </div>
+
+    <!-- Rúbrica -->
+    <div class="act-block">
+      <h3>Rúbrica de evaluación</h3>
+      <p class="act-desc">Ponderación de cada instrumento sobre la calificación del capítulo (nota final sobre 10).</p>
+      <div class="rub-row"><span class="rub-name">Participación en el simulador (reporte de convergencia)</span><div class="rub-bar"><div style="width:15%"></div></div><span class="rub-pct">15%</span></div>
+      <div class="rub-row"><span class="rub-name">Ejercicios guiados (solución detallada)</span><div class="rub-bar"><div style="width:25%"></div></div><span class="rub-pct">25%</span></div>
+      <div class="rub-row"><span class="rub-name">Quiz de autoevaluación</span><div class="rub-bar"><div style="width:30%"></div></div><span class="rub-pct">30%</span></div>
+      <div class="rub-row"><span class="rub-name">Tarea: problemas del Walpole</span><div class="rub-bar"><div style="width:30%"></div></div><span class="rub-pct">30%</span></div>
+      <p class="note">El registro es automático en <a href="#" data-view="boleta">Mi boleta</a>: el simulador por lanzamientos acumulados, el quiz por tu mejor intento, y los ejercicios y la tarea por las casillas que marques al resolverlos.</p>
+    </div>
+
+    <!-- Ejercicios guiados -->
+    <div class="act-block" id="ejBlock">
+      <h3>Ejercicios guiados con solución</h3>
+      <p class="act-desc">Intenta resolverlos por escrito antes de desplegar la solución. En clase se revisará el procedimiento, no solo el resultado. Al terminar cada uno, márcalo como resuelto para que sume en tu boleta.</p>
+
+      <details class="sol">
+        <summary><span class="sol-marker">+</span><span><span class="prob-tag">Ejercicio 1 · fmp y fda discretas</span>Se lanza una moneda honesta 4 veces y \(X\) = número de águilas. Obtén (a) la fmp, (b) \(P(X \ge 2)\) y (c) \(F(2)\).</span></summary>
+        <div class="sol-body">
+          <p><strong>(a)</strong> Por simetría, \(f(x) = \dbinom{4}{x}\big/16\):</p>
+          <table class="tbl"><thead><tr><th class="center">\(x\)</th><th class="center">0</th><th class="center">1</th><th class="center">2</th><th class="center">3</th><th class="center">4</th></tr></thead>
+          <tbody><tr><td class="center">\(f(x)\)</td><td class="center">1/16</td><td class="center">4/16</td><td class="center">6/16</td><td class="center">4/16</td><td class="center">1/16</td></tr></tbody></table>
+          <p><strong>(b)</strong> \(P(X\ge 2) = \tfrac{6+4+1}{16} = \tfrac{11}{16}\). &nbsp; <strong>(c)</strong> \(F(2) = P(X\le 2) = \tfrac{1+4+6}{16} = \tfrac{11}{16}\).</p>
+          <p><em>Observación:</em> coinciden porque la distribución es simétrica respecto a \(x=2\): \(P(X\le 2) = P(X\ge 2)\).</p>
+          <label class="chk chk-ej" style="margin-top:14px"><input type="checkbox" data-ej="e1"><span>Ya resolví este ejercicio y verifiqué mi resultado</span></label>
+        </div>
+      </details>
+
+      <details class="sol">
+        <summary><span class="sol-marker">+</span><span><span class="prob-tag">Ejercicio 2 · hipergeométrica</span>Un lote de 10 artículos contiene 3 defectuosos. Se seleccionan 2 al azar. Con \(X\) = número de defectuosos en la muestra, halla la distribución de \(X\) y \(P(X \ge 1)\).</span></summary>
+        <div class="sol-body">
+          <p>Muestreo sin reemplazo ⇒ hipergeométrica con \(N=10,\ K=3,\ n=2\): &nbsp; \( h(x) = \dfrac{\binom{3}{x}\binom{7}{2-x}}{\binom{10}{2}} \).</p>
+          <p>\(P(X=0) = \tfrac{\binom{7}{2}}{45} = \tfrac{21}{45} = \tfrac{7}{15}\), &nbsp; \(P(X=1) = \tfrac{\binom{3}{1}\binom{7}{1}}{45} = \tfrac{21}{45} = \tfrac{7}{15}\), &nbsp; \(P(X=2) = \tfrac{\binom{3}{2}}{45} = \tfrac{3}{45} = \tfrac{1}{15}\).</p>
+          <p>\(P(X\ge 1) = \tfrac{7}{15}+\tfrac{1}{15} = \tfrac{8}{15} \approx 0.533\). Verifica siempre que la suma valga 1: \(\tfrac{7+7+1}{15} = 1\). ✓</p>
+          <label class="chk chk-ej" style="margin-top:14px"><input type="checkbox" data-ej="e2"><span>Ya resolví este ejercicio y verifiqué mi resultado</span></label>
+        </div>
+      </details>
+
+      <details class="sol">
+        <summary><span class="sol-marker">+</span><span><span class="prob-tag">Ejercicio 3 · densidad continua</span>Sea \(f(x) = 2(1-x)\) para \(0 &lt; x &lt; 1\). (a) Verifica que es una fdp legítima; (b) calcula \(P(\tfrac14 &lt; X &lt; \tfrac34)\); (c) obtén \(F(x)\).</span></summary>
+        <div class="sol-body">
+          <p><strong>(a)</strong> \(f(x)\ge 0\) en \((0,1)\) y \(\int_0^1 2(1-x)\,dx = 1\). ✓ &nbsp; <strong>(b)</strong> \(\left[2x - x^2\right]_{1/4}^{3/4} = \left(\tfrac32 - \tfrac{9}{16}\right) - \left(\tfrac12 - \tfrac{1}{16}\right) = \tfrac{15}{16} - \tfrac{7}{16} = \tfrac{1}{2}\).</p>
+          <p><strong>(c)</strong> \(F(x) = \int_0^x 2(1-t)\,dt = 2x - x^2\) para \(0&lt;x&lt;1\), con \(F(x)=0\) si \(x\le 0\) y \(F(x)=1\) si \(x\ge 1\).</p>
+          <label class="chk chk-ej" style="margin-top:14px"><input type="checkbox" data-ej="e3"><span>Ya resolví este ejercicio y verifiqué mi resultado</span></label>
+        </div>
+      </details>
+
+      <details class="sol">
+        <summary><span class="sol-marker">+</span><span><span class="prob-tag">Ejercicio 4 · Poisson</span>Una central telefónica recibe en promedio 3 llamadas por minuto. Con \(X\) = llamadas por minuto (Poisson, \(\lambda = 3\)), calcula (a) \(P(X=0)\), (b) \(P(X=2)\) y (c) \(P(X\ge 2)\).</span></summary>
+        <div class="sol-body">
+          <p><strong>(a)</strong> \(P(X=0) = e^{-3} \approx 0.0498\). &nbsp; <strong>(b)</strong> \(P(X=2) = \dfrac{e^{-3}3^2}{2!} \approx 0.2240\).</p>
+          <p><strong>(c)</strong> \(P(X\ge 2) = 1 - P(X\le 1) = 1 - e^{-3}(1 + 3) = 1 - 4e^{-3} \approx 0.8009\).</p>
+          <p>El complemento \(P(X\le 1)\) es más fácil que sumar infinitos términos: una estrategia habitual con Poisson.</p>
+          <label class="chk chk-ej" style="margin-top:14px"><input type="checkbox" data-ej="e4"><span>Ya resolví este ejercicio y verifiqué mi resultado</span></label>
+        </div>
+      </details>
+    </div>
+
+    <!-- Quiz -->
+    <div class="act-block">
+      <h3>Quiz de autoevaluación</h3>
+      <p class="act-desc">Seis preguntas de opción múltiple. Al calificar recibirás la retroalimentación de cada respuesta; tu <strong>mejor intento</strong> se registra en tu boleta.</p>
+      <div id="quizList"></div>
+      <div class="quiz-foot">
+        <button class="btn" id="btnGrade"><i data-lucide="check-check"></i>Calificar quiz</button>
+        <button class="btn ghost" id="btnQuizReset"><i data-lucide="rotate-ccw"></i>Reintentar</button>
+        <div class="quiz-result" id="quizResult"></div>
+      </div>
+    </div>
+
+    <!-- Tarea -->
+    <div class="act-block" style="margin-bottom:0">
+      <h3>Tarea del capítulo — problemas del Walpole</h3>
+      <p class="act-desc">Resuelve los ejercicios seleccionados del Capítulo 3 (verifica la numeración en tu edición) y registra tu avance. Fecha límite: <strong id="taskDeadline"></strong>.</p>
+      <div class="task-panel">
+        <div class="panel">
+          <div class="panel-head"><i data-lucide="list-checks"></i>Avance de la tarea</div>
+          <div class="panel-body">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">
+              <span>Progreso</span><span id="taskPct">0 / 8 · 0%</span>
+            </div>
+            <div class="conv-bar" style="margin-bottom:18px"><div id="taskBar" style="background:var(--pine)"></div></div>
+            <div id="taskList"></div>
+            <p class="note">Tu avance se guarda en este navegador y se refleja en <a href="#" data-view="boleta">Mi boleta</a>.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><i data-lucide="file-text"></i>Instrucciones de entrega</div>
+          <div class="panel-body">
+            <ol style="margin-left:20px;font-size:14.5px">
+              <li style="margin-bottom:9px">Resuelve a mano o en LaTeX, justificando cada paso con la definición o propiedad que aplicas.</li>
+              <li style="margin-bottom:9px">En cada problema identifica: variable aleatoria, su tipo (discreta/continua), la distribución usada y la verificación \(\sum f = 1\) o \(\int f = 1\).</li>
+              <li style="margin-bottom:9px">Marca aquí cada problema terminado; el avance se guarda automáticamente en este dispositivo.</li>
+              <li>Entrega el PDF en la plataforma de la clase el día de la sesión 4.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MI BOLETA ==================== -->
+<section class="view" id="v-boleta" hidden>
+  <div class="wrap">
+    <div class="view-head">
+      <p class="overline">Expediente individual</p>
+      <h2>Mi boleta de resultados</h2>
+      <p class="sub">Regístrate una sola vez en este dispositivo: tu progreso y tu nota final quedan a tu nombre, y podrás descargar tu boleta como imagen para compartirla. Los datos nunca salen de tu navegador.</p>
+    </div>
+
+    <!-- Ficha de registro (visible si aún no hay registro) -->
+    <div class="panel" id="regEmpty" style="max-width:560px">
+      <div class="panel-head"><i data-lucide="user-plus"></i>Ficha de registro individual</div>
+      <div class="panel-body">
+        <form id="formEst" style="display:grid;gap:14px" novalidate>
+          <div class="field">
+            <label for="alNombre">Nombre completo</label>
+            <input id="alNombre" type="text" placeholder="Ej. Ana Sofía Delgado Ruiz" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="alMat">Matrícula</label>
+            <input id="alMat" type="text" placeholder="Ej. 20240315" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="alMail">Correo electrónico</label>
+            <input id="alMail" type="email" placeholder="nombre@universidad.edu.mx" autocomplete="off">
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn" type="submit" id="btnEstSave"><i data-lucide="user-plus"></i><span>Registrarme</span></button>
+            <button class="btn ghost" type="button" id="btnEstCancel" hidden>Cancelar</button>
+          </div>
+        </form>
+        <p class="hint" style="margin-top:12px">Tu registro y todo tu avance se guardan únicamente en este navegador. Si ya marcaste actividades, aparecerán automáticamente en tu boleta al registrarte.</p>
+      </div>
+    </div>
+
+    <!-- Boleta emitida (visible si hay registro) -->
+    <div id="boletaWrap" hidden>
+      <div class="boleta-card" id="boletaCard">
+        <div class="b-head">
+          <span class="avatar" id="bAvatar">··</span>
+          <div>
+            <div class="b-title">Boleta de evaluación · Capítulo 3 — Distribuciones de probabilidad</div>
+            <div class="b-name" id="bName">—</div>
+            <div class="b-meta" id="bMeta">—</div>
+          </div>
+          <div class="b-seal"><span>Aula<br>Interactiva</span><strong>Cap. 3</strong></div>
+        </div>
+        <div class="b-body" id="bRows"></div>
+        <div class="b-total">
+          <div>
+            <div class="b-total-lbl">Nota final del capítulo</div>
+            <div class="b-total-det">Simulador 15% · Ejercicios 25% · Quiz 30% · Tarea 30%</div>
+          </div>
+          <div class="b-score"><span class="big" id="bNota">0.0</span><span class="den">/ 10</span></div>
+        </div>
+        <div class="b-foot">
+          <span>Emitida: <strong id="bEmit">—</strong></span>
+          <span>Registro desde: <strong id="bSince">—</strong></span>
+          <span>Probabilidad y Estadística · Dr. Adrián Cerda</span>
+        </div>
+      </div>
+
+      <div class="boleta-actions">
+        <button class="btn" id="btnBoletaPng"><i data-lucide="download"></i>Descargar boleta (PNG)</button>
+        <button class="btn ghost" id="btnEstEdit"><i data-lucide="pencil"></i>Editar datos</button>
+        <button class="del-btn" id="btnEstDel"><i data-lucide="trash-2"></i><span>Borrar registro y avance</span></button>
+      </div>
+      <p class="note" style="max-width:700px"><strong>Criterios de la nota.</strong> <em>Simulador:</em> 20% del rubro por cada nivel de lanzamientos acumulados — 1, 25, 100, 500 y 1,000 o más. <em>Quiz:</em> proporción de tu mejor intento (0–6 aciertos). <em>Ejercicios y tarea:</em> casillas marcadas en la sección de Actividades. Al borrar el registro se elimina también todo el avance guardado en este navegador.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div><strong>Referencia:</strong> Walpole, R. E., Myers, R. H., Myers, S. L., &amp; Ye, K. — <em>Probabilidad y Estadística para Ingeniería y Ciencias</em>, 9.ª ed., Capítulo 3.</div>
+    <div>Aula interactiva de Probabilidad y Estadística · uso educativo · los datos se guardan solo en este navegador.</div>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+/* ============================================================
+   UTILIDADES
+============================================================ */
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const INK='#1c2b25', PINE='#1e4636', TERRA='#c2542f', PAPER='#fffdf8';
+
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtP(v){ if(!isFinite(v)) return '—'; if(v!==0 && Math.abs(v)<1e-6) return v.toExponential(3); return String(parseFloat(v.toFixed(6))); }
+function fmtNum(v){ if(v===0) return '0'; const a=Math.abs(v); if(a>=1e5||a<1e-4) return v.toExponential(1); if(a<1) return String(parseFloat(v.toFixed(4))); return String(parseFloat(v.toPrecision(4))); }
+function toast(msg, type='ok'){
+  const box=$('#toasts'), t=document.createElement('div');
+  t.className='toast '+type;
+  t.innerHTML = `<i data-lucide="${type==='ok'?'check-circle-2':'alert-circle'}"></i><span>${msg}</span>`;
+  box.appendChild(t); lucide.createIcons();
+  setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(), 320); }, 3200);
+}
+function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
+
+/* ============================================================
+   PERSISTENCIA: registro individual + actividades del curso
+   Claves genéricas para reutilizar el modelo en otras materias.
+============================================================ */
+const LS_EST='aula_estudiante';   // datos del alumno registrado
+const LS_ACT='aula_actividades';  // avance por curso: { cap3: {...} }
+const CURSO='cap3';
+
+function loadEst(){ try{ return JSON.parse(localStorage.getItem(LS_EST)); }catch(e){ return null; } }
+function saveEst(e){ localStorage.setItem(LS_EST, JSON.stringify(e)); }
+function loadAct(){ try{ return JSON.parse(localStorage.getItem(LS_ACT)||'{}'); }catch(e){ return {}; } }
+function act(){
+  const a=loadAct();
+  a[CURSO]=a[CURSO]||{ sim:{rolls:0}, ej:{}, quiz:null, tarea:{} };
+  a[CURSO].sim=a[CURSO].sim||{rolls:0};
+  a[CURSO].ej=a[CURSO].ej||{};
+  a[CURSO].tarea=a[CURSO].tarea||{};
+  return a;
+}
+function saveAct(a){ localStorage.setItem(LS_ACT, JSON.stringify(a)); }
+
+/* ============================================================
+   NAVEGACIÓN DE VISTAS
+============================================================ */
+function showView(v){
+  $$('.view').forEach(s => s.hidden = true);
+  $('#v-'+v).hidden = false;
+  $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(v==='inicio')      animateHero();
+  if(v==='simulador')   requestAnimationFrame(drawSim);
+  if(v==='calculadora') redrawCalc();
+  if(v==='boleta')      renderBoleta();
+}
+ $$('[data-view]').forEach(el => el.addEventListener('click', e => {
+  if(el.tagName==='A'){ e.preventDefault(); }
+  showView(el.dataset.view);
+}));
+
+/* ============================================================
+   MATEMÁTICAS: combinatoria y distribuciones
+============================================================ */
+function logGamma(z){ // Lanczos
+  const g=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,
+           12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  if(z<0.5) return Math.log(Math.PI/Math.sin(Math.PI*z))-logGamma(1-z);
+  z-=1; let x=0.99999999999980993;
+  for(let i=0;i<8;i++) x+=g[i]/(z+i+1);
+  const t=z+7.5;
+  return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x);
+}
+const logChoose = (n,k)=> logGamma(n+1)-logGamma(k+1)-logGamma(n-k+1);
+const choose    = (n,k)=> Math.exp(logChoose(n,k));
+const logFact   = x => logGamma(x+1);
+function binomPmf(n,x,p){ if(x<0||x>n||n<0) return 0; return Math.exp(logChoose(n,x)+x*Math.log(p)+(n-x)*Math.log(1-p)); }
+function poisPmf(l,x){ if(x<0) return 0; return Math.exp(-l + x*Math.log(l) - logFact(x)); }
+function erf(x){
+  const s = x<0?-1:1; x=Math.abs(x);
+  const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;
+  const t=1/(1+p*x), y=1-((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;
+}
+const Phi = z => 0.5*(1+erf(z/Math.SQRT2));
+function niceStep(range,n){ const raw=range/n, mag=Math.pow(10,Math.floor(Math.log10(raw))), q=raw/mag;
+  return (q<1.5?1:q<3?2:q<7?5:10)*mag; }
+
+/* ============================================================
+   DIBUJO EN CANVAS
+============================================================ */
+function setupCanvas(cv){
+  const dpr = window.devicePixelRatio||1;
+  const r = cv.getBoundingClientRect();
+  cv.width = Math.max(10, r.width*dpr); cv.height = Math.max(10, r.height*dpr);
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, w:r.width, h:r.height};
+}
+function axes(ctx,m,w,h){
+  ctx.strokeStyle=INK; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(m.l, m.t-8); ctx.lineTo(m.l, m.t+m.ph); ctx.lineTo(m.l+m.pw+8, m.t+m.ph); ctx.stroke();
+}
+function makeMargins(w,h){ return {l:48,r:14,t:22,b:36, pw:w-48-14, ph:h-22-36}; }
+function yTicks(ctx,m,yMax){
+  const s=niceStep(yMax,4);
+  ctx.font='11px Instrument Sans'; ctx.textAlign='right';
+  for(let v=s; v<=yMax; v+=s){
+    const y=m.t+m.ph-(v/yMax)*m.ph;
+    ctx.strokeStyle='rgba(28,43,37,.12)'; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(m.l,y); ctx.lineTo(m.l+m.pw,y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(28,43,37,.6)'; ctx.fillText(fmtNum(v), m.l-7, y+4);
+  }
+}
+function drawPMF(cv, pmf, lo, hi, mark){
+  const {ctx,w,h}=setupCanvas(cv); const m=makeMargins(w,h); m.ph2=m.ph;
+  let maxV=0; const pts=[];
+  for(let x=lo;x<=hi;x++){ const v=Math.max(0,pmf(x)); pts.push([x,v]); if(v>maxV)maxV=v; }
+  const yMax=maxV*1.18||1, n=pts.length, bw=Math.max(2,(m.pw/n)*0.7);
+  axes(ctx,m,w,h); yTicks(ctx,m,yMax);
+  const step=Math.max(1,Math.ceil(n/14));
+  pts.forEach(([x,v],i)=>{
+    const cx=m.l+(i+0.5)*(m.pw/n), bh=(v/yMax)*m.ph;
+    const isMark = mark!=null && x===mark;
+    ctx.fillStyle = isMark? TERRA : 'rgba(30,70,54,.8)';
+    ctx.fillRect(cx-bw/2, m.t+m.ph-bh, bw, bh);
+    if(isMark && v>0){ ctx.fillStyle=INK; ctx.font='700 12px Instrument Sans'; ctx.textAlign='center';
+      ctx.fillText(fmtP(v), cx, m.t+m.ph-bh-7); }
+    if(n<=16 || i%step===0){ ctx.fillStyle='rgba(28,43,37,.7)'; ctx.font='11px Instrument Sans'; ctx.textAlign='center';
+      ctx.fillText(x, cx, m.t+m.ph+17); }
+  });
+}
+function drawPDF(cv, pdf, lo, hi, shades){
+  const {ctx,w,h}=setupCanvas(cv); const m=makeMargins(w,h);
+  const N=360, xs=[]; let maxV=0;
+  for(let i=0;i<=N;i++){ const x=lo+(hi-lo)*i/N, v=Math.max(0,pdf(x)); xs.push([x,v]); if(v>maxV)maxV=v; }
+  const yMax=maxV*1.15||1;
+  const X = x => m.l + (x-lo)/(hi-lo)*m.pw;
+  const Y = v => m.t + m.ph - (v/yMax)*m.ph;
+  // áreas sombreadas
+  (shades||[]).forEach(([a,b])=>{
+    if(b<=a) return;
+    ctx.beginPath(); ctx.moveTo(X(a), Y(0));
+    for(let i=0;i<=N;i++){ const x=lo+(hi-lo)*i/N; if(x<a) continue; if(x>b) break; ctx.lineTo(X(x), Y(pdf(x))); }
+    ctx.lineTo(X(Math.min(b,hi)), Y(0)); ctx.closePath();
+    ctx.fillStyle='rgba(194,84,47,.22)'; ctx.fill();
+  });
+  // marcas verticales
+  (shades||[]).flat().forEach(x=>{
+    if(x==null||x<=lo||x>=hi) return;
+    ctx.strokeStyle=TERRA; ctx.setLineDash([4,4]); ctx.beginPath();
+    ctx.moveTo(X(x), m.t+m.ph); ctx.lineTo(X(x), m.t+m.ph- (Math.min(Math.max(0,pdf(x)),yMax)/yMax)*m.ph - 8);
+    ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=TERRA; ctx.font='700 11px Instrument Sans'; ctx.textAlign='center';
+    ctx.fillText(String(parseFloat(x.toPrecision(4))), X(x), m.t+m.ph+17);
+  });
+  // curva
+  ctx.strokeStyle=INK; ctx.lineWidth=2; ctx.beginPath();
+  xs.forEach(([x,v],i)=> i? ctx.lineTo(X(x),Y(v)) : ctx.moveTo(X(x),Y(v)));
+  ctx.stroke();
+  // ejes
+  ctx.strokeStyle=INK; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(m.l,m.t-8); ctx.lineTo(m.l,m.t+m.ph); ctx.lineTo(m.l+m.pw+8,m.t+m.ph); ctx.stroke();
+  // ticks y
+  const s=niceStep(yMax,4); ctx.font='11px Instrument Sans'; ctx.textAlign='right';
+  for(let v=s; v<=yMax; v+=s){ const y=Y(v);
+    ctx.strokeStyle='rgba(28,43,37,.12)'; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(m.l,y); ctx.lineTo(m.l+m.pw,y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(28,43,37,.6)'; ctx.fillText(fmtNum(v), m.l-7, y+4); }
+}
+
+/* ============================================================
+   HERO: binomial vs normal (animado)
+============================================================ */
+let heroAnim=null;
+function drawHero(t){
+  const cv=$('#heroCanvas'); if(!cv || cv.offsetParent===null) return;
+  const {ctx,w,h}=setupCanvas(cv);
+  const m={l:24,r:24,t:20,b:22}, pw=w-m.l-m.r, ph=h-m.t-m.b;
+  const n=36, sd=3, mu=18;
+  const X = x => m.l + (x - (mu-3.9*sd))/(7.8*sd)*pw;
+  const scale = 0.82*ph/0.3989;
+  // barras binomiales
+  const bars=[]; for(let x=4;x<=32;x++) bars.push([x, Math.exp(logChoose(n,x)-n*Math.LN2)]);
+  const nb=bars.length;
+  bars.forEach(([x,p],i)=>{
+    const frac = Math.min(1, Math.max(0, t*nb - i));
+    if(frac<=0) return;
+    const bh = p*scale*Math.pow(frac,3); // ease-out
+    ctx.fillStyle='rgba(30,70,54,.75)';
+    ctx.fillRect(X(x-0.32), m.t+ph-bh, X(x+0.32)-X(x-0.32), bh);
+  });
+  // curva normal
+  const frac = Math.min(1, Math.max(0, (t-0.2)/0.8));
+  if(frac>0){
+    ctx.strokeStyle=TERRA; ctx.lineWidth=2.4; ctx.beginPath();
+    const steps=200, upto=Math.floor(steps*frac);
+    for(let i=0;i<=upto;i++){
+      const z=-3.9 + 7.8*i/steps;
+      const y=0.3989*Math.exp(-z*z/2)*scale;
+      const px=X(mu+z*sd), py=m.t+ph-y;
+      i? ctx.lineTo(px,py) : ctx.moveTo(px,py);
+    }
+    ctx.stroke();
+  }
+  // eje base
+  ctx.strokeStyle=INK; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(m.l, m.t+ph); ctx.lineTo(w-m.r, m.t+ph); ctx.stroke();
+  // leyenda
+  ctx.font='600 11.5px Instrument Sans';
+  ctx.fillStyle='rgba(30,70,54,.85)'; ctx.fillRect(w-172, m.t-4, 10, 10);
+  ctx.fillText('B(x; 36, ½)', w-158, m.t+5);
+  ctx.strokeStyle=TERRA; ctx.lineWidth=2.4;
+  ctx.beginPath(); ctx.moveTo(w-92, m.t+1); ctx.lineTo(w-80, m.t+1); ctx.stroke();
+  ctx.fillStyle=INK; ctx.fillText('Normal', w-74, m.t+5);
+}
+function animateHero(){
+  cancelAnimationFrame(heroAnim);
+  const t0=performance.now();
+  (function loop(now){
+    const t=Math.min(1,(now-t0)/1400);
+    drawHero(1-Math.pow(1-t,3));
+    if(t<1) heroAnim=requestAnimationFrame(loop);
+  })(t0);
+}
+
+/* ============================================================
+   SIMULADOR DE DADOS (con acumulado persistente para la boleta)
+============================================================ */
+const THEO=[0,0,1/36,2/36,3/36,4/36,5/36,6/36,5/36,4/36,3/36,2/36,1/36];
+const sim={counts:Array(13).fill(0), smooth:Array(13).fill(0), total:0};
+function addRolls(k){
+  for(let i=0;i<k;i++){ const s=1+Math.floor(Math.random()*6)+1+Math.floor(Math.random()*6); sim.counts[s]++; }
+  sim.total+=k;
+  const a=act(); a[CURSO].sim.rolls=(a[CURSO].sim.rolls||0)+k; saveAct(a);
+  updateSimStats();
+}
+function resetSim(){ sim.counts.fill(0); sim.smooth.fill(0); sim.total=0; updateSimStats(); }
+function updateSimStats(){
+  $('#simN').textContent = sim.total.toLocaleString('es-MX');
+  $('#simEver').textContent = (act()[CURSO].sim.rolls||0).toLocaleString('es-MX');
+  if(sim.total===0){ $('#simMean').textContent='—'; $('#simDev').textContent='—'; $('#simTV').textContent='—';
+    $('#simTVBar').style.width='0%'; $('#simFit').textContent='—'; return; }
+  let mean=0, tv=0, maxDev=0;
+  for(let s=2;s<=12;s++){
+    const rel=sim.counts[s]/sim.total, d=Math.abs(rel-THEO[s]);
+    mean+=s*rel; tv+=d; if(d>maxDev) maxDev=d;
+  }
+  tv*=0.5;
+  $('#simMean').textContent=mean.toFixed(3);
+  $('#simDev').textContent=maxDev.toFixed(4);
+  $('#simTV').textContent=tv.toFixed(4);
+  $('#simTVBar').style.width=Math.min(100, tv/0.5*100)+'%';
+  $('#simFit').textContent=(100*(1-Math.min(1,tv/0.5))).toFixed(1)+'% de convergencia';
+}
+function drawSim(){
+  const cv=$('#simCanvas'); if(!cv || cv.offsetParent===null) return;
+  const {ctx,w,h}=setupCanvas(cv); const m=makeMargins(w,h);
+  let maxV=1/36*1.2;
+  for(let s=2;s<=12;s++) maxV=Math.max(maxV, sim.smooth[s]/Math.max(1,sim.total), THEO[s]);
+  const yMax=maxV*1.22, n=11, slot=m.pw/n, bw=slot*0.66;
+  axes(ctx,m,w,h); yTicks(ctx,m,yMax);
+  for(let s=2;s<=12;s++){
+    const cx=m.l+(s-2+0.5)*slot;
+    // barra empírica
+    const rel=sim.total? sim.smooth[s]/sim.total : 0;
+    const bh=(rel/yMax)*m.ph;
+    ctx.fillStyle='rgba(30,70,54,.8)'; ctx.fillRect(cx-bw/2, m.t+m.ph-bh, bw, bh);
+    // marcador teórico
+    const ty=m.t+m.ph-(THEO[s]/yMax)*m.ph;
+    ctx.strokeStyle=TERRA; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(cx-bw/2-4, ty); ctx.lineTo(cx+bw/2+4, ty); ctx.stroke();
+    // etiqueta x
+    ctx.fillStyle='rgba(28,43,37,.7)'; ctx.font='11px Instrument Sans'; ctx.textAlign='center';
+    ctx.fillText(s, cx, m.t+m.ph+17);
+  }
+  // leyenda
+  ctx.font='600 11.5px Instrument Sans';
+  ctx.fillStyle='rgba(30,70,54,.85)'; ctx.fillRect(m.l+6, m.t-6, 10, 10);
+  ctx.fillText('frecuencia relativa', m.l+21, m.t+3);
+  ctx.strokeStyle=TERRA; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(m.l+150, m.t-1); ctx.lineTo(m.l+164, m.t-1); ctx.stroke();
+  ctx.fillStyle=INK; ctx.fillText('probabilidad teórica', m.l+170, m.t+3);
+}
+(function simLoop(){
+  if($('#v-simulador') && !$('#v-simulador').hidden){
+    let moving=false;
+    for(let s=2;s<=12;s++){
+      const d=sim.counts[s]-sim.smooth[s];
+      if(Math.abs(d)>0.001){ sim.smooth[s]+=d*0.14; moving=true; } else sim.smooth[s]=sim.counts[s];
+    }
+    if(moving||sim.total===0) drawSim();
+  }
+  requestAnimationFrame(simLoop);
+})();
+ $('#btnRoll1').addEventListener('click',()=>addRolls(1));
+ $('#btnRoll100').addEventListener('click',()=>addRolls(100));
+ $('#btnRoll1000').addEventListener('click',()=>addRolls(1000));
+ $('#btnSimReset').addEventListener('click',()=>{ resetSim(); drawSim(); toast('Experimento reiniciado (tu acumulado para la boleta se conserva).'); });
+
+/* ============================================================
+   CALCULADORA DE DISTRIBUCIONES
+============================================================ */
+const PDEFS = {
+  binomial:[
+    {k:'n',label:'n — número de ensayos',min:1,max:400,step:1,val:10},
+    {k:'p',label:'p — probabilidad de éxito',min:0.001,max:0.999,step:0.01,val:0.5},
+    {k:'x',label:'x — éxitos deseados',min:0,max:400,step:1,val:3}],
+  poisson:[
+    {k:'l',label:'λ — ritmo promedio',min:0.01,max:500,step:0.1,val:3},
+    {k:'x',label:'x — eventos deseados',min:0,max:2000,step:1,val:2}],
+  geometrica:[
+    {k:'p',label:'p — probabilidad de éxito',min:0.001,max:1,step:0.01,val:0.25},
+    {k:'x',label:'x — ensayo del primer éxito (≥ 1)',min:1,max:10000,step:1,val:3}],
+  hipergeometrica:[
+    {k:'N',label:'N — tamaño de la población',min:1,max:10000,step:1,val:10},
+    {k:'K',label:'K — éxitos en la población',min:0,max:10000,step:1,val:3},
+    {k:'n',label:'n — tamaño de la muestra',min:1,max:10000,step:1,val:2},
+    {k:'x',label:'x — éxitos en la muestra',min:0,max:10000,step:1,val:1}],
+  unifdisc:[
+    {k:'k',label:'k — número de valores equiprobables (1..k)',min:2,max:100,step:1,val:6},
+    {k:'x',label:'x — valor deseado',min:1,max:100,step:1,val:3}],
+  normal:[
+    {k:'mu',label:'μ — media',min:-1000,max:1000,step:0.5,val:0},
+    {k:'sg',label:'σ — desviación estándar',min:0.01,max:1000,step:0.1,val:1},
+    {k:'x',label:'x — valor de corte',min:-10000,max:10000,step:0.1,val:1},
+    {k:'x2',label:'x₂ — corte superior (opcional)',min:-10000,max:10000,step:0.1,val:'',opt:true}],
+  exponencial:[
+    {k:'l',label:'λ — ritmo (vida media = 1/λ)',min:0.0001,max:1000,step:0.1,val:0.5},
+    {k:'x',label:'x — tiempo de corte (≥ 0)',min:0,max:100000,step:0.1,val:2}],
+  unifcont:[
+    {k:'a',label:'α — límite inferior',min:-10000,max:10000,step:0.5,val:0},
+    {k:'b',label:'β — límite superior',min:-10000,max:10000,step:0.5,val:2},
+    {k:'x',label:'x — valor de corte',min:-10000,max:10000,step:0.1,val:1}]
+};
+const DIST_NAMES = {binomial:'Binomial',poisson:'Poisson',geometrica:'Geométrica',
+  hipergeometrica:'Hipergeométrica',unifdisc:'Uniforme discreta',
+  normal:'Normal',exponencial:'Exponencial',unifcont:'Uniforme continua'};
+
+function buildParams(){
+  const key=$('#calcDist').value, box=$('#calcParams');
+  box.innerHTML = PDEFS[key].map(p=>`
+    <div class="field">
+      <label for="cp_${p.k}">${p.label}</label>
+      <input id="cp_${p.k}" type="number" step="${p.step}" min="${p.min}" max="${p.max}"
+        value="${p.val}" placeholder="${p.opt?'opcional':''}">
+    </div>`).join('');
+}
+ $('#calcDist').addEventListener('change',()=>{
+  buildParams();
+  $('#calcResults').innerHTML = `<div class="calc-empty"><i data-lucide="calculator"></i>
+    <p>Parámetros de <strong>${DIST_NAMES[$('#calcDist').value]}</strong> listos.<br>Presiona <strong>Calcular</strong>.</p></div>`;
+  refreshIcons();
+  const cv=$('#calcCanvas'), c=cv.getContext('2d'); c.clearRect(0,0,cv.width,cv.height);
+});
+
+let calcState=null; // para redibujar en resize
+
+function readVals(key){
+  const out={};
+  for(const p of PDEFS[key]){
+    const raw=$('#cp_'+p.k).value.trim();
+    if(p.opt && raw==='') { out[p.k]=null; continue; }
+    const v=parseFloat(raw);
+    if(isNaN(v)) throw `Revisa el campo «${p.label.split('—')[0].trim()}».`;
+    if(v<p.min||v>p.max) throw `«${p.label.split('—')[0].trim()}» debe estar entre ${p.min} y ${p.max}.`;
+    out[p.k]=v;
+  }
+  return out;
+}
+
+function computeDist(key,v){
+  const R=[]; // resultados
+  if(key==='binomial'){
+    const {n,p,x}=v;
+    if(x>n) throw `x no puede exceder n = ${n}.`;
+    const px=binomPmf(n,x,p);
+    let F=0; for(let t=0;t<=x;t++) F+=binomPmf(n,t,p);
+    R.push(['P(X = x)',px],['P(X ≤ x)',F],['P(X ≥ x)',1-F+px]);
+    let lo=0,hi=n;
+    if(n>70){ const mu=n*p,sd=Math.sqrt(n*p*(1-p));
+      lo=Math.max(0,Math.floor(mu-4*sd)); hi=Math.min(n,Math.ceil(mu+4*sd)); }
+    return {results:R, draw:()=>drawPMF($('#calcCanvas'), t=>binomPmf(n,t,p), lo, hi, x),
+      tex:`P(X{=}x)=\\binom{${n}}{${x}}(${+p.toFixed(3)})^{${x}}(${+(1-p).toFixed(3)})^{${n-x}}`};
+  }
+  if(key==='poisson'){
+    const {l,x}=v;
+    const px=poisPmf(l,x);
+    let F=0; for(let t=0;t<=x;t++) F+=poisPmf(l,t);
+    R.push(['P(X = x)',px],['P(X ≤ x)',F],['P(X ≥ x)',1-F+px]);
+    const hi=Math.min(80,Math.ceil(l+4*Math.sqrt(l)+2));
+    return {results:R, draw:()=>drawPMF($('#calcCanvas'), t=>poisPmf(l,t), 0, hi, x),
+      tex:`P(X{=}x)=\\dfrac{e^{-${+l.toFixed(2)}}\\,${+l.toFixed(2)}^{${x}}}{${x}!}`};
+  }
+  if(key==='geometrica'){
+    const {p,x}=v;
+    const px=p*Math.pow(1-p,x-1);
+    const F=1-Math.pow(1-p,x);
+    R.push(['P(X = x)',px],['P(X ≤ x)',F],['P(X ≥ x)',1-F+px]);
+    const hi=Math.min(60,Math.ceil(5/p)+2);
+    return {results:R, draw:()=>drawPMF($('#calcCanvas'), t=>t>=1?p*Math.pow(1-p,t-1):0, 1, hi, x),
+      tex:`P(X{=}x)=${+p.toFixed(3)}\\,(${+(1-p).toFixed(3)})^{${x}-1}`};
+  }
+  if(key==='hipergeometrica'){
+    const {N,K,n,x}=v;
+    if(K>N) throw 'K no puede exceder N.';
+    if(n>N) throw 'n no puede exceder N.';
+    const den=choose(N,n);
+    const px = (x<=K && (n-x)<=(N-K)) ? choose(K,x)*choose(N-K,n-x)/den : 0;
+    let F=0; for(let t=Math.max(0,n-(N-K)); t<=x; t++) F += (t<=K)? choose(K,t)*choose(N-K,n-t)/den : 0;
+    R.push(['P(X = x)',px],['P(X ≤ x)',F],['P(X ≥ x)',1-F+px]);
+    const lo=Math.max(0,n-(N-K)), hi=Math.min(n,K);
+    return {results:R, draw:()=>drawPMF($('#calcCanvas'),
+        t=>(t>=lo&&t<=hi)? choose(K,t)*choose(N-K,n-t)/den : 0, lo, hi, x),
+      tex:`h(x)=\\dfrac{\\binom{${K}}{${x}}\\binom{${N-K}}{${n-x}}}{\\binom{${N}}{${n}}}`};
+  }
+  if(key==='unifdisc'){
+    const {k,x}=v;
+    if(x>k) throw `x no puede exceder k = ${k}.`;
+    const px=1/k, F=x/k;
+    R.push(['P(X = x)',px],['P(X ≤ x)',F],['P(X ≥ x)',1-F+px]);
+    return {results:R, draw:()=>drawPMF($('#calcCanvas'), ()=>1/k, 1, k, x),
+      tex:`f(x)=\\dfrac{1}{${k}},\\;\\; x=1,\\dots,${k}`};
+  }
+  if(key==='normal'){
+    const {mu,sg,x,x2}=v;
+    const F=Phi((x-mu)/(sg*Math.SQRT2));
+    R.push(['P(X ≤ x)',F],['P(X > x)',1-F]);
+    const shades=[[null,x]];
+    if(x2!=null){ R.push([`P(${+x.toFixed(3)} ≤ X ≤ ${+x2.toFixed(3)})`, Math.max(0,Phi((x2-mu)/(sg*Math.SQRT2))-F)]); shades.push([x,x2]); }
+    const lo=mu-4.2*sg, hi=mu+4.2*sg;
+    return {results:R, draw:()=>drawPDF($('#calcCanvas'),
+        z=>Math.exp(-Math.pow(z-mu,2)/(2*sg*sg))/(sg*Math.sqrt(2*Math.PI)), lo, hi,
+        shades.map(([a,b])=>[a==null?lo:a, b==null?hi:b])),
+      tex:`n(x;\\,\\mu{=}${+mu.toFixed(3)},\\,\\sigma{=}${+sg.toFixed(3)})`};
+  }
+  if(key==='exponencial'){
+    const {l,x}=v;
+    const F=1-Math.exp(-l*x);
+    R.push(['P(X ≤ x)',F],['P(X > x)',Math.exp(-l*x)]);
+    const hi=Math.min(Math.max(1.4*x, 5/l), 100/l);
+    return {results:R, draw:()=>drawPDF($('#calcCanvas'), t=>t>=0? l*Math.exp(-l*t):0, 0, hi, [[0,x]]),
+      tex:`F(x)=1-e^{-${+l.toFixed(3)}\\,x}`};
+  }
+  if(key==='unifcont'){
+    const {a,b,x}=v;
+    if(b<=a) throw 'β debe ser mayor que α.';
+    const F=Math.min(1,Math.max(0,(x-a)/(b-a)));
+    R.push([`P(X ≤ x) = F(x)`,F],[`P(X > x)`,1-F],[`f(x) en [α, β]`,1/(b-a)]);
+    return {results:R, draw:()=>drawPDF($('#calcCanvas'),
+        t=>(t>=a&&t<=b)? 1/(b-a) : 0, a-(b-a)*0.25, b+(b-a)*0.25, [[a,Math.min(x,b)]]),
+      tex:`f(x)=\\dfrac{1}{${+(b-a).toFixed(3)}},\\;\\; ${+a.toFixed(3)}\\le x\\le ${+b.toFixed(3)}`};
+  }
+}
+
+ $('#btnCalc').addEventListener('click',()=>{
+  const key=$('#calcDist').value;
+  let v,out;
+  try{ v=readVals(key); out=computeDist(key,v); }
+  catch(e){ toast(typeof e==='string'? e : 'Parámetros inválidos.', 'err'); return; }
+  calcState=out;
+  $('#calcResults').innerHTML =
+    `<div class="calc-formula" id="calcTex"></div>` +
+    out.results.map(([lab,val])=>`
+      <div class="res-row"><span class="res-label">${lab}</span><span class="res-val mono">${fmtP(val)}</span></div>`).join('');
+  try{ katex.render(out.tex, $('#calcTex'), {throwOnError:false}); }catch(e){ $('#calcTex').textContent=''; }
+  out.draw();
+  toast(`Distribución ${DIST_NAMES[key]} calculada.`);
+});
+function redrawCalc(){ if(calcState) calcState.draw(); }
+buildParams();
+
+/* ============================================================
+   QUIZ (guarda el mejor intento para la boleta)
+============================================================ */
+const QUIZ=[
+ {q:'¿Cuál de las siguientes es una variable aleatoria discreta?',
+  opts:['El tiempo que tarda un foco en fundirse','El número de automóviles que llegan a un estacionamiento por minuto','La temperatura de un horno industrial','El peso de un saco de cemento'],
+  ans:1, why:'Las variables discretas provienen de <em>contar</em> (0, 1, 2, …); las continuas, de <em>medir</em> sobre un intervalo. El número de automóviles es un conteo.'},
+ {q:'La función f(x) es una fmp legítima para una variable discreta si…',
+  opts:['f(x) > 0 para toda x','F(x) = 1 para toda x','f(x) ≥ 0 para toda x y Σₓ f(x) = 1','La integral de f(x) vale 1'],
+  ans:2, why:'Dos condiciones: no negatividad y suma total 1. La condición de integral corresponde a las densidades continuas, no a las fmp.'},
+ {q:'Si X tiene distribución binomial con n = 5 y p = 0.2, entonces P(X = 0) es…',
+  opts:['0.2','(0.8)⁵ ≈ 0.3277','0.5','5 · 0.2 = 1'],
+  ans:1, why:'\\(P(X=0)=\\binom{5}{0}(0.2)^0(0.8)^5=(0.8)^5\\approx 0.3277\\): todos los ensayos fracasan.'},
+ {q:'El número de erratas por página de un libro se modela típicamente con…',
+  opts:['Distribución binomial','Distribución normal','Distribución de Poisson','Distribución exponencial'],
+  ans:2, why:'La Poisson describe conteos de eventos por unidad de tiempo o espacio, cuando ocurren de forma independiente a un ritmo promedio constante λ.'},
+ {q:'Para una variable aleatoria continua, P(X = a)…',
+  opts:['Es igual a f(a)','Es igual a 0','Es mayor que 0','Depende de F(a)'],
+  ans:1, why:'La probabilidad puntual es cero: \\(P(X=a)=0\\). f(a) es una <em>densidad</em>, no una probabilidad, y puede incluso superar a 1.'},
+ {q:'Si f(x) = 1/2 para 0 ≤ x ≤ 2 y 0 en otro caso, entonces P(0.5 ≤ X ≤ 1.5) es…',
+  opts:['0.25','0.5','0.75','1'],
+  ans:1, why:'\\(P=\\int_{0.5}^{1.5}\\tfrac12\\,dx=\\tfrac12\\). En la uniforme, la probabilidad es proporcional a la longitud del intervalo.'}
+];
+function renderQuiz(){
+  $('#quizList').innerHTML = QUIZ.map((it,i)=>`
+    <article class="quiz-q">
+      <header><span class="qnum">P${i+1}</span><p class="q-text">${it.q}</p></header>
+      <div class="opts">${it.opts.map((o,j)=>`
+        <label class="opt"><input type="radio" name="q${i}" value="${j}">
+        <span class="opt-key">${'ABCD'[j]}</span><span>${o}</span></label>`).join('')}
+      </div>
+      <p class="explain" hidden><strong>Retroalimentación:</strong> ${it.why}</p>
+    </article>`).join('');
+  $('#quizResult').innerHTML='';
+  try{ renderMathInElement($('#quizList'),{delimiters:[{left:'\\(',right:'\\)',display:false}],throwOnError:false}); }catch(e){}
+}
+ $('#btnGrade').addEventListener('click',()=>{
+  const unanswered = QUIZ.some((_,i)=>!document.querySelector(`input[name="q${i}"]:checked`));
+  if(unanswered){ toast('Responde todas las preguntas antes de calificar.','err'); return; }
+  let score=0;
+  $$('#quizList .quiz-q').forEach((art,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    if(+sel.value===QUIZ[i].ans) score++;
+    art.querySelectorAll('.opt').forEach(l=>{
+      const inp=l.querySelector('input'); inp.disabled=true; l.classList.add('locked');
+      if(+inp.value===QUIZ[i].ans) l.classList.add('is-correct');
+      else if(+inp.value===+sel.value) l.classList.add('is-wrong');
+    });
+    art.querySelector('.explain').hidden=false;
+  });
+  // registrar mejor intento
+  const a=act(), prev=(a[CURSO].quiz && a[CURSO].quiz.score!=null)? a[CURSO].quiz.score : -1;
+  if(score>prev){ a[CURSO].quiz={score, total:QUIZ.length, ts:Date.now()}; saveAct(a); renderBoleta(); }
+  const msg = score===6?'Dominio excelente del capítulo.':score>=4?'Muy bien: revisa los puntos marcados en naranja.':
+              score>=2?'Repasa las secciones 3.2 a 3.5 y vuelve a intentarlo.':'Comienza por la teoría y reintenta con calma.';
+  $('#quizResult').innerHTML=`<strong>${score} / ${QUIZ.length}</strong> ${msg}`;
+  toast(`Quiz calificado: ${score} de ${QUIZ.length} aciertos. Tu mejor intento se refleja en «Mi boleta».`);
+});
+ $('#btnQuizReset').addEventListener('click',()=>{ renderQuiz(); toast('Quiz reiniciado.'); });
+renderQuiz();
+
+/* ============================================================
+   TAREA: avance de los 8 problemas
+============================================================ */
+const PROBLEMAS=['3.1','3.5','3.13','3.21','3.37','3.49','3.61','3.73'];
+const dl=new Date(Date.now()+7*864e5);
+ $('#taskDeadline').textContent = dl.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
+
+function renderTaskList(){
+  const T=act()[CURSO].tarea;
+  $('#taskList').innerHTML = PROBLEMAS.map(p=>`
+    <label class="chk ${T[p]?'done':''}">
+      <input type="checkbox" data-p="${p}" ${T[p]?'checked':''}>
+      <span>Problema <strong>${p}</strong> del Capítulo 3</span>
+    </label>`).join('');
+  updateTaskBar();
+}
+function updateTaskBar(){
+  const T=act()[CURSO].tarea;
+  const done=PROBLEMAS.filter(p=>T[p]).length, pct=Math.round(done/PROBLEMAS.length*100);
+  $('#taskBar').style.width=pct+'%';
+  $('#taskPct').textContent=`${done} / ${PROBLEMAS.length} · ${pct}%`;
+}
+let progToastTimer=null;
+ $('#taskList').addEventListener('change', e=>{
+  const cb=e.target.closest('input[data-p]'); if(!cb) return;
+  const p=cb.dataset.p;
+  const a=act(); a[CURSO].tarea[p]=cb.checked; saveAct(a);
+  cb.closest('.chk').classList.toggle('done', cb.checked);
+  updateTaskBar(); renderBoleta();
+  clearTimeout(progToastTimer);
+  progToastTimer=setTimeout(()=>{
+    const T=act()[CURSO].tarea, done=PROBLEMAS.filter(q=>T[q]).length;
+    if(done===PROBLEMAS.length) toast('¡Tarea completa! No olvides entregar tu PDF.');
+    else toast(`Avance guardado: ${done} de ${PROBLEMAS.length} problemas.`);
+  },500);
+});
+
+/* ============================================================
+   EJERCICIOS GUIADOS: casillas "ya lo resolví"
+============================================================ */
+function syncEjChecks(){
+  const EJ=act()[CURSO].ej;
+  $$('#ejBlock .chk-ej input').forEach(cb=>{
+    cb.checked=!!EJ[cb.dataset.ej];
+    cb.closest('.chk').classList.toggle('done', cb.checked);
+  });
+}
+ $('#ejBlock').addEventListener('change', e=>{
+  const cb=e.target.closest('input[data-ej]'); if(!cb) return;
+  const a=act(); a[CURSO].ej[cb.dataset.ej]=cb.checked; saveAct(a);
+  cb.closest('.chk').classList.toggle('done', cb.checked);
+  renderBoleta();
+  const n=Object.values(a[CURSO].ej).filter(Boolean).length;
+  toast(`Ejercicio marcado como resuelto (${n} de 4).`);
+});
+
+/* ============================================================
+   REGISTRO INDIVIDUAL + BOLETA DE RESULTADOS
+============================================================ */
+const AV_COLORS=[['#e4ecdf','#1e4636'],['#f3e0d6','#8a3d1e'],['#f2e8c9','#7a6210'],
+                 ['#e2e8dd','#3c5a3c'],['#ead9e0','#7a3550'],['#dde7ea','#22505c']];
+function initials(name){
+  const p=name.trim().split(/\s+/);
+  return ((p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||'')).toUpperCase();
+}
+function avColor(name){ return AV_COLORS[[...name].reduce((a,c)=>a+c.charCodeAt(0),0)%AV_COLORS.length]; }
+
+// Criterio del rubro simulador: niveles de lanzamientos acumulados
+function simPct(n){ return n>=1000?100 : n>=500?80 : n>=100?60 : n>=25?40 : n>=1?20 : 0; }
+
+function progresoCap3(){
+  const c=act()[CURSO];
+  const rolls=c.sim.rolls||0;
+  const ejOk=['e1','e2','e3','e4'].filter(k=>c.ej[k]).length;
+  const tOk=PROBLEMAS.filter(p=>c.tarea[p]).length;
+  return {
+    rolls,
+    sim:   simPct(rolls),
+    ej:    ejOk/4*100, ejOk,
+    quiz:  (c.quiz && c.quiz.score!=null)? c.quiz.score/c.quiz.total*100 : 0,
+    quizScore: (c.quiz && c.quiz.score!=null)? c.quiz.score : null,
+    tarea: tOk/PROBLEMAS.length*100, tOk
+  };
+}
+function notaFinal(){
+  const p=progresoCap3();
+  return (p.sim*0.15 + p.ej*0.25 + p.quiz*0.30 + p.tarea*0.30)/10; // 0..10
+}
+function updateHomeStat(){
+  const est=loadEst();
+  $('#statNota').textContent = est? notaFinal().toFixed(1) : '—';
+}
+function renderBoleta(){
+  const est=loadEst();
+  $('#regEmpty').hidden = !!est;
+  $('#boletaWrap').hidden = !est;
+  updateHomeStat();
+  if(!est) return;
+
+  // encabezado
+  const [bg,fg]=avColor(est.nombre);
+  const av=$('#bAvatar'); av.textContent=initials(est.nombre); av.style.background=bg; av.style.color=fg;
+  $('#bName').textContent=est.nombre;
+  $('#bMeta').textContent=`Matrícula ${est.matricula} · ${est.correo}`;
+  $('#bSince').textContent=new Date(est.ts).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+
+  // desglose por rubro
+  const p=progresoCap3();
+  const defs=[
+    {nombre:'Simulador — suma de dos dados', pct:p.sim, w:1.5, det:`${p.rolls.toLocaleString('es-MX')} lanzamientos acumulados`},
+    {nombre:'Ejercicios guiados resueltos', pct:p.ej, w:2.5, det:`${p.ejOk} de 4 marcados como resueltos`},
+    {nombre:'Quiz de autoevaluación', pct:p.quiz, w:3.0, det: p.quizScore==null?'Sin intento registrado':`Mejor intento: ${p.quizScore} de 6 aciertos`},
+    {nombre:'Tarea — problemas del Walpole', pct:p.tarea, w:3.0, det:`${p.tOk} de ${PROBLEMAS.length} problemas marcados`}
+  ];
+  $('#bRows').innerHTML=defs.map(d=>`
+    <div class="b-row">
+      <div><div class="b-rubname">${d.nombre}</div><div class="b-rubdet">${d.det}</div></div>
+      <div class="b-bar"><div style="width:${d.pct.toFixed(0)}%"></div></div>
+      <div class="b-pts mono">${(d.pct/100*d.w).toFixed(2)} <small>/ ${d.w.toFixed(1)}</small></div>
+    </div>`).join('');
+  $('#bNota').textContent=notaFinal().toFixed(1);
+  $('#bEmit').textContent=new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+}
+
+/* --- formulario: alta y edición --- */
+let editMode=false;
+function setFormMode(edit){
+  editMode=edit;
+  $('#btnEstSave').innerHTML = edit? '<i data-lucide="save"></i><span>Guardar cambios</span>'
+                                   : '<i data-lucide="user-plus"></i><span>Registrarme</span>';
+  $('#btnEstCancel').hidden=!edit;
+  refreshIcons();
+}
+ $('#formEst').addEventListener('submit', e=>{
+  e.preventDefault();
+  const nombre=$('#alNombre').value.trim(), mat=$('#alMat').value.trim(), correo=$('#alMail').value.trim();
+  if(nombre.length<3){ toast('Escribe el nombre completo del alumno.','err'); return; }
+  if(mat.length<4){ toast('La matrícula debe tener al menos 4 caracteres.','err'); return; }
+  if(!/^\S+@\S+\.\S+$/.test(correo)){ toast('Escribe un correo electrónico válido.','err'); return; }
+  const prev=loadEst();
+  saveEst({nombre, matricula:mat, correo, ts: prev? prev.ts : Date.now()});
+  e.target.reset(); setFormMode(false);
+  renderBoleta(); syncEjChecks(); renderTaskList();
+  toast(prev? 'Datos actualizados correctamente.' : `¡Listo, ${nombre.split(' ')[0]}! Tu avance quedará registrado a tu nombre.`);
+});
+ $('#btnEstEdit').addEventListener('click', ()=>{
+  const est=loadEst(); if(!est) return;
+  $('#alNombre').value=est.nombre; $('#alMat').value=est.matricula; $('#alMail').value=est.correo;
+  $('#regEmpty').hidden=false; $('#boletaWrap').hidden=true;
+  setFormMode(true); $('#alNombre').focus();
+});
+ $('#btnEstCancel').addEventListener('click', ()=>{ $('#formEst').reset(); setFormMode(false); renderBoleta(); });
+
+/* --- borrar registro y avance (confirmación en dos pasos) --- */
+ $('#btnEstDel').addEventListener('click', ()=>{
+  const b=$('#btnEstDel');
+  if(!b.classList.contains('confirm')){
+    b.classList.add('confirm'); b.innerHTML='<i data-lucide="alert-triangle"></i><span>¿Borrar todo?</span>'; refreshIcons();
+    setTimeout(()=>{ if(b.isConnected){ b.classList.remove('confirm');
+      b.innerHTML='<i data-lucide="trash-2"></i><span>Borrar registro y avance</span>'; refreshIcons(); } },3000);
+    return;
+  }
+  localStorage.removeItem(LS_EST); localStorage.removeItem(LS_ACT);
+  $('#formEst').reset(); setFormMode(false);
+  renderBoleta(); syncEjChecks(); renderTaskList(); updateSimStats();
+  toast('Registro y avance borrados de este navegador.');
+});
+
+/* --- descarga de la boleta como imagen PNG --- */
+ $('#btnBoletaPng').addEventListener('click', ()=>{
+  if(typeof html2canvas!=='function'){ toast('No se pudo cargar el generador de imágenes; toma una captura de pantalla.','err'); return; }
+  toast('Generando imagen de tu boleta…');
+  html2canvas($('#boletaCard'),{scale:2, backgroundColor:null, useCORS:true}).then(cv=>{
+    const est=loadEst();
+    const a=document.createElement('a');
+    a.download=`boleta-cap3-${est? est.matricula : 'alumno'}.png`;
+    a.href=cv.toDataURL('image/png'); a.click();
+    toast('Boleta descargada como PNG.');
+  }).catch(()=>toast('No se pudo generar la imagen; toma una captura de pantalla.','err'));
+});
+
+/* ============================================================
+   RENDER MATEMÁTICO + ARRANQUE
+============================================================ */
+function initMath(){
+  if(typeof renderMathInElement==='function'){
+    renderMathInElement(document.body,{delimiters:[
+      {left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});
+  }
+}
+window.addEventListener('resize', ()=>{ drawSim(); redrawCalc(); animateHero(); });
+
+refreshIcons();
+initMath();
+renderTaskList();
+syncEjChecks();
+renderBoleta();
+animateHero();
+</script>
+</body>
+</html>
