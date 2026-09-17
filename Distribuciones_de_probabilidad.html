@@ -493,31 +493,31 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
   <h3>Distribución de probabilidad discreta</h3>
   <div class="def">
     <span class="def-tag">Definición</span>
-    <p>El conjunto de pares ordenados \\((x, f(x))\\) es una <strong>función de probabilidad</strong>, <strong>función de masa de probabilidad</strong> (fmp) o <strong>distribución de probabilidad</strong> de la variable aleatoria discreta \\(X\\) si, para cada resultado posible \\(x\\):</p>
+    <p>El conjunto de pares ordenados \((s, f(s))\) es una <strong>función de masa de probabilidad</strong> (fmp) o <strong>distribución de probabilidad</strong> de la variable aleatoria discreta \(X\) si, para cada resultado posible \(s\):</p>
     <ol>
-      <li>\\(f(x) \ge 0\\)</li>
-      <li>\\(\sum_{x} f(x) = 1\\)</li>
-      <li>\\(P(X = x) = f(x)\\)</li>
+      <li>\(f(s) \ge 0\)</li>
+      <li>\(\sum_{s} f(s) = 1\)</li>
+      <li>\(P(X = s) = f(s)\)</li>
     </ol>
   </div>
-  <p>La fmp describe cómo se distribuye la probabilidad total (que suma 1) entre los valores posibles de la variable aleatoria discreta \\(X\\). Su representación gráfica suele realizarse mediante un histograma de probabilidad, donde cada rectángulo se centra en \\(x\\) y su altura representa \\(f(x)\\).</p>
+  <p>La fmp describe cómo se distribuye la probabilidad total (que suma 1) entre los valores posibles de la variable aleatoria discreta \(X\). Su representación gráfica suele realizarse mediante un histograma de probabilidad, donde cada rectángulo se centra en \(s\) y su altura representa \(f(s)\).</p>
   
   <div class="ex">
     <span class="ex-tag">Ejemplo — Walpole 3.8 (Sección 3.2)</span>
-    <p><strong>Planteamiento y Contexto del Experimento:</strong> Un embarque de 20 computadoras portátiles similares contiene 3 que están defectuosas y 17 en buen estado. Una escuela compra al azar 2 de estas computadoras sin reemplazo. Sea \\(X\\) la variable aleatoria que representa el número de computadoras defectuosas que recibe la escuela.</p>
+    <p>Un embarque de 20 computadoras portátiles similares contiene 3 que están defectuosas y 17 en buen estado. Una escuela compra al azar 2 de estas computadoras sin reemplazo. Sea \(X\) la variable aleatoria que representa el número de computadoras defectuosas que recibe la escuela.</p>
     
-    <p><strong>Valores posibles de \\(X\\):</strong> Como la escuela compra 2 computadoras, puede recibir 0, 1 o 2 computadoras defectuosas. Por lo tanto, los valores posibles son \\(x \in \{0, 1, 2\}\\).</p>
+    <p><strong>Valores posibles de \(X\):</strong> Como la escuela compra 2 computadoras, puede recibir 0, 1 o 2 computadoras defectuosas. Por lo tanto, los valores posibles son \(x \in \{0, 1, 2\}\).</p>
     
-    <p><strong>Desarrollo paso a paso de la tabla:</strong></p>
-    <p>El número total de formas igualmente probables de seleccionar 2 computadoras cualesquiera de las 20 disponibles está dado por la combinación \\(\binom{20}{2} = \frac{20 \times 19}{2} = 190\\).</p>
+    <p><strong>Desarrollo paso a paso de la tabla de distribución de probabilidad:</strong></p>
+    <p>El número total de formas igualmente probables de seleccionar 2 computadoras cualesquiera de las 20 disponibles está dado por la combinación \(\binom{20}{2} = \frac{20 \times 19}{2} = 190\).</p>
     <ul>
-      <li><strong>Para \\(x = 0\\) (0 defectuosas de las 3, y 2 buenas de las 17):</strong>
+      <li><strong>Para \(x = 0\) (0 defectuosas de las 3, y 2 buenas de las 17):</strong>
         $$f(0) = P(X = 0) = \frac{\binom{3}{0}\binom{17}{2}}{\binom{20}{2}} = \frac{1 \times 136}{190} = \frac{136}{190} = \frac{68}{95}$$
       </li>
-      <li><strong>Para \\(x = 1\\) (1 defectuosa de las 3, y 1 buena de las 17):</strong>
+      <li><strong>Para \(x = 1\) (1 defectuosa de las 3, y 1 buena de las 17):</strong>
         $$f(1) = P(X = 1) = \frac{\binom{3}{1}\binom{17}{1}}{\binom{20}{2}} = \frac{3 \times 17}{190} = \frac{51}{190}$$
       </li>
-      <li><strong>Para \\(x = 2\\) (2 defectuosas de las 3, y 0 buenas de las 17):</strong>
+      <li><strong>Para \(x = 2\) (2 defectuosas de las 3, y 0 buenas de las 17):</strong>
         $$f(2) = P(X = 2) = \frac{\binom{3}{2}\binom{17}{0}}{\binom{20}{2}} = \frac{3 \times 1}{190} = \frac{3}{190}$$
       </li>
     </ul>
@@ -526,7 +526,7 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
     <table class="tbl">
       <thead>
         <tr>
-          <th class="center">\\(x\\)</th>
+          <th class="center">\(x\)</th>
           <th class="center">0</th>
           <th class="center">1</th>
           <th class="center">2</th>
@@ -534,22 +534,22 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
       </thead>
       <tbody>
         <tr>
-          <td class="center">\\(f(x)\\)</td>
-          <td class="center">\\(\frac{68}{95}\\) (\\(\approx 0.7158\\))</td>
-          <td class="center">\\(\frac{51}{190}\\) (\\(\approx 0.2684\\))</td>
-          <td class="center">\\(\frac{3}{190}\\) (\\(\approx 0.0158\\))</td>
+          <td class="center">\(f(x)\)</td>
+          <td class="center">\(\frac{68}{95}\) \(\approx 0.7158\)</td>
+          <td class="center">\(\frac{51}{190}\) \(\approx 0.2684\)</td>
+          <td class="center">\(\frac{3}{190}\) \(\approx 0.0158\)</td>
         </tr>
       </tbody>
     </table>
 
     <p><strong>Verificación de propiedades:</strong></p>
     <ol>
-      <li>Cada probabilidad es mayor o igual a cero: \\(f(x) \ge 0\\).</li>
+      <li>Cada probabilidad es mayor o igual a cero: \(f(x) \ge 0\).</li>
       <li>La suma total de probabilidades es exactamente 1:
         $$\sum_{x=0}^{2} f(x) = \frac{136}{190} + \frac{51}{190} + \frac{3}{190} = \frac{190}{190} = 1$$
       </li>
     </ol>
-    <p>Con esta tabla ya se pueden calcular probabilidades de eventos compuestos; por ejemplo, la probabilidad de comprar al menos una computadora defectuosa: \\(P(X \ge 1) = f(1) + f(2) = \frac{51}{190} + \frac{3}{190} = \frac{54}{190} = \frac{27}{95}\\).</p>
+    <p>Con esta tabla ya se pueden calcular probabilidades de eventos compuestos; por ejemplo, la probabilidad de comprar al menos una computadora defectuosa: \(P(X \ge 1) = f(1) + f(2) = \frac{51}{190} + \frac{3}{190} = \frac{54}{190} = \frac{27}{95}\).</p>
   </div>
 </article>
         <!-- 3.3 -->
