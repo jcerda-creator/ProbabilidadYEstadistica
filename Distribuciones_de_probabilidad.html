@@ -487,26 +487,71 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
           </div>
         </article>
 
-        <!-- 3.2 -->
-        <article class="sec" id="t32">
-          <div class="sec-no">3.2</div>
-          <h3>Distribución de probabilidad discreta </h3>
-          <div class="def">
-            <span class="def-tag">Definición</span>
-            <p>La <strong>función de masa de probabilidad</strong> (fmp) de la variable discreta \(X\) es $$f(x) = P(X = x)$$ y debe cumplir:</p>
-            <p style="display:flex;justify-content:center;padding:6px 0">\( \displaystyle f(x) \ge 0 \qquad \text{y} \qquad \sum_{x} f(x) = 1. \)</p>
-          </div>
-          <p>La fmp describe cómo se reparte la probabilidad total (que vale 1) entre los valores posibles de \(X\). Su gráfica suele presentarse como un histograma de probabilidad, donde cada rectángulo tiene área igual a la probabilidad del valor.</p>
-          <div class="ex">
-            <span class="ex-tag">Ejemplo — Walpole 3.4</span>
-            <p>Se envían dos refacciones electrónicas y \(X\) = número que sigue funcionando después de 2 años. La distribución es:</p>
-            <table class="tbl">
-              <thead><tr><th class="center">\(x\)</th><th class="center">0</th><th class="center">1</th><th class="center">2</th></tr></thead>
-              <tbody><tr><td class="center">\(f(x)\)</td><td class="center">1/10</td><td class="center">3/10</td><td class="center">6/10</td></tr></tbody>
-            </table>
-            <p>Verificación: \(f(x)\ge 0\) y \( \tfrac{1}{10}+\tfrac{3}{10}+\tfrac{6}{10}=1 \). Con esta tabla de distribución ya podemos responder preguntas como \(P(X &gt; 0) = \tfrac{3}{10}+\tfrac{6}{10} = \tfrac{9}{10}\).</p>
-          </div>
-        </article>
+      <!-- 3.2 -->
+<article class="sec" id="t32">
+  <div class="sec-no">3.2</div>
+  <h3>Distribución de probabilidad discreta</h3>
+  <div class="def">
+    <span class="def-tag">Definición</span>
+    <p>La <strong>función de masa de probabilidad</strong> (fmp) de la variable discreta \(X\) es \(f(x) = P(X = x)\) y debe cumplir:</p>
+    <p style="display:flex;justify-content:center;padding:6px 0">\( \displaystyle f(x) \ge 0 \qquad \text{y} \qquad \sum_{x} f(x) = 1. \)</p>
+  </div>
+  <p>La fmp describe cómo se reparte la probabilidad total (que vale 1) entre los valores posibles de \(X\). Su gráfica suele presentarse como un histograma de probabilidad, donde cada rectángulo tiene área igual a la probabilidad del valor.</p>
+
+  <div class="ex">
+    <span class="ex-tag">Ejemplo — Walpole 3.4</span>
+
+    <p><strong> Situación problemática:</strong> Se envían <strong>dos refacciones (componentes) electrónicos</strong> a un cliente. Después de <strong>2 años de uso</strong>, queremos saber cuántos de ellos siguen funcionando.</p>
+
+    <p><strong> Variable aleatoria:</strong> Sea \(X\) = número de componentes que siguen funcionando después de 2 años. Como hay 2 componentes, \(X\) puede tomar los valores: <strong>0, 1 o 2</strong>.</p>
+
+    <p><strong> ¿Cómo se obtienen las probabilidades?</strong> Supongamos, con base en datos históricos del fabricante, que cada componente tiene una probabilidad individual de sobrevivir 2 años de \(p = 0.6\) (60%) y de fallar \(q = 1-p = 0.4\) (40%). Asumiendo que los fallos son <em>independientes</em> entre componentes, aplicamos la <strong>distribución binomial</strong> con \(n = 2\):</p>
+
+    <ul>
+      <li><strong>Para \(X = 0\)</strong> (ninguno funciona): ambos fallan \(\Rightarrow P(X=0) = (0.4)(0.4) = 0.16 \approx \tfrac{1}{10}\).</li>
+      <li><strong>Para \(X = 1\)</strong> (uno funciona): primero funciona y segundo falla, o viceversa \(\Rightarrow P(X=1) = 2(0.6)(0.4) = 0.48 \approx \tfrac{3}{10}\).</li>
+      <li><strong>Para \(X = 2\)</strong> (ambos funcionan): ambos sobreviven \(\Rightarrow P(X=2) = (0.6)(0.6) = 0.36 \approx \tfrac{6}{10}\).</li>
+    </ul>
+
+    <p><strong>Tabla de distribución de probabilidad:</strong></p>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th class="center">\(x\)</th>
+          <th class="center">0</th>
+          <th class="center">1</th>
+          <th class="center">2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center">\(f(x)\)</td>
+          <td class="center">1/10</td>
+          <td class="center">3/10</td>
+          <td class="center">6/10</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong> Verificación de las propiedades:</strong></p>
+    <ul>
+      <li>Todas las probabilidades son \(\ge 0\): ✓ \(\left(\tfrac{1}{10},\, \tfrac{3}{10},\, \tfrac{6}{10} > 0\right)\).</li>
+      <li>La suma es igual a 1: ✓ \(\;\tfrac{1}{10}+\tfrac{3}{10}+\tfrac{6}{10} = \tfrac{10}{10} = 1\).</li>
+    </ul>
+
+    <p><strong> Aplicaciones prácticas:</strong> con esta tabla podemos responder preguntas como:</p>
+    <ul>
+      <li><strong>a)</strong> ¿Probabilidad de que al menos uno funcione?
+        \[ P(X > 0) = P(X=1)+P(X=2) = \tfrac{3}{10}+\tfrac{6}{10} = \tfrac{9}{10} = 0.9 \]</li>
+      <li><strong>b)</strong> ¿Probabilidad de que al menos uno falle?
+        \[ P(X < 2) = P(X=0)+P(X=1) = \tfrac{1}{10}+\tfrac{3}{10} = \tfrac{4}{10} = 0.4 \]</li>
+      <li><strong>c)</strong> ¿Probabilidad de que exactamente uno funcione?
+        \[ P(X = 1) = \tfrac{3}{10} = 0.3 \]</li>
+    </ul>
+
+    <p><strong> Interpretación:</strong> este ejemplo ilustra cómo una variable aleatoria discreta \(X\) toma valores específicos (0, 1, 2), cada uno con una probabilidad asociada que indica qué tan probable es ese resultado; las probabilidades deben sumar 1 (certeza total); y podemos calcular probabilidades de eventos combinados simplemente sumando las probabilidades individuales correspondientes.</p>
+  </div>
+</article>
 
         <!-- 3.3 -->
         <article class="sec" id="t33">
