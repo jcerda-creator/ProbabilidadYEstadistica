@@ -552,23 +552,69 @@ footer{border-top:2px solid var(--ink);padding:30px 0 40px;margin-top:20px}
     <p>Con esta tabla ya se pueden calcular probabilidades de eventos compuestos; por ejemplo, la probabilidad de comprar al menos una computadora defectuosa: \(P(X \ge 1) = f(1) + f(2) = \frac{51}{190} + \frac{3}{190} = \frac{54}{190} = \frac{27}{95}\).</p>
   </div>
 </article>
-        <!-- 3.3 -->
-        <article class="sec" id="t33">
-          <div class="sec-no">3.3</div>
-          <h3>Distribución acumulativa discreta (fda)</h3>
-          <div class="def">
-            <span class="def-tag">Definición</span>
-            <p>La <strong>distribución acumulativa</strong> de \(X\) es \( F(x) = P(X \le x) = \displaystyle\sum_{t \le x} f(t) \).</p>
-          </div>
-          <p>La fda acumula probabilidad de izquierda a derecha. Es una función <strong>escalonada</strong>, no decreciente, con \(F(-\infty)=0\) y \(F(+\infty)=1\). Cada salto en un punto \(x\) mide exactamente \(f(x)\).</p>
-          <div class="ex">
-            <span class="ex-tag">Ejemplo — Walpole 3.6</span>
-            <p>Para las refacciones del ejemplo anterior:</p>
-            \( \displaystyle F(x) = \begin{cases} 0, & x &lt; 0 \\[2pt] \tfrac{1}{10}, & 0 \le x &lt; 1 \\[2pt] \tfrac{2}{5}, & 1 \le x &lt; 2 \\[2pt] 1, & x \ge 2 \end{cases} \)
-            <p style="margin-top:10px">Obsérvese que \(F(1) = f(0)+f(1) = \tfrac{4}{10}\). La fda responde de inmediato preguntas del tipo «¿cuál es la probabilidad de que falle <em>a más tardar</em>…?».</p>
-          </div>
-        </article>
+     <!-- 3.3 -->
+<article class="sec" id="t33">
+  <div class="sec-no">3.3</div>
+  <h3>Distribución acumulativa discreta (fda)</h3>
+  
+  <div class="def">
+    <span class="def-tag">Definición (Definición 3.5 — Walpole)</span>
+    <p>La <strong>función de distribución acumulativa</strong> $F(x)$ de una variable aleatoria discreta $X$ con función de probabilidad $f(x)$ es:</p>
+    <div class="formula">
+      $$F(x) = P(X \le x) = \sum_{t \le x} f(t), \quad \text{para } -\infty < x < \infty$$
+    </div>
+  </div>
 
+  <p>La función de distribución acumulativa (fda) acumula probabilidad de izquierda a derecha. Es una función <strong>escalonada</strong>, no decreciente, definida para todo número real $x \in \mathbb{R}$, que cumple con $F(-\infty) = 0$ y $F(+\infty) = 1$. En cada valor posible $x_i$, la altura del salto mide exactamente la probabilidad puntual $f(x_i)$.</p>
+
+  <div class="ex">
+    <span class="ex-tag">Ejemplo — Basado en el Ejemplo 3.8 (Walpole)</span>
+    <p><strong>Contexto y antecedentes:</strong> Tomando como referencia la distribución de probabilidad del Ejemplo 3.8, donde $X$ representa el número de computadoras defectuosas al comprar $2$ de un lote de $20$ (con $3$ defectuosas), las probabilidades puntuales son [1]:</p>
+    
+    <ul>
+      <li>$f(0) = P(X = 0) = \frac{136}{190} = \frac{68}{95} \approx 0.7158$ [1]</li>
+      <li>$f(1) = P(X = 1) = \frac{51}{190} \approx 0.2684$ [1]</li>
+      <li>$f(2) = P(X = 2) = \frac{3}{190} \approx 0.0158$ [1]</li>
+    </ul>
+
+    <p><strong>Cálculo paso a paso de la fda $F(x)$:</strong></p>
+    <ul>
+      <li><strong>Para $x < 0$:</strong> No hay valores posibles de $X$ menores a $0$, por lo tanto $F(x) = 0$.</li>
+      <li><strong>Para $0 \le x < 1$:</strong> Solo se acumula el evento $X = 0$:
+        $$F(0) = P(X \le 0) = f(0) = \frac{68}{95} \approx 0.7158$$
+      </li>
+      <li><strong>Para $1 \le x < 2$:</strong> Se acumulan los eventos $X = 0$ y $X = 1$:
+        $$F(1) = P(X \le 1) = f(0) + f(1) = \frac{136}{190} + \frac{51}{190} = \frac{187}{190} \approx 0.9842$$
+      </li>
+      <li><strong>Para $x \ge 2$:</strong> Se acumulan todos los resultados posibles ($X = 0, 1, 2$):
+        $$F(2) = P(X \le 2) = f(0) + f(1) + f(2) = \frac{136}{190} + \frac{51}{190} + \frac{3}{190} = \frac{190}{190} = 1$$
+      </li>
+    </ul>
+
+    <p><strong>Función por tramos de la distribución acumulativa:</strong></p>
+    <div class="formula">
+      $$F(x) = \begin{cases} 
+      0, & \text{si } x < 0 \\
+      \frac{68}{95}, & \text{si } 0 \le x < 1 \\
+      \frac{187}{190}, & \text{si } 1 \le x < 2 \\
+      1, & \text{si } x \ge 2 
+      \end{cases}$$
+    </div>
+
+    <p><strong>Aplicaciones prácticas de la fda:</strong></p>
+    <ul>
+      <li><strong>¿Cuál es la probabilidad de recibir a lo más 1 computadora defectuosa?</strong>
+        $$P(X \le 1) = F(1) = \frac{187}{190} \approx 0.9842$$
+      </li>
+      <li><strong>¿Cuál es la probabilidad de recibir al menos 1 computadora defectuosa?</strong>
+        $$P(X \ge 1) = 1 - P(X < 1) = 1 - F(0) = 1 - \frac{68}{95} = \frac{27}{95} \approx 0.2842$$
+      </li>
+      <li><strong>Obtención de la probabilidad puntual a partir de los escalones de $F(x)$:</strong>
+        $$f(1) = F(1) - F(0) = \frac{187}{190} - \frac{136}{190} = \frac{51}{190}$$
+      </li>
+    </ul>
+  </div>
+</article>
         <!-- 3.4 -->
         <article class="sec" id="t34">
           <div class="sec-no">3.4</div>
