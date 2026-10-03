@@ -1847,25 +1847,37 @@
                   </li>
                 </ul>
 
-                <p><strong>Tabla de la Distribución de Probabilidad:</strong></p>
-                <table class="tbl">
-                  <thead>
-                    <tr>
-                      <th class="center">\(x\)</th>
-                      <th class="center">0</th>
-                      <th class="center">1</th>
-                      <th class="center">2</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="center">\(f(x)\)</td>
-                      <td class="center">\(\frac{68}{95}\) \(\approx 0.7158\)</td>
-                      <td class="center">\(\frac{51}{190}\) \(\approx 0.2684\)</td>
-                      <td class="center">\(\frac{3}{190}\) \(\approx 0.0158\)</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <p><strong>Tabla y gráfica de la distribución de probabilidad:</strong></p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;align-items:center;margin:16px 0 22px">
+                  <div style="background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);padding:14px;overflow-x:auto">
+                    <p style="margin:0 0 10px;font-weight:600;font-size:13px;color:var(--ink)">Tabla de probabilidad \(f(x)\):</p>
+                    <table class="tbl" style="margin:0">
+                      <thead>
+                        <tr>
+                          <th class="center">\(x\)</th>
+                          <th class="center">0</th>
+                          <th class="center">1</th>
+                          <th class="center">2</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="center">\(f(x)\)</td>
+                          <td class="center">\(\frac{68}{95}\) \(\approx 0.7158\)</td>
+                          <td class="center">\(\frac{51}{190}\) \(\approx 0.2684\)</td>
+                          <td class="center">\(\frac{3}{190}\) \(\approx 0.0158\)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div style="background:var(--card);border:1.5px solid var(--ink);border-radius:var(--radius);overflow:hidden;box-shadow:4px 4px 0 rgba(30,41,59,.1)">
+                    <canvas id="fmpBarCanvas" style="width:100%;height:220px;display:block;"></canvas>
+                    <div style="padding:9px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--paper);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                      <span>Histograma de probabilidad de \(f(x)\). Suma total de barras = 1.</span>
+                      <a class="btn ghost sm" href="https://www.geogebra.org/calculator?command=BarChart({0,1,2},{68/95,51/190,3/190},0.4)" target="_blank" rel="noopener"><i data-lucide="external-link"></i>Abrir en GeoGebra</a>
+                    </div>
+                  </div>
+                </div>
 
                 <p><strong>Verificación de propiedades:</strong></p>
                 <ol>
@@ -1926,11 +1938,24 @@
                     </li>
                   </ul>
 
-                  <p><strong>Función por tramos de la distribución acumulativa:</strong></p>
-                  <div class="formula">
-                    $$F(x) = \begin{cases}
-                    0, & \text{si } x < 0 \\ \frac{68}{95}, & \text{si } 0 \le x < 1 \\ \frac{187}{190}, & \text{si } 1
-                      \le x < 2 \\ 1, & \text{si } x \ge 2 \end{cases}$$ </div>
+                  <p><strong>Función por tramos y gráfica escalonada:</strong></p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;align-items:center;margin:16px 0 22px">
+                    <div class="formula" style="margin:0;padding:16px;background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);overflow-x:auto">
+                      $$F(x) = \begin{cases}
+                      0, & \text{si } x < 0 \\
+                      \frac{68}{95}, & \text{si } 0 \le x < 1 \\
+                      \frac{187}{190}, & \text{si } 1 \le x < 2 \\
+                      1, & \text{si } x \ge 2
+                      \end{cases}$$
+                    </div>
+                    <div style="background:var(--card);border:1.5px solid var(--ink);border-radius:var(--radius);overflow:hidden;box-shadow:4px 4px 0 rgba(30,41,59,.1)">
+                      <canvas id="fdaStepCanvas" style="width:100%;height:220px;display:block;"></canvas>
+                      <div style="padding:9px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--paper);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                        <span>Gráfica escalonada de \(F(x)\) con discontinuidades de salto en \(x = 0, 1, 2\).</span>
+                        <a class="btn ghost sm" href="https://www.geogebra.org/calculator?command=F(x)=If(x&lt;0,0,If(x&lt;1,68/95,If(x&lt;2,187/190,1)))" target="_blank" rel="noopener"><i data-lucide="external-link"></i>Abrir en GeoGebra</a>
+                      </div>
+                    </div>
+                  </div>
 
                       <p><strong>Aplicaciones prácticas de la fda:</strong></p>
                       <ul>
@@ -1967,10 +1992,19 @@
                 <span class="ex-tag">Ejemplo</span>
                 <p>El tiempo normalizado de operación de una batería tiene densidad \( f(x) = 2(1-x) \) para \( 0 &lt; x
                   &lt; 1 \), y 0 en otro caso.</p>
-                <p><strong>Verificación:</strong> \( f(x)\ge 0 \) en \((0,1)\) y \( \int_0^1 2(1-x)\,dx = 2\left[x -
-                  \tfrac{x^2}{2}\right]_0^1 = 2(1-\tfrac12) = 1 \). ✓</p>
-                <p><strong>Probabilidad:</strong> \( P(\tfrac14 &lt; X &lt; \tfrac12) = \displaystyle\int_{1/4}^{1/2}
-                  2(1-x)\,dx = \left[2x - x^2\right]_{1/4}^{1/2} = \tfrac34 - \tfrac{7}{16} = \tfrac{5}{16}. \)</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;align-items:center;margin:16px 0 10px">
+                  <div style="background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);padding:14px">
+                    <p style="margin:0 0 10px"><strong>Verificación:</strong><br>\( f(x)\ge 0 \) en \((0,1)\) y \( \displaystyle\int_0^1 2(1-x)\,dx = 2\left[x - \tfrac{x^2}{2}\right]_0^1 = 2(1-\tfrac12) = 1 \). ✓</p>
+                    <p style="margin:0"><strong>Probabilidad:</strong><br>\( P(\tfrac14 &lt; X &lt; \tfrac12) = \displaystyle\int_{1/4}^{1/2} 2(1-x)\,dx = \left[2x - x^2\right]_{1/4}^{1/2} = \tfrac34 - \tfrac{7}{16} = \tfrac{5}{16} \approx 0.3125 \).</p>
+                  </div>
+                  <div style="background:var(--card);border:1.5px solid var(--ink);border-radius:var(--radius);overflow:hidden;box-shadow:4px 4px 0 rgba(30,41,59,.1)">
+                    <canvas id="fdpBatteryCanvas" style="width:100%;height:220px;display:block;"></canvas>
+                    <div style="padding:9px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--paper);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                      <span>Área bajo la curva entre \(x = 1/4\) y \(x = 1/2\): \(P = 5/16 \approx 0.3125\).</span>
+                      <a class="btn ghost sm" href="https://www.geogebra.org/calculator?command=f(x)=If(0&lt;x&lt;1,2*(1-x),0);Integral(f,1/4,1/2)" target="_blank" rel="noopener"><i data-lucide="external-link"></i>Abrir en GeoGebra</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </article>
 
@@ -1988,11 +2022,21 @@
               <div class="ex">
                 <span class="ex-tag">Ejemplo</span>
                 <p>Para la batería del ejemplo 3.4:</p>
-                \( \displaystyle F(x) = \begin{cases} 0, & x \le 0 \\[2pt] 2x - x^2, & 0 &lt; x &lt; 1 \\[2pt] 1, & x
-                \ge 1 \end{cases} \)
-                <p style="margin-top:10px">Y en efecto \( F(\tfrac12) - F(\tfrac14) = \tfrac34 - \tfrac{7}{16} =
-                  \tfrac{5}{16} \), la misma área calculada por integración directa. La fda es la herramienta natural
-                  cuando la densidad es complicada pero la acumulada es simple (o está tabulada, como la normal).</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;align-items:center;margin:16px 0 10px">
+                  <div style="background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);padding:14px">
+                    <div style="margin-bottom:12px;overflow-x:auto">
+                      \( \displaystyle F(x) = \begin{cases} 0, & x \le 0 \\[2pt] 2x - x^2, & 0 &lt; x &lt; 1 \\[2pt] 1, & x \ge 1 \end{cases} \)
+                    </div>
+                    <p style="margin:0">Y en efecto \( F(\tfrac12) - F(\tfrac14) = \tfrac34 - \tfrac{7}{16} = \tfrac{5}{16} \approx 0.3125 \), la misma área calculada por integración directa. La fda es la herramienta natural cuando la densidad es complicada pero la acumulada es simple (o está tabulada, como la normal).</p>
+                  </div>
+                  <div style="background:var(--card);border:1.5px solid var(--ink);border-radius:var(--radius);overflow:hidden;box-shadow:4px 4px 0 rgba(30,41,59,.1)">
+                    <canvas id="fdaBatteryCanvas" style="width:100%;height:220px;display:block;"></canvas>
+                    <div style="padding:9px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--paper);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                      <span>Curva continua monótona creciente: \(F(1/2) - F(1/4) = 5/16\).</span>
+                      <a class="btn ghost sm" href="https://www.geogebra.org/calculator?command=F(x)=If(x&lt;=0,0,If(x&lt;1,2*x-x^2,1))" target="_blank" rel="noopener"><i data-lucide="external-link"></i>Abrir en GeoGebra</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </article>
 
@@ -2112,53 +2156,128 @@
         </div>
 
         <div class="lab-grid">
-          <div class="panel">
-            <div class="panel-head"><i data-lucide="dice-5"></i>Controles del experimento</div>
-            <div class="panel-body">
-              <div class="sim-controls">
-                <button class="btn" id="btnRoll1"><i data-lucide="play"></i>Lanzar 1</button>
-                <button class="btn ghost" id="btnRoll100"><i data-lucide="plus"></i>100</button>
-                <button class="btn ghost" id="btnRoll1000"><i data-lucide="plus"></i>1,000</button>
-                <button class="btn ghost" id="btnSimReset"><i data-lucide="rotate-ccw"></i>Reiniciar</button>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div class="panel">
+              <div class="panel-head"><i data-lucide="dice-5"></i>Controles del experimento</div>
+              <div class="panel-body">
+                <div class="sim-controls">
+                  <button class="btn" id="btnRoll1"><i data-lucide="play"></i>Lanzar 1</button>
+                  <button class="btn ghost" id="btnRoll100"><i data-lucide="plus"></i>100</button>
+                  <button class="btn ghost" id="btnRoll1000"><i data-lucide="plus"></i>1,000</button>
+                  <button class="btn ghost" id="btnSimReset"><i data-lucide="rotate-ccw"></i>Reiniciar</button>
+                </div>
+                <div class="stat-2">
+                  <div class="stat">
+                    <div class="num mono" id="simN">0</div>
+                    <div class="lbl">Lanzamientos</div>
+                  </div>
+                  <div class="stat">
+                    <div class="num mono" id="simMean">—</div>
+                    <div class="lbl">Media muestral (teo: 7)</div>
+                  </div>
+                  <div class="stat">
+                    <div class="num mono" id="simDev">—</div>
+                    <div class="lbl">Desviación máx.</div>
+                  </div>
+                  <div class="stat">
+                    <div class="num mono" id="simTV">—</div>
+                    <div class="lbl">Distancia total a lo teórico</div>
+                  </div>
+                </div>
+                <div class="conv">
+                  <div
+                    style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">
+                    <span>Ajuste a la teórica</span><span id="simFit">—</span>
+                  </div>
+                  <div class="conv-bar">
+                    <div id="simTVBar"></div>
+                  </div>
+                </div>
+                <p class="note">La <strong>distancia total de variación</strong> es \( \tfrac12\sum_x |\hat f(x) - f(x)|
+                  \): mide cuánta probabilidad hay que «mover» para que el experimento coincida con la teoría. Tiende a 0
+                  conforme \(n\) crece. Registra tus observaciones: esta actividad vale <strong>15% de la
+                    evaluación</strong>. Cada lanzamiento se acumula a tu boleta aunque reinicies el experimento: llevas
+                  <strong class="mono" id="simEver">0</strong> en total (1,000 o más alcanzan el 100% del rubro).
+                </p>
               </div>
-              <div class="stat-2">
-                <div class="stat">
-                  <div class="num mono" id="simN">0</div>
-                  <div class="lbl">Lanzamientos</div>
+            </div>
+
+            <!-- Panel de Registro de Lanzamientos -->
+            <div class="panel" id="panelSimHistory">
+              <div class="panel-head"><i data-lucide="history"></i>Registro de Lanzamientos</div>
+              <div class="panel-body">
+                <!-- a) Último tiro -->
+                <div style="margin-bottom:18px">
+                  <span class="overline" style="display:block;margin-bottom:8px">Último tiro</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:12px 16px">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <div id="simDie1" style="width:42px;height:42px;background:var(--card);border:2px solid var(--ink);border-radius:8px;display:grid;place-items:center;font-family:'Fraunces',serif;font-size:1.45rem;font-weight:700;color:var(--ink);box-shadow:2px 2px 0 rgba(15,44,89,.12)">—</div>
+                      <span style="font-weight:700;font-size:18px;color:var(--muted)">+</span>
+                      <div id="simDie2" style="width:42px;height:42px;background:var(--card);border:2px solid var(--ink);border-radius:8px;display:grid;place-items:center;font-family:'Fraunces',serif;font-size:1.45rem;font-weight:700;color:var(--ink);box-shadow:2px 2px 0 rgba(15,44,89,.12)">—</div>
+                    </div>
+                    <div style="text-align:right">
+                      <span style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:block">Suma total</span>
+                      <span class="mono" id="simDieSum" style="font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--pine);line-height:1">—</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="stat">
-                  <div class="num mono" id="simMean">—</div>
-                  <div class="lbl">Media muestral (teo: 7)</div>
+
+                <!-- b) Historial reciente -->
+                <div style="margin-bottom:16px">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+                    <span class="overline">Últimos 10 lanzamientos</span>
+                    <span style="font-size:11px;color:var(--muted)" id="simHistCount">0 registrados</span>
+                  </div>
+                  <div id="simHistPills" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin">
+                    <span style="font-size:12.5px;color:var(--muted);font-style:italic">Sin lanzamientos aún</span>
+                  </div>
                 </div>
-                <div class="stat">
-                  <div class="num mono" id="simDev">—</div>
-                  <div class="lbl">Desviación máx.</div>
-                </div>
-                <div class="stat">
-                  <div class="num mono" id="simTV">—</div>
-                  <div class="lbl">Distancia total a lo teórico</div>
+
+                <!-- c) Botón Ver registro detallado -->
+                <button class="btn ghost sm" id="btnToggleSimTable" style="width:100%;justify-content:center">
+                  <i data-lucide="list"></i><span>Ver registro detallado</span>
+                </button>
+
+                <!-- Tabla colapsable con los últimos 50 -->
+                <div id="simTableWrap" hidden style="margin-top:14px;border-top:1px dashed var(--line-strong);padding-top:14px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                    <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Últimos 50 tiros</span>
+                    <span style="font-size:11px;color:var(--muted)">[N° · D1 · D2 · Suma]</span>
+                  </div>
+                  <div style="max-height:220px;overflow-y:auto;border:1px solid var(--line-strong);border-radius:8px">
+                    <table class="tbl" style="margin:0;font-size:12.5px">
+                      <thead>
+                        <tr>
+                          <th class="center" style="padding:6px">Tiro</th>
+                          <th class="center" style="padding:6px">Dado 1</th>
+                          <th class="center" style="padding:6px">Dado 2</th>
+                          <th class="center" style="padding:6px">Suma</th>
+                        </tr>
+                      </thead>
+                      <tbody id="simTableBody">
+                        <tr><td colspan="4" class="center" style="color:var(--muted);padding:12px">Sin registros</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-              <div class="conv">
-                <div
-                  style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">
-                  <span>Ajuste a la teórica</span><span id="simFit">—</span>
-                </div>
-                <div class="conv-bar">
-                  <div id="simTVBar"></div>
-                </div>
-              </div>
-              <p class="note">La <strong>distancia total de variación</strong> es \( \tfrac12\sum_x |\hat f(x) - f(x)|
-                \): mide cuánta probabilidad hay que «mover» para que el experimento coincida con la teoría. Tiende a 0
-                conforme \(n\) crece. Registra tus observaciones: esta actividad vale <strong>15% de la
-                  evaluación</strong>. Cada lanzamiento se acumula a tu boleta aunque reinicies el experimento: llevas
-                <strong class="mono" id="simEver">0</strong> en total (1,000 o más alcanzan el 100% del rubro).
-              </p>
             </div>
           </div>
 
           <div class="panel graph-frame">
-            <div class="panel-head"><i data-lucide="bar-chart-3"></i>Distribución empírica vs. teórica</div>
+            <div class="panel-head" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+              <span style="display:inline-flex;align-items:center;gap:8px"><i data-lucide="bar-chart-3"></i>Distribución empírica vs. teórica</span>
+              <div class="sim-legend" style="display:inline-flex;align-items:center;gap:16px;font-size:12px;text-transform:none;letter-spacing:normal;font-weight:500;color:var(--muted)">
+                <span style="display:inline-flex;align-items:center;gap:6px">
+                  <span style="display:inline-block;width:12px;height:12px;background:rgba(15,44,89,.85);border-radius:2px;flex:none"></span>
+                  <span style="color:var(--ink);font-weight:600">Frecuencia relativa observada</span>
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:6px">
+                  <span style="display:inline-block;width:18px;height:3.5px;background:var(--terra);border-radius:2px;flex:none"></span>
+                  <span style="color:var(--ink);font-weight:600">Probabilidad teórica</span>
+                </span>
+              </div>
+            </div>
             <canvas id="simCanvas"></canvas>
             <div class="graph-cap">Barras: frecuencia relativa observada \(\hat f(x)\). Guiones: probabilidad teórica
               \(f(x) = \tfrac{6-|x-7|}{36}\). Solo es válida con \(n &gt; 0\).</div>
@@ -2555,6 +2674,7 @@
       $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v));
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (v === 'inicio') animateHero();
+      if (v === 'teoria') requestAnimationFrame(renderTheoryCanvases);
       if (v === 'simulador') requestAnimationFrame(drawSim);
       if (v === 'calculadora') redrawCalc();
       if (v === 'boleta') renderBoleta();
@@ -2675,6 +2795,447 @@
     }
 
     /* ============================================================
+       GRÁFICAS DE LA TEORÍA (Capítulo 3)
+    ============================================================ */
+
+    /* 3.2 Histograma de probabilidad discreta f(x) (Ejemplo 3.8 Walpole) */
+    function drawFmpBar() {
+      const cv = $('#fmpBarCanvas');
+      if (!cv || cv.offsetParent === null) return;
+      const { ctx, w, h } = setupCanvas(cv);
+      const m = { l: 52, r: 24, t: 24, b: 34 };
+      const pw = w - m.l - m.r, ph = h - m.t - m.b;
+
+      const xMin = -0.6, xMax = 2.6, yMin = 0, yMax = 0.85;
+      const X = x => m.l + ((x - xMin) / (xMax - xMin)) * pw;
+      const Y = y => m.t + ph - ((y - yMin) / (yMax - yMin)) * ph;
+
+      // Líneas de cuadrícula horizontal en Y
+      const yTicks = [0, 0.2, 0.4, 0.6, 0.8];
+      ctx.font = '10px Instrument Sans';
+      ctx.textAlign = 'right';
+      yTicks.forEach(v => {
+        const y = Y(v);
+        ctx.strokeStyle = 'rgba(30,41,59,.12)';
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.moveTo(m.l - 4, y); ctx.lineTo(m.l + pw, y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(30,41,59,.7)';
+        ctx.fillText(v.toFixed(1), m.l - 8, y + 3);
+      });
+
+      // Ejes coordenados
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(m.l - 6, Y(0)); ctx.lineTo(m.l + pw + 8, Y(0));
+      ctx.moveTo(m.l, m.t + ph + 6); ctx.lineTo(m.l, m.t - 8);
+      ctx.stroke();
+
+      ctx.font = '600 11px Instrument Sans';
+      ctx.fillStyle = INK;
+      ctx.textAlign = 'left';
+      ctx.fillText('f(x)', m.l + 6, m.t - 6);
+
+      // Barras del histograma
+      const bars = [
+        { x: 0, p: 68 / 95, dec: '0.716', frac: '68/95' },
+        { x: 1, p: 51 / 190, dec: '0.268', frac: '51/190' },
+        { x: 2, p: 3 / 190, dec: '0.016', frac: '3/190' }
+      ];
+
+      const barWidth = X(0.4) - X(0); // Ancho de barra ~0.4 en unidades
+
+      bars.forEach(b => {
+        const cx = X(b.x);
+        const topY = Y(b.p);
+        const botY = Y(0);
+        const bh = botY - topY;
+
+        // Barra con relleno en azul institucional
+        ctx.fillStyle = 'rgba(15,44,89,.85)';
+        ctx.fillRect(cx - barWidth / 2, topY, barWidth, bh);
+        ctx.strokeStyle = PINE; ctx.lineWidth = 1.5;
+        ctx.strokeRect(cx - barWidth / 2, topY, barWidth, bh);
+
+        // Valor numérico arriba de la barra
+        ctx.font = '600 10.5px Instrument Sans';
+        ctx.fillStyle = INK;
+        ctx.textAlign = 'center';
+        ctx.fillText(b.dec, cx, topY - 7);
+
+        // Marcas y números del eje X
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(cx, Y(0)); ctx.lineTo(cx, Y(0) + 5); ctx.stroke();
+        ctx.font = '11px Instrument Sans';
+        ctx.fillStyle = 'rgba(30,41,59,.85)';
+        ctx.fillText(b.x, cx, Y(0) + 18);
+      });
+
+      ctx.font = '600 11px Instrument Sans';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = INK;
+      ctx.fillText('x', m.l + pw + 6, Y(0) - 6);
+    }
+
+    /* 3.3 Gráfica interactiva de la FDA escalonada (Ejemplo 3.8) */
+    function drawFdaStep() {
+      const cv = $('#fdaStepCanvas');
+      if (!cv || cv.offsetParent === null) return;
+      const { ctx, w, h } = setupCanvas(cv);
+      const m = { l: 68, r: 24, t: 22, b: 34 };
+      const pw = w - m.l - m.r, ph = h - m.t - m.b;
+
+      // Dominio X de -0.5 a 3.2 para dar margen visual a la derecha
+      const xMin = -0.5, xMax = 3.2, yMin = 0, yMax = 1.2;
+      const X = x => m.l + ((x - xMin) / (xMax - xMin)) * pw;
+      const Y = y => m.t + ph - ((y - yMin) / (yMax - yMin)) * ph;
+
+      // Eje X
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(m.l - 6, Y(0));
+      ctx.lineTo(m.l + pw + 8, Y(0));
+      ctx.stroke();
+
+      // Eje Y (en x = 0)
+      ctx.beginPath();
+      ctx.moveTo(X(0), m.t + ph + 6);
+      ctx.lineTo(X(0), m.t - 8);
+      ctx.stroke();
+
+      // Marcas X: 0, 1, 2
+      ctx.font = '11px Instrument Sans';
+      ctx.fillStyle = 'rgba(30,41,59,.8)';
+      ctx.textAlign = 'center';
+      [0, 1, 2].forEach(xVal => {
+        const cx = X(xVal);
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(cx, Y(0)); ctx.lineTo(cx, Y(0) + 5); ctx.stroke();
+        ctx.fillText(xVal, cx, Y(0) + 18);
+      });
+      ctx.textAlign = 'right';
+      ctx.fillText('x', m.l + pw + 6, Y(0) - 6);
+
+      // Marcas Y: 0, 68/95 (~0.7158), 187/190 (~0.9842), 1.0
+      const yTicksData = [
+        { v: 0, txt: '0', offset: 4 },
+        { v: 68 / 95, txt: '68/95', offset: 3 },
+        { v: 187 / 190, txt: '187/190', offset: 8 },
+        { v: 1.0, txt: '1', offset: -4 }
+      ];
+
+      yTicksData.forEach(t => {
+        const cy = Y(t.v);
+        ctx.strokeStyle = 'rgba(30,41,59,.12)';
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.moveTo(m.l - 6, cy);
+        ctx.lineTo(m.l + pw, cy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(X(0) - 4, cy); ctx.lineTo(X(0), cy); ctx.stroke();
+
+        ctx.font = '10px Instrument Sans';
+        ctx.fillStyle = 'rgba(30,41,59,.85)';
+        ctx.textAlign = 'right';
+        ctx.fillText(t.txt, m.l - 10, cy + t.offset);
+      });
+
+      ctx.textAlign = 'left';
+      ctx.fillText('F(x)', X(0) + 6, m.t - 4);
+
+      // Líneas discontinuas verticales de los saltos
+      ctx.strokeStyle = 'rgba(122,26,26,.45)';
+      ctx.setLineDash([3, 3]);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(0), Y(68 / 95)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(1), Y(68 / 95)); ctx.lineTo(X(1), Y(187 / 190)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(2), Y(187 / 190)); ctx.lineTo(X(2), Y(1)); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Trazo de los 4 peldaños horizontales
+      ctx.strokeStyle = PINE; ctx.lineWidth = 2.8;
+      ctx.beginPath(); ctx.moveTo(X(-0.5), Y(0)); ctx.lineTo(X(0), Y(0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(0), Y(68 / 95)); ctx.lineTo(X(1), Y(68 / 95)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(1), Y(187 / 190)); ctx.lineTo(X(2), Y(187 / 190)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(2), Y(1)); ctx.lineTo(X(3.1), Y(1)); ctx.stroke();
+
+      function circle(px, py, closed) {
+        ctx.beginPath();
+        ctx.arc(px, py, 3.8, 0, Math.PI * 2);
+        if (closed) {
+          ctx.fillStyle = PINE;
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.strokeStyle = PINE;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+      }
+
+      circle(X(0), Y(0), false);
+      circle(X(0), Y(68 / 95), true);
+      circle(X(1), Y(68 / 95), false);
+      circle(X(1), Y(187 / 190), true);
+      circle(X(2), Y(187 / 190), false);
+      circle(X(2), Y(1), true);
+
+      // Etiquetas pedagógicas de saltos f(x)
+      ctx.font = '600 10.5px Instrument Sans';
+      ctx.fillStyle = TERRA;
+      ctx.textAlign = 'left';
+      ctx.fillText('f(0)', X(0) + 6, (Y(0) + Y(68 / 95)) / 2 + 3);
+      ctx.fillText('f(1)', X(1) + 6, (Y(68 / 95) + Y(187 / 190)) / 2 + 3);
+
+      // f(2) posicionado con claridad en x = 2.15, y = 0.95 para evitar colisión con recta y = 1
+      ctx.fillText('f(2)', X(2.15), Y(0.95));
+    }
+
+    /* 3.4 Gráfica de FDP Continua (Ejemplo de la Batería f(x) = 2(1-x)) */
+    function drawFdpBattery() {
+      const cv = $('#fdpBatteryCanvas');
+      if (!cv || cv.offsetParent === null) return;
+      const { ctx, w, h } = setupCanvas(cv);
+      const m = { l: 48, r: 24, t: 24, b: 34 };
+      const pw = w - m.l - m.r, ph = h - m.t - m.b;
+
+      const xMin = -0.1, xMax = 1.15, yMin = 0, yMax = 2.3;
+      const X = x => m.l + ((x - xMin) / (xMax - xMin)) * pw;
+      const Y = y => m.t + ph - ((y - yMin) / (yMax - yMin)) * ph;
+
+      // Marcas de cuadrícula horizontal en Y: 1 y 2
+      [1.0, 2.0].forEach(v => {
+        const y = Y(v);
+        ctx.strokeStyle = 'rgba(30,41,59,.12)';
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.moveTo(m.l - 4, y); ctx.lineTo(m.l + pw, y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.font = '10px Instrument Sans';
+        ctx.fillStyle = 'rgba(30,41,59,.7)';
+        ctx.textAlign = 'right';
+        ctx.fillText(v.toFixed(0), m.l - 8, y + 3);
+      });
+
+      // Región sombreada [0.25, 0.50] en tono borgoña translúcido
+      const f = x => 2 * (1 - x);
+      ctx.fillStyle = 'rgba(122,26,26,.25)';
+      ctx.beginPath();
+      ctx.moveTo(X(0.25), Y(0));
+      ctx.lineTo(X(0.25), Y(f(0.25)));
+      ctx.lineTo(X(0.50), Y(f(0.50)));
+      ctx.lineTo(X(0.50), Y(0));
+      ctx.closePath();
+      ctx.fill();
+
+      // Líneas discontinuas verticales en x = 0.25 y x = 0.50
+      ctx.strokeStyle = TERRA; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(X(0.25), Y(0)); ctx.lineTo(X(0.25), Y(f(0.25))); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(0.50), Y(0)); ctx.lineTo(X(0.50), Y(f(0.50))); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Anotación centrada: Área = 5/16
+      ctx.font = '600 11px Instrument Sans';
+      ctx.fillStyle = TERRA;
+      ctx.textAlign = 'center';
+      ctx.fillText('Área = 5/16', X(0.375), (Y(0) + Y(f(0.375))) / 2 + 4);
+
+      // Trazo de la recta decreciente f(x) = 2(1-x) en [0, 1]
+      ctx.strokeStyle = PINE; ctx.lineWidth = 2.8;
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(2));
+      ctx.lineTo(X(1), Y(0));
+      ctx.stroke();
+
+      // Trazos para f(x) = 0 fuera del intervalo (0, 1)
+      ctx.strokeStyle = 'rgba(15,44,89,.4)'; ctx.lineWidth = 2.0;
+      ctx.beginPath(); ctx.moveTo(X(-0.1), Y(0)); ctx.lineTo(X(0), Y(0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(1), Y(0)); ctx.lineTo(X(1.12), Y(0)); ctx.stroke();
+
+      // Puntos en (0, 2) y (1, 0)
+      ctx.fillStyle = PINE;
+      ctx.beginPath(); ctx.arc(X(0), Y(2), 3.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(X(1), Y(0), 3.5, 0, Math.PI * 2); ctx.fill();
+
+      // Ejes coordenados
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(m.l - 6, Y(0)); ctx.lineTo(m.l + pw + 8, Y(0));
+      ctx.moveTo(X(0), m.t + ph + 6); ctx.lineTo(X(0), m.t - 8);
+      ctx.stroke();
+
+      // Etiquetas del eje X
+      const xTicks = [
+        { v: 0, txt: '0' },
+        { v: 0.25, txt: '1/4' },
+        { v: 0.50, txt: '1/2' },
+        { v: 1.0, txt: '1' }
+      ];
+      ctx.font = '10.5px Instrument Sans';
+      ctx.textAlign = 'center';
+      xTicks.forEach(t => {
+        const cx = X(t.v);
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(cx, Y(0)); ctx.lineTo(cx, Y(0) + 5); ctx.stroke();
+        ctx.fillStyle = (t.v === 0.25 || t.v === 0.50) ? TERRA : 'rgba(30,41,59,.85)';
+        ctx.fillText(t.txt, cx, Y(0) + 18);
+      });
+
+      ctx.font = '600 11px Instrument Sans';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = INK;
+      ctx.fillText('x', m.l + pw + 6, Y(0) - 6);
+
+      ctx.textAlign = 'left';
+      ctx.fillText('f(x)', X(0) + 6, m.t - 6);
+    }
+
+    /* 3.5 Gráfica de FDA Continua (Ejemplo de la Batería F(x) = 2x - x^2) */
+    function drawFdaBattery() {
+      const cv = $('#fdaBatteryCanvas');
+      if (!cv || cv.offsetParent === null) return;
+      const { ctx, w, h } = setupCanvas(cv);
+      const m = { l: 56, r: 24, t: 22, b: 34 };
+      const pw = w - m.l - m.r, ph = h - m.t - m.b;
+
+      const xMin = -0.1, xMax = 1.15, yMin = 0, yMax = 1.18;
+      const X = x => m.l + ((x - xMin) / (xMax - xMin)) * pw;
+      const Y = y => m.t + ph - ((y - yMin) / (yMax - yMin)) * ph;
+
+      const F = x => (x <= 0 ? 0 : x >= 1 ? 1 : 2 * x - x * x);
+
+      // Línea de referencia horizontal en y = 1
+      ctx.strokeStyle = 'rgba(30,41,59,.12)';
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath(); ctx.moveTo(m.l - 4, Y(1)); ctx.lineTo(m.l + pw, Y(1)); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '10px Instrument Sans';
+      ctx.fillStyle = 'rgba(30,41,59,.7)';
+      ctx.textAlign = 'right';
+      ctx.fillText('1', m.l - 8, Y(1) + 3);
+
+      // Puntos notables: (1/4, 7/16) y (1/2, 3/4)
+      const p1 = { x: 0.25, y: 7 / 16, txtX: '1/4', txtY: '7/16' };
+      const p2 = { x: 0.50, y: 3 / 4, txtX: '1/2', txtY: '3/4' };
+
+      // Líneas punteadas hacia los ejes
+      ctx.strokeStyle = 'rgba(122,26,26,.6)';
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([3, 3]);
+
+      // Guías punto 1
+      ctx.beginPath();
+      ctx.moveTo(X(p1.x), Y(0));
+      ctx.lineTo(X(p1.x), Y(p1.y));
+      ctx.lineTo(X(0), Y(p1.y));
+      ctx.stroke();
+
+      // Guías punto 2
+      ctx.beginPath();
+      ctx.moveTo(X(p2.x), Y(0));
+      ctx.lineTo(X(p2.x), Y(p2.y));
+      ctx.lineTo(X(0), Y(p2.y));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Diferencia vertical visual ΔF = 5/16 en el eje Y
+      const brackX = X(0) - 2;
+      ctx.strokeStyle = TERRA; ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(brackX, Y(p1.y));
+      ctx.lineTo(brackX, Y(p2.y));
+      ctx.stroke();
+
+      // Marcas y etiquetas de Y(p1.y) y Y(p2.y)
+      ctx.font = '10px Instrument Sans';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = TERRA;
+      ctx.fillText(p1.txtY, m.l - 8, Y(p1.y) + 3);
+      ctx.fillText(p2.txtY, m.l - 8, Y(p2.y) + 3);
+
+      // Trazo de la curva acumulada continua F(x) = 2x - x^2
+      // Tramo horizontal x <= 0
+      ctx.strokeStyle = 'rgba(15,44,89,.4)'; ctx.lineWidth = 2.0;
+      ctx.beginPath(); ctx.moveTo(X(-0.1), Y(0)); ctx.lineTo(X(0), Y(0)); ctx.stroke();
+
+      // Curva parabólica continua en [0, 1]
+      ctx.strokeStyle = PINE; ctx.lineWidth = 2.8;
+      ctx.beginPath();
+      const steps = 60;
+      for (let i = 0; i <= steps; i++) {
+        const curX = i / steps;
+        const curY = F(curX);
+        if (i === 0) ctx.moveTo(X(curX), Y(curY));
+        else ctx.lineTo(X(curX), Y(curY));
+      }
+      ctx.stroke();
+
+      // Tramo horizontal x >= 1
+      ctx.strokeStyle = 'rgba(15,44,89,.4)'; ctx.lineWidth = 2.0;
+      ctx.beginPath(); ctx.moveTo(X(1), Y(1)); ctx.lineTo(X(1.12), Y(1)); ctx.stroke();
+
+      // Círculos destacados en los puntos evaluados
+      [p1, p2].forEach(p => {
+        ctx.fillStyle = TERRA;
+        ctx.beginPath();
+        ctx.arc(X(p.x), Y(p.y), 4.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+
+      // Anotación pedagógica ΔF = 5/16
+      ctx.font = '600 10.5px Instrument Sans';
+      ctx.fillStyle = TERRA;
+      ctx.textAlign = 'left';
+      ctx.fillText('ΔF = 5/16', X(p1.x) + 8, (Y(p1.y) + Y(p2.y)) / 2 + 3);
+
+      // Ejes coordenados
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(m.l - 6, Y(0)); ctx.lineTo(m.l + pw + 8, Y(0));
+      ctx.moveTo(X(0), m.t + ph + 6); ctx.lineTo(X(0), m.t - 8);
+      ctx.stroke();
+
+      // Marcas del eje X
+      const xTicks = [
+        { v: 0, txt: '0' },
+        { v: 0.25, txt: '1/4' },
+        { v: 0.50, txt: '1/2' },
+        { v: 1.0, txt: '1' }
+      ];
+      ctx.font = '10.5px Instrument Sans';
+      ctx.textAlign = 'center';
+      xTicks.forEach(t => {
+        const cx = X(t.v);
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(cx, Y(0)); ctx.lineTo(cx, Y(0) + 5); ctx.stroke();
+        ctx.fillStyle = (t.v === 0.25 || t.v === 0.50) ? TERRA : 'rgba(30,41,59,.85)';
+        ctx.fillText(t.txt, cx, Y(0) + 18);
+      });
+
+      ctx.font = '600 11px Instrument Sans';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = INK;
+      ctx.fillText('x', m.l + pw + 6, Y(0) - 6);
+
+      ctx.textAlign = 'left';
+      ctx.fillText('F(x)', X(0) + 6, m.t - 6);
+    }
+
+    /* Agrupador general para renderizar las cuatro gráficas de teoría */
+    function renderTheoryCanvases() {
+      drawFmpBar();
+      drawFdaStep();
+      drawFdpBattery();
+      drawFdaBattery();
+    }
+
+    /* ============================================================
        HERO
     ============================================================ */
     let heroAnim = null;
@@ -2729,15 +3290,71 @@
        SIMULADOR DE DADOS
     ============================================================ */
     const THEO = [0, 0, 1 / 36, 2 / 36, 3 / 36, 4 / 36, 5 / 36, 6 / 36, 5 / 36, 4 / 36, 3 / 36, 2 / 36, 1 / 36];
-    const sim = { counts: Array(13).fill(0), smooth: Array(13).fill(0), total: 0 };
+    const sim = { counts: Array(13).fill(0), smooth: Array(13).fill(0), total: 0, history: [] };
+
+    function updateSimHistoryUI() {
+      const d1El = $('#simDie1'), d2El = $('#simDie2'), sumEl = $('#simDieSum');
+      const pillsEl = $('#simHistPills'), tbodyEl = $('#simTableBody'), countEl = $('#simHistCount');
+      if (!d1El) return;
+      if (sim.history && sim.history.length > 0) {
+        const latest = sim.history[0];
+        d1El.textContent = latest.d1;
+        d2El.textContent = latest.d2;
+        sumEl.textContent = latest.sum;
+        countEl.textContent = `${sim.history.length} en memoria`;
+
+        pillsEl.innerHTML = sim.history.slice(0, 10).map(r =>
+          `<span class="tag d mono" style="font-weight:700;font-size:12px;padding:3px 8px">${r.sum}</span>`
+        ).join('');
+
+        tbodyEl.innerHTML = sim.history.slice(0, 50).map(r =>
+          `<tr>
+            <td class="center mono" style="padding:6px;color:var(--muted)">#${r.id}</td>
+            <td class="center mono" style="padding:6px">${r.d1}</td>
+            <td class="center mono" style="padding:6px">${r.d2}</td>
+            <td class="center mono" style="padding:6px"><strong>${r.sum}</strong></td>
+          </tr>`
+        ).join('');
+      } else {
+        d1El.textContent = '—';
+        d2El.textContent = '—';
+        sumEl.textContent = '—';
+        countEl.textContent = '0 registrados';
+        pillsEl.innerHTML = '<span style="font-size:12.5px;color:var(--muted);font-style:italic">Sin lanzamientos aún</span>';
+        tbodyEl.innerHTML = '<tr><td colspan="4" class="center" style="color:var(--muted);padding:12px">Sin registros</td></tr>';
+      }
+    }
+
     function addRolls(k) {
-      for (let i = 0; i < k; i++) { const s = 1 + Math.floor(Math.random() * 6) + 1 + Math.floor(Math.random() * 6); sim.counts[s]++; }
+      const recent = [];
+      for (let i = 0; i < k; i++) {
+        const d1 = 1 + Math.floor(Math.random() * 6);
+        const d2 = 1 + Math.floor(Math.random() * 6);
+        const s = d1 + d2;
+        sim.counts[s]++;
+        if (i >= k - 50) {
+          recent.push({ id: sim.total + i + 1, d1, d2, sum: s });
+        }
+      }
       sim.total += k;
+      if (recent.length > 0) {
+        sim.history.unshift(...recent.reverse());
+        if (sim.history.length > 100) sim.history.length = 100;
+      }
       const a = act(); a[CURSO].sim.rolls = (a[CURSO].sim.rolls || 0) + k; saveAct(a);
       updateSimStats();
       updateHomeStat();
+      updateSimHistoryUI();
     }
-    function resetSim() { sim.counts.fill(0); sim.smooth.fill(0); sim.total = 0; updateSimStats(); drawSim(); }
+    function resetSim() {
+      sim.counts.fill(0);
+      sim.smooth.fill(0);
+      sim.total = 0;
+      sim.history = [];
+      updateSimStats();
+      updateSimHistoryUI();
+      drawSim();
+    }
     function updateSimStats() {
       $('#simN').textContent = sim.total.toLocaleString('es-MX');
       $('#simEver').textContent = (act()[CURSO].sim.rolls || 0).toLocaleString('es-MX');
@@ -2775,12 +3392,6 @@
         ctx.fillStyle = 'rgba(30,41,59,.7)'; ctx.font = '11px Instrument Sans'; ctx.textAlign = 'center';
         ctx.fillText(s, cx, m.t + m.ph + 17);
       }
-      ctx.font = '600 11.5px Instrument Sans';
-      ctx.fillStyle = 'rgba(15,44,89,.85)'; ctx.fillRect(m.l + 6, m.t - 6, 10, 10);
-      ctx.fillText('frecuencia relativa', m.l + 21, m.t + 3);
-      ctx.strokeStyle = TERRA; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(m.l + 150, m.t - 1); ctx.lineTo(m.l + 164, m.t - 1); ctx.stroke();
-      ctx.fillStyle = INK; ctx.fillText('probabilidad teórica', m.l + 170, m.t + 3);
     }
     (function simLoop() {
       if ($('#v-simulador') && !$('#v-simulador').hidden) {
@@ -2797,6 +3408,14 @@
     $('#btnRoll100').addEventListener('click', () => addRolls(100));
     $('#btnRoll1000').addEventListener('click', () => addRolls(1000));
     $('#btnSimReset').addEventListener('click', () => { resetSim(); drawSim(); toast('Experimento reiniciado (tu acumulado para la boleta se conserva).'); });
+    $('#btnToggleSimTable').addEventListener('click', () => {
+      const wrap = $('#simTableWrap');
+      wrap.hidden = !wrap.hidden;
+      $('#btnToggleSimTable').innerHTML = wrap.hidden
+        ? '<i data-lucide="list"></i><span>Ver registro detallado</span>'
+        : '<i data-lucide="chevron-up"></i><span>Ocultar registro</span>';
+      refreshIcons();
+    });
 
     /* ============================================================
        CALCULADORA DE DISTRIBUCIONES
@@ -2881,7 +3500,14 @@
         if (x > n) throw `x no puede exceder n = ${n}.`;
         const px = binomPmf(n, x, p);
         let F = 0; for (let t = 0; t <= x; t++) F += binomPmf(n, t, p);
-        R.push(['P(X = x)', px], ['P(X ≤ x)', F], ['P(X ≥ x)', 1 - F + px]);
+        F = Math.min(1, Math.max(0, F));
+        R.push(
+          ['P(X = x)', px],
+          ['P(X < x)', Math.max(0, F - px)],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.min(1, Math.max(0, 1 - F + px))]
+        );
         let lo = 0, hi = n;
         if (n > 70) {
           const mu = n * p, sd = Math.sqrt(n * p * (1 - p));
@@ -2896,7 +3522,14 @@
         const { l, x } = v;
         const px = poisPmf(l, x);
         let F = 0; for (let t = 0; t <= x; t++) F += poisPmf(l, t);
-        R.push(['P(X = x)', px], ['P(X ≤ x)', F], ['P(X ≥ x)', 1 - F + px]);
+        F = Math.min(1, Math.max(0, F));
+        R.push(
+          ['P(X = x)', px],
+          ['P(X < x)', Math.max(0, F - px)],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.min(1, Math.max(0, 1 - F + px))]
+        );
         const hi = Math.min(100, Math.max(x + 2, Math.ceil(l + 4 * Math.sqrt(l) + 2)));
         return {
           results: R, draw: () => drawPMF($('#calcCanvas'), t => poisPmf(l, t), 0, hi, x),
@@ -2906,8 +3539,14 @@
       if (key === 'geometrica') {
         const { p, x } = v;
         const px = p * Math.pow(1 - p, x - 1);
-        const F = 1 - Math.pow(1 - p, x);
-        R.push(['P(X = x)', px], ['P(X ≤ x)', F], ['P(X ≥ x)', 1 - F + px]);
+        const F = Math.min(1, Math.max(0, 1 - Math.pow(1 - p, x)));
+        R.push(
+          ['P(X = x)', px],
+          ['P(X < x)', Math.max(0, F - px)],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.min(1, Math.max(0, 1 - F + px))]
+        );
         const hi = Math.min(100, Math.max(x + 2, Math.ceil(5 / p) + 2));
         return {
           results: R, draw: () => drawPMF($('#calcCanvas'), t => t >= 1 ? p * Math.pow(1 - p, t - 1) : 0, 1, hi, x),
@@ -2926,7 +3565,14 @@
         else if (x >= lo) {
           for (let t = lo; t <= x; t++) F += choose(K, t) * choose(N - K, n - t) / den;
         }
-        R.push(['P(X = x)', px], ['P(X ≤ x)', F], ['P(X ≥ x)', 1 - F + px]);
+        F = Math.min(1, Math.max(0, F));
+        R.push(
+          ['P(X = x)', px],
+          ['P(X < x)', Math.max(0, F - px)],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.min(1, Math.max(0, 1 - F + px))]
+        );
         return {
           results: R, draw: () => drawPMF($('#calcCanvas'),
             t => (t >= lo && t <= hi) ? choose(K, t) * choose(N - K, n - t) / den : 0, lo, hi, x),
@@ -2936,8 +3582,14 @@
       if (key === 'unifdisc') {
         const { k, x } = v;
         if (x > k) throw `x no puede exceder k = ${k}.`;
-        const px = 1 / k, F = x / k;
-        R.push(['P(X = x)', px], ['P(X ≤ x)', F], ['P(X ≥ x)', 1 - F + px]);
+        const px = 1 / k, F = Math.min(1, Math.max(0, x / k));
+        R.push(
+          ['P(X = x)', px],
+          ['P(X < x)', Math.max(0, F - px)],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.min(1, Math.max(0, 1 - F + px))]
+        );
         return {
           results: R, draw: () => drawPMF($('#calcCanvas'), () => 1 / k, 1, k, x),
           tex: `f(x)=\\dfrac{1}{${k}},\\;\\; x=1,\\dots,${k}`
@@ -2948,8 +3600,21 @@
         if (x2 != null && x2 <= x) throw 'x₂ debe ser estrictamente mayor que x.';
         const z = (x - mu) / sg;
         const F = Phi(z);
-        R.push(['P(X ≤ x)', F], ['P(X > x)', 1 - F]);
-        if (x2 != null) { const z2 = (x2 - mu) / sg; R.push([`P(${+x.toFixed(3)} ≤ X ≤ ${+x2.toFixed(3)})`, Math.max(0, Phi(z2) - F)]); }
+        R.push(
+          ['P(X = x)', 0],
+          ['P(X < x)', F],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.max(0, 1 - F)]
+        );
+        if (x2 != null) {
+          const z2 = (x2 - mu) / sg;
+          const pInt = Math.max(0, Phi(z2) - F);
+          R.push(
+            [`P(${+x.toFixed(3)} < X < ${+x2.toFixed(3)})`, pInt],
+            [`P(${+x.toFixed(3)} ≤ X ≤ ${+x2.toFixed(3)})`, pInt]
+          );
+        }
         const shades = (x2 != null) ? [[x, x2]] : [[null, x]];
         const lo = mu - 4.2 * sg, hi = mu + 4.2 * sg;
         return {
@@ -2961,8 +3626,15 @@
       }
       if (key === 'exponencial') {
         const { l, x } = v;
-        const F = 1 - Math.exp(-l * x);
-        R.push(['P(X ≤ x)', F], ['P(X > x)', Math.exp(-l * x)]);
+        const tail = Math.exp(-l * x);
+        const F = Math.max(0, Math.min(1, 1 - tail));
+        R.push(
+          ['P(X = x)', 0],
+          ['P(X < x)', F],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', tail],
+          ['P(X ≥ x)', tail]
+        );
         const hi = Math.min(Math.max(1.4 * x, 5 / l), 100 / l);
         return {
           results: R, draw: () => drawPDF($('#calcCanvas'), t => t >= 0 ? l * Math.exp(-l * t) : 0, 0, hi, [[0, x]]),
@@ -2973,7 +3645,14 @@
         const { a, b, x } = v;
         if (b <= a) throw 'β debe ser mayor que α.';
         const F = Math.min(1, Math.max(0, (x - a) / (b - a)));
-        R.push([`P(X ≤ x) = F(x)`, F], [`P(X > x)`, 1 - F], [`f(x) en [α, β]`, 1 / (b - a)]);
+        R.push(
+          ['P(X = x)', 0],
+          ['P(X < x)', F],
+          ['P(X ≤ x)', F],
+          ['P(X > x)', Math.max(0, 1 - F)],
+          ['P(X ≥ x)', Math.max(0, 1 - F)],
+          ['f(x) en [α, β]', 1 / (b - a)]
+        );
         return {
           results: R, draw: () => drawPDF($('#calcCanvas'),
             t => (t >= a && t <= b) ? 1 / (b - a) : 0, a - (b - a) * 0.25, b + (b - a) * 0.25, [[a, Math.min(x, b)]]),
@@ -3262,14 +3941,15 @@
         });
       }
     }
-    window.addEventListener('resize', () => { drawSim(); redrawCalc(); animateHero(); });
+    window.addEventListener('resize', () => { drawSim(); redrawCalc(); animateHero(); renderTheoryCanvases(); });
 
-    refreshIcons();
     initMath();
     renderTaskList();
     syncEjChecks();
     renderBoleta();
     animateHero();
+    renderTheoryCanvases();
+    refreshIcons();
   </script>
 </body>
 
